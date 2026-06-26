@@ -1,0 +1,28 @@
+<div class="page-section container">
+  <h1 class="page-title">{{ page.title }}</h1>
+  <div class="page-content rte">
+    {{ page.content }}
+  </div>
+</div>
+
+<style>
+  .page-section {
+    max-width: 800px;
+    padding-top: 3rem;
+  }
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .page-content {
+    color: var(--text-secondary);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "settings": []
+}
+{% endschema %}

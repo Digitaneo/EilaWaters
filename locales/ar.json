@@ -1,0 +1,32 @@
+{
+  "general": {
+    "404": {
+      "title": "الصفحة غير موجودة",
+      "subtext": "الصفحة التي تبحث عنها غير موجودة."
+    },
+    "continue_shopping": "متابعة التسوق",
+    "search": "بحث"
+  },
+  "customer": {
+    "log_in": "تسجيل الدخول",
+    "account_fallback": "الحساب"
+  },
+  "cart": {
+    "title": "السلة",
+    "empty": "سلتك فارغة حالياً",
+    "add_more": "إضافة المزيد من المنتجات",
+    "clear": "إفراغ السلة",
+    "checkout": "الذهاب للدفع",
+    "subtotal": "المجموع"
+  },
+  "header": {
+    "deliver_to": "التوصيل إلى",
+    "follow_us": "تابعنا",
+    "all_rights": "جميع الحقوق محفوظة"
+  },
+  "sections": {
+    "hero_banner": {
+      "shop_now": "تسوق الآن"
+    }
+  }
+}

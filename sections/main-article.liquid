@@ -1,0 +1,57 @@
+<article class="article-section container">
+  <header class="article-header">
+    <h1 class="article-title">{{ article.title }}</h1>
+    <span class="article-meta">{{ article.published_at | date: "%b %d, %Y" }} by {{ article.author }}</span>
+  </header>
+
+  {%- if article.image != blank -%}
+    <div class="article-featured-image-wrapper">
+      {{ article.image | image_url: width: 1200 | image_tag: class: 'article-featured-image' }}
+    </div>
+  {%- endif -%}
+
+  <div class="article-content rte">
+    {{ article.content }}
+  </div>
+</article>
+
+<style>
+  .article-section {
+    max-width: 800px;
+    padding-top: 2rem;
+  }
+  .article-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .article-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .article-meta {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .article-featured-image-wrapper {
+    margin-bottom: 3rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+  }
+  .article-featured-image {
+    width: 100%;
+    height: auto;
+  }
+  .article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Article Content",
+  "settings": []
+}
+{% endschema %}

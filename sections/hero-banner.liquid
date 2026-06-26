@@ -1,0 +1,398 @@
+{% comment %}
+  Hero Banner Section designed to match the Abar app landing page style.
+{% endcomment %}
+
+{%- schema -%}
+{
+  "name": "بانر البطل",
+  "settings": [
+    {
+      "type": "header",
+      "content": "الخلفية"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "صورة الخلفية"
+    },
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "فيديو الخلفية",
+      "info": "يتم عرضه بدلاً من الصورة في حال تحميله."
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_dark",
+      "label": "تفعيل تعتيم الخلفية",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "المحتوى والتنسيق"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "محاذاة المحتوى",
+      "options": [
+        { "value": "start", "label": "بداية" },
+        { "value": "center", "label": "وسط" },
+        { "value": "end", "label": "نهاية" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "لون النصوص",
+      "options": [
+        { "value": "light", "label": "فاتح / أبيض" },
+        { "value": "dark", "label": "داكن / أسود" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "text",
+      "id": "pre_title",
+      "label": "العنوان التمهيدي",
+      "default": "تطبيق آبار"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "العنوان الرئيسي",
+      "default": "أفضل تطبيق لطلب توصيل المياه للمنازل والمساجد"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "الوصف",
+      "default": "اطلب مياه الشرب المفضلة لديك بكل سهولة وسرعة من خلال تطبيق آبار لنوصلها لك أينما كنت."
+    },
+    {
+      "type": "header",
+      "content": "زر الإجراء"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "نص الزر",
+      "default": "تسوق الآن"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "رابط الزر",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "رمز الاستجابة السريعة"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_qr",
+      "label": "إظهار رمز الاستجابة السريعة",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "qr_image",
+      "label": "صورة الرمز"
+    },
+    {
+      "type": "text",
+      "id": "qr_text",
+      "label": "نص الرمز",
+      "default": "امسح الكود وحمل تطبيق آبار"
+    }
+  ],
+  "presets": [
+    {
+      "name": "بانر البطل",
+      "category": "Banner"
+    }
+  ]
+}
+{%- endschema -%}
+
+{%- style -%}
+.hero-banner-sec {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 80px 0;
+}
+
+/* Background Video */
+.hero-banner-sec__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Dark Overlay */
+.hero-banner-sec::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-banner-sec[data-overlay="true"]::before {
+  opacity: 1;
+}
+
+.hero-banner-sec__container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.hero-banner-sec__wrapper {
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Alignments using logical properties for RTL support */
+.hero-banner-sec[data-align="start"] {
+  text-align: start;
+}
+.hero-banner-sec[data-align="start"] .hero-banner-sec__wrapper {
+  margin-inline-end: auto;
+  margin-inline-start: 0;
+}
+
+.hero-banner-sec[data-align="center"] {
+  text-align: center;
+}
+.hero-banner-sec[data-align="center"] .hero-banner-sec__wrapper {
+  margin: 0 auto;
+}
+
+.hero-banner-sec[data-align="end"] {
+  text-align: end;
+}
+.hero-banner-sec[data-align="end"] .hero-banner-sec__wrapper {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+/* Text Colors */
+.hero-banner-sec[data-color="light"] {
+  color: #ffffff;
+}
+.hero-banner-sec[data-color="light"] .hero-banner-sec__pre-title {
+  color: rgba(255, 255, 255, 0.8);
+}
+.hero-banner-sec[data-color="light"] .hero-banner-sec__subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-banner-sec[data-color="dark"] {
+  color: #1e293b;
+}
+.hero-banner-sec[data-color="dark"] .hero-banner-sec__pre-title {
+  color: #64748b;
+}
+.hero-banner-sec[data-color="dark"] .hero-banner-sec__subtitle {
+  color: #475569;
+}
+
+/* Typography & Elements */
+.hero-banner-sec__pre-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.hero-banner-sec__title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 1.25rem 0;
+}
+
+.hero-banner-sec__subtitle {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  line-height: 1.7;
+  margin: 0 0 2rem 0;
+  max-width: 600px;
+}
+
+/* Action Button */
+.hero-banner-sec__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 0.9rem 2.2rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #0f172a;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+}
+.hero-banner-sec[data-align="end"] .hero-banner-sec__btn {
+  align-self: flex-end;
+}
+.hero-banner-sec[data-align="center"] .hero-banner-sec__btn {
+  align-self: center;
+}
+
+.hero-banner-sec__btn:hover {
+  background-color: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.2);
+}
+
+/* QR Code Section */
+.hero-banner-sec__qr-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  margin-top: 2.5rem;
+  align-self: flex-start;
+  max-width: 320px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.hero-banner-sec[data-align="end"] .hero-banner-sec__qr-card {
+  align-self: flex-end;
+}
+.hero-banner-sec[data-align="center"] .hero-banner-sec__qr-card {
+  align-self: center;
+}
+
+.hero-banner-sec__qr-text {
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.hero-banner-sec__qr-img-wrapper {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.hero-banner-sec__qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .hero-banner-sec {
+    min-height: 70vh;
+    padding: 60px 0;
+  }
+  .hero-banner-sec__wrapper {
+    max-width: 100%;
+    padding: 0 1.5rem;
+  }
+  .hero-banner-sec[data-align="start"],
+  .hero-banner-sec[data-align="end"] {
+    text-align: center;
+  }
+  .hero-banner-sec[data-align="start"] .hero-banner-sec__wrapper,
+  .hero-banner-sec[data-align="end"] .hero-banner-sec__wrapper {
+    margin: 0 auto;
+  }
+  .hero-banner-sec[data-align="start"] .hero-banner-sec__btn,
+  .hero-banner-sec[data-align="start"] .hero-banner-sec__qr-card,
+  .hero-banner-sec[data-align="end"] .hero-banner-sec__btn,
+  .hero-banner-sec[data-align="end"] .hero-banner-sec__qr-card {
+    align-self: center;
+  }
+}
+{%- endstyle -%}
+
+<section class="hero-banner-sec" 
+         data-overlay="{{ section.settings.overlay_dark }}"
+         data-align="{{ section.settings.content_alignment }}"
+         data-color="{{ section.settings.text_color }}"
+         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2000 }}');{% else %}background-color: #f8fafc;{% endif %}">
+  
+  {%- if section.settings.bg_video != blank -%}
+    <video autoplay muted loop playsinline class="hero-banner-sec__video">
+      <source src="{{ section.settings.bg_video | file_url }}" type="video/mp4">
+    </video>
+  {%- endif -%}
+
+  <div class="container hero-banner-sec__container">
+    <div class="hero-banner-sec__wrapper">
+      {%- if section.settings.pre_title != blank -%}
+        <span class="hero-banner-sec__pre-title">{{ section.settings.pre_title }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.title != blank -%}
+        <h1 class="hero-banner-sec__title">{{ section.settings.title | newline_to_br }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="hero-banner-sec__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank and section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}" class="hero-banner-sec__btn">{{ section.settings.button_text }}</a>
+      {%- endif -%}
+
+      {%- if section.settings.show_qr -%}
+        <div class="hero-banner-sec__qr-card">
+          <span class="hero-banner-sec__qr-text">{{ section.settings.qr_text }}</span>
+          <div class="hero-banner-sec__qr-img-wrapper">
+            {%- if section.settings.qr_image != blank -%}
+              {{ section.settings.qr_image | image_url: width: 120 | image_tag: class: 'hero-banner-sec__qr-img', loading: 'lazy' }}
+            {%- else -%}
+              <!-- Inline fallback SVG representing a QR Code -->
+              <svg class="hero-banner-sec__qr-img" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="6" height="6" rx="1" />
+                <rect x="15" y="3" width="6" height="6" rx="1" />
+                <rect x="3" y="15" width="6" height="6" rx="1" />
+                <path d="M15 15h1v1h-1zM18 18h1v1h-1zM15 18h1v1h-1zM18 15h1v1h-1zM20 15h1v1h-1zM20 18h1v1h-1zM15 20h3v1h-3zM19 20h2v1h-2zM9 9h2v2H9zM12 9h1v1h-1z" />
+              </svg>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

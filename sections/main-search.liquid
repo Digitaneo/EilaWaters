@@ -1,0 +1,75 @@
+<div class="search-section container">
+  <h1 class="search-title">Search Results</h1>
+
+  <div class="search-box-container">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search our store..." class="search-input">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+
+  {%- if search.performed -%}
+    <p class="search-results-count">{{ search.results_count }} results found for "{{ search.terms }}"</p>
+    
+    <div class="product-grid">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          <article class="product-card">
+            <a href="{{ item.url }}" class="product-card__link">
+              <div class="product-card__image-wrapper">
+                {%- if item.featured_image != blank -%}
+                  {{ item.featured_image | image_url: width: 400 | image_tag: class: 'product-card__image' }}
+                {%- else -%}
+                  <div class="product-card__placeholder">No Image</div>
+                {%- endif -%}
+              </div>
+              <div class="product-card__info">
+                <h2 class="product-card__title">{{ item.title }}</h2>
+                <span class="product-card__price">{{ item.price | money }}</span>
+              </div>
+            </a>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  .search-section {
+    padding-top: 2rem;
+  }
+  .search-title {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .search-box-container {
+    max-width: 500px;
+    margin: 0 auto 3rem;
+  }
+  .search-form {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 9999px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+  }
+  .search-results-count {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,522 @@
+{%- liquid
+  assign is_rtl = false
+  if request.locale.iso_code == 'ar'
+    assign is_rtl = true
+  endif
+  assign show_announcement = false
+  if section.settings.show_announcement_desktop or section.settings.show_announcement_mobile
+    assign show_announcement = true
+  endif
+-%}
+
+<div class="header-group{% if section.settings.enable_transparent_header %} header-group--transparent{% endif %}" id="header-group">
+
+{%- if show_announcement -%}
+  <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
+    <div class="container announcement-bar__container">
+      <p class="announcement-bar__text">{{ section.settings.announcement_text }}</p>
+    </div>
+  </div>
+{%- endif -%}
+
+<header class="site-header{% if section.settings.enable_sticky_header %} site-header--sticky{% endif %}{% if section.settings.enable_transparent_header %} site-header--transparent{% endif %} site-header--trans-text-{{ section.settings.transparent_text_color }}" id="site-header" data-sticky="{{ section.settings.enable_sticky_header }}" data-transparent="{{ section.settings.enable_transparent_header }}">
+  <div class="container site-header__container">
+    
+    <!-- Desktop: Logo (First) -->
+    <div class="site-header__logo">
+      <a href="{{ routes.root_url }}" class="site-header__logo-link">
+        {%- if section.settings.logo != blank -%}
+          {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+          {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'logo-img', alt: logo_alt }}
+        {%- else -%}
+          <span class="logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    <!-- Desktop: Navigation (Middle) -->
+    <nav class="site-nav desktop-only" role="navigation">
+      <ul class="site-nav__list">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li class="site-nav__item {% if link.links != blank %}site-nav__item--has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="site-nav__link {% if link.active %}site-nav__link--active{% endif %}">
+              {{ link.title }}
+              {%- if link.links != blank -%}
+                <svg class="icon-dropdown" aria-hidden="true" focusable="false" width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {%- endif -%}
+            </a>
+            {%- if link.links != blank -%}
+              <ul class="site-nav__dropdown">
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" class="site-nav__dropdown-link">{{ childlink.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <!-- Desktop: Actions/Icons (Last) -->
+    <div class="site-header__actions desktop-only">
+      <!-- Delivery Location Indicator -->
+      {%- if section.settings.delivery_text != blank -%}
+        <div class="header-delivery">
+          <svg class="icon icon-pin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <div class="delivery-info">
+            <span class="delivery-label">{{ 'header.deliver_to' | t }}</span>
+            <span class="delivery-value">{{ section.settings.delivery_text }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <!-- Language Selector -->
+      <div class="header-lang-selector">
+        {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+          <div class="disclosure">
+            <button type="button" class="disclosure__button" aria-expanded="false" aria-controls="HeaderLanguageList">
+              <span>{{ localization.language.endonym_name | capitalize }}</span>
+              <svg aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <ul id="HeaderLanguageList" role="list" class="disclosure__list" hidden>
+              {%- for language in localization.available_languages -%}
+                <li class="disclosure__item" role="listitem">
+                  <a class="disclosure__link {% if language.iso_code == localization.language.iso_code %}disclosure__link--active{% endif %}" href="#" data-value="{{ language.iso_code }}">
+                    {{ language.endonym_name | capitalize }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+          </div>
+        {%- endform -%}
+      </div>
+
+      <!-- Cart Trigger -->
+      <button type="button" class="header-action-item header-cart-trigger" aria-label="{{ 'cart.title' | t }}">
+        <div class="cart-icon-wrapper">
+          <svg class="icon icon-cart" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count-badge" id="cart-count-desktop">{{ cart.item_count }}</span>
+        </div>
+      </button>
+
+      <!-- Account Link -->
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header-action-item header-account">
+          <svg class="icon icon-user" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="action-text">
+            {%- if customer -%}
+              {{ 'customer.account_fallback' | t }}
+            {%- else -%}
+              {{ 'customer.log_in' | t }}
+            {%- endif -%}
+          </span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Mobile Header Actions (Mobile Only) -->
+    <div class="mobile-only mobile-header-left">
+      <button type="button" class="header-action-item header-cart-trigger" aria-label="{{ 'cart.title' | t }}">
+        <div class="cart-icon-wrapper">
+          <svg class="icon icon-cart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count-badge" id="cart-count-mobile">{{ cart.item_count }}</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Hamburger (Mobile Only) -->
+    <div class="mobile-only mobile-header-right">
+      <button type="button" class="mobile-nav-toggle" aria-label="Toggle Menu" id="menu-toggle-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+</div><!-- .header-group -->
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer__header">
+    <div class="mobile-drawer__logo">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 150 | image_tag: class: 'logo-img', alt: shop.name }}
+      {%- else -%}
+        <span class="logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </div>
+    <button type="button" class="mobile-drawer__close" id="mobile-drawer-close-btn" aria-label="Close Menu">&times;</button>
+  </div>
+  
+  <div class="mobile-drawer__body">
+    <ul class="mobile-drawer__menu">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <li class="mobile-drawer__item">
+          {%- if link.links != blank -%}
+            <details class="mobile-drawer__details">
+              <summary class="mobile-drawer__link">
+                {{ link.title }}
+                <svg class="icon-chevron" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </summary>
+              <ul class="mobile-drawer__submenu">
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" class="mobile-drawer__submenu-link">{{ childlink.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}" class="mobile-drawer__link">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if shop.customer_accounts_enabled -%}
+      <div class="mobile-drawer__account">
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="mobile-drawer__account-link">
+          <svg class="icon icon-user" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>
+            {%- if customer -%}
+              {{ 'customer.account_fallback' | t }}
+            {%- else -%}
+              {{ 'customer.log_in' | t }}
+            {%- endif -%}
+          </span>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="mobile-drawer__footer">
+    <span class="social-title">{{ 'header.follow_us' | t }}</span>
+    <div class="mobile-drawer__socials">
+      {%- if settings.social_instagram_link != blank -%}
+        <a href="{{ settings.social_instagram_link }}" target="_blank" aria-label="Instagram">Instagram</a>
+      {%- endif -%}
+      {%- if settings.social_twitter_link != blank -%}
+        <a href="{{ settings.social_twitter_link }}" target="_blank" aria-label="Twitter">Twitter</a>
+      {%- endif -%}
+      {%- if settings.social_facebook_link != blank -%}
+        <a href="{{ settings.social_facebook_link }}" target="_blank" aria-label="Facebook">Facebook</a>
+      {%- endif -%}
+    </div>
+    <div class="mobile-drawer__copyright">
+      &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ 'header.all_rights' | t }}
+    </div>
+  </div>
+</div>
+
+<!-- Cart Drawer (Slide-out Cart) -->
+<div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer__header">
+    <h2 class="cart-drawer__title">{{ 'cart.title' | t }}</h2>
+    <button type="button" class="cart-drawer__close" id="cart-drawer-close-btn" aria-label="Close Cart">&times;</button>
+  </div>
+  
+  <div class="cart-drawer__body" id="cart-drawer-body">
+    {%- render 'cart-drawer-items' -%}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    /* ============ Prevent Layout Shake / Shifting ============ */
+    const getScrollbarWidth = () => window.innerWidth - document.documentElement.clientWidth;
+
+    const lockScroll = () => {
+      const sbw = getScrollbarWidth();
+      document.body.style.paddingRight = `${sbw}px`;
+      document.body.classList.add('overflow-hidden');
+      const hg = document.getElementById('header-group');
+      if (hg) {
+        hg.style.paddingRight = `${sbw}px`;
+      }
+    };
+
+    const unlockScroll = () => {
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('overflow-hidden');
+      const hg = document.getElementById('header-group');
+      if (hg) {
+        hg.style.paddingRight = '';
+      }
+    };
+
+    /* ============ Sticky / Transparent Header ============ */
+    const header = document.getElementById('site-header');
+    const headerGroup = document.getElementById('header-group');
+    if (header && headerGroup) {
+      const isSticky = header.dataset.sticky === 'true';
+      const isTransparent = header.dataset.transparent === 'true';
+
+      if (isSticky || isTransparent) {
+        const handleScroll = () => {
+          const scrollY = window.scrollY;
+          if (isTransparent) {
+            if (scrollY > 50) {
+              headerGroup.classList.add('header-group--scrolled');
+            } else {
+              headerGroup.classList.remove('header-group--scrolled');
+            }
+          }
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+      }
+    }
+
+    /* ============ Mobile Drawer ============ */
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const mobileOverlay = document.getElementById('mobile-drawer-overlay');
+    const menuToggle = document.getElementById('menu-toggle-btn');
+    const menuClose = document.getElementById('mobile-drawer-close-btn');
+
+    const closeMobileDrawer = () => {
+      if (mobileDrawer) mobileDrawer.classList.remove('active');
+      if (mobileOverlay) mobileOverlay.classList.remove('active');
+      unlockScroll();
+    };
+
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        lockScroll();
+        if (mobileDrawer) mobileDrawer.classList.add('active');
+        if (mobileOverlay) mobileOverlay.classList.add('active');
+      });
+    }
+    if (menuClose) menuClose.addEventListener('click', closeMobileDrawer);
+    if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileDrawer);
+
+    /* ============ Cart Drawer ============ */
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartOverlay = document.getElementById('cart-drawer-overlay');
+    const cartClose = document.getElementById('cart-drawer-close-btn');
+
+    const openCartDrawer = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      lockScroll();
+      if (cartDrawer) cartDrawer.classList.add('active');
+      if (cartOverlay) cartOverlay.classList.add('active');
+      fetchCartDrawerItems();
+    };
+
+    const closeCartDrawer = () => {
+      if (cartDrawer) cartDrawer.classList.remove('active');
+      if (cartOverlay) cartOverlay.classList.remove('active');
+      unlockScroll();
+    };
+
+    // Bind ALL cart trigger buttons (desktop + mobile)
+    document.querySelectorAll('.header-cart-trigger').forEach(btn => {
+      btn.addEventListener('click', openCartDrawer);
+    });
+    if (cartClose) cartClose.addEventListener('click', closeCartDrawer);
+    if (cartOverlay) cartOverlay.addEventListener('click', closeCartDrawer);
+
+    /* ============ Language Disclosure ============ */
+    const disclosureButton = document.querySelector('.disclosure__button');
+    const disclosureList = document.getElementById('HeaderLanguageList');
+    if (disclosureButton && disclosureList) {
+      disclosureButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const expanded = disclosureButton.getAttribute('aria-expanded') === 'true';
+        disclosureButton.setAttribute('aria-expanded', String(!expanded));
+        disclosureList.hidden = expanded;
+      });
+
+      document.addEventListener('click', () => {
+        disclosureButton.setAttribute('aria-expanded', 'false');
+        disclosureList.hidden = true;
+      });
+
+      disclosureList.querySelectorAll('.disclosure__link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const form = document.getElementById('HeaderLanguageForm');
+          form.querySelector('input[name="locale_code"]').value = link.dataset.value;
+          form.submit();
+        });
+      });
+    }
+
+    // Expose close drawer functions for inner items
+    window.closeCartDrawer = closeCartDrawer;
+  });
+
+  /* ============ AJAX Cart Operations ============ */
+  function fetchCartDrawerItems() {
+    const container = document.getElementById('cart-drawer-body');
+    if (!container) return;
+
+    fetch(window.location.pathname + '?section_id=header')
+      .then(r => r.text())
+      .then(html => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const newBody = doc.getElementById('cart-drawer-body');
+        if (newBody) container.innerHTML = newBody.innerHTML;
+        
+        const newCount = doc.getElementById('cart-count-desktop');
+        if (newCount) {
+          const count = newCount.textContent.trim();
+          const desktopBadge = document.getElementById('cart-count-desktop');
+          const mobileBadge = document.getElementById('cart-count-mobile');
+          if (desktopBadge) desktopBadge.textContent = count;
+          if (mobileBadge) mobileBadge.textContent = count;
+        }
+
+        bindCartItemEvents();
+      });
+  }
+
+  function updateCartItemQuantity(line, qty) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ line: parseInt(line), quantity: qty })
+    })
+    .then(r => r.json())
+    .then(() => fetchCartDrawerItems());
+  }
+
+  function bindCartItemEvents() {
+    document.querySelectorAll('.cart-drawer__qty-input').forEach(input => {
+      const line = input.dataset.line;
+      const plus = input.parentElement.querySelector('.plus-qty');
+      const minus = input.parentElement.querySelector('.minus-qty');
+      if (plus) plus.onclick = () => updateCartItemQuantity(line, parseInt(input.value) + 1);
+      if (minus) minus.onclick = () => { let v = parseInt(input.value) - 1; if (v >= 0) updateCartItemQuantity(line, v); };
+    });
+
+    document.querySelectorAll('.cart-drawer__item-remove').forEach(btn => {
+      btn.onclick = (e) => { e.preventDefault(); updateCartItemQuantity(btn.dataset.line, 0); };
+    });
+
+    const clearBtn = document.querySelector('.cart-drawer__clear');
+    if (clearBtn) {
+      clearBtn.onclick = (e) => { e.preventDefault(); fetch('/cart/clear.js', { method: 'POST' }).then(() => fetchCartDrawerItems()); };
+    }
+
+    // Bind close buttons inside rendered snippet
+    document.querySelectorAll('.header-cart-trigger-close').forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        if (window.closeCartDrawer) {
+          window.closeCartDrawer();
+        }
+      };
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "رأس الصفحة",
+  "settings": [
+    {
+      "type": "header",
+      "content": "شريط الإعلانات"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement_desktop",
+      "label": "إظهار شريط الإعلانات على الكمبيوتر",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement_mobile",
+      "label": "إظهار شريط الإعلانات على الهاتف",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "نص الإعلان",
+      "default": "أفضل تطبيق لطلب توصيل المياه للمنازل"
+    },
+    {
+      "type": "header",
+      "content": "الشعار والقائمة"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "صورة الشعار"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "القائمة",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "مؤشر التوصيل"
+    },
+    {
+      "type": "text",
+      "id": "delivery_text",
+      "label": "نص موقع التوصيل",
+      "default": "عرعر"
+    },
+    {
+      "type": "header",
+      "content": "إعدادات رأس الصفحة"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "تثبيت رأس الصفحة عند التمرير",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "label": "جعل رأس الصفحة شفافاً فوق البانر",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "transparent_text_color",
+      "label": "لون نصوص رأس الصفحة الشفاف",
+      "options": [
+        { "value": "light", "label": "أبيض (فاتح)" },
+        { "value": "dark", "label": "أسود (داكن)" }
+      ],
+      "default": "dark"
+    }
+  ]
+}
+{% endschema %}

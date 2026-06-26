@@ -1,0 +1,32 @@
+{
+  "general": {
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were looking for does not exist."
+    },
+    "continue_shopping": "Continue shopping",
+    "search": "Search"
+  },
+  "customer": {
+    "log_in": "Log in",
+    "account_fallback": "Account"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "add_more": "Add more products",
+    "clear": "Empty Cart",
+    "checkout": "Go to Checkout",
+    "subtotal": "Subtotal"
+  },
+  "header": {
+    "deliver_to": "Deliver to",
+    "follow_us": "Follow Us",
+    "all_rights": "All rights reserved"
+  },
+  "sections": {
+    "hero_banner": {
+      "shop_now": "Shop Now"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<div class="blog-section container">
+  <h1 class="blog-title">{{ blog.title }}</h1>
+
+  <div class="blog-articles">
+    {%- for article in blog.articles -%}
+      <article class="article-card">
+        <a href="{{ article.url }}" class="article-card__link">
+          <div class="article-card__image-wrapper">
+            {%- if article.image != blank -%}
+              {{ article.image | image_url: width: 600 | image_tag: class: 'article-card__image' }}
+            {%- else -%}
+              <div class="article-card__placeholder">No Image</div>
+            {%- endif -%}
+          </div>
+          <div class="article-card__info">
+            <h2 class="article-card__title">{{ article.title }}</h2>
+            <span class="article-card__date">{{ article.published_at | date: "%b %d, %Y" }}</span>
+            <p class="article-card__excerpt">
+              {%- if article.excerpt.size > 0 -%}
+                {{ article.excerpt | strip_html | truncatewords: 30 }}
+              {%- else -%}
+                {{ article.content | strip_html | truncatewords: 30 }}
+              {%- endif -%}
+            </p>
+          </div>
+        </a>
+      </article>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  .blog-section {
+    padding-top: 2rem;
+  }
+  .blog-title {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .blog-articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+  }
+  .article-card {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    transition: transform var(--transition-normal);
+  }
+  .article-card:hover {
+    transform: translateY(-4px);
+  }
+  .article-card__image-wrapper {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+  }
+  .article-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .article-card__info {
+    padding: 1.5rem;
+  }
+  .article-card__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .article-card__date {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .article-card__excerpt {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Blog Articles",
+  "settings": []
+}
+{% endschema %}

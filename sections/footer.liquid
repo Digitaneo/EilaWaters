@@ -1,0 +1,74 @@
+<footer class="site-footer">
+  <div class="container site-footer__container">
+    <div class="site-footer__section">
+      <h3 class="footer-title">{{ shop.name }}</h3>
+      <p class="footer-text">Welcome to our store. Discover our latest collections.</p>
+    </div>
+    <div class="site-footer__section">
+      <h3 class="footer-title">Quick Links</h3>
+      <ul class="footer-links">
+        {%- for link in linklists[section.settings.footer_menu].links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="site-footer__bottom">
+      <p>&copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: routes.root_url }}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 4rem 0 2rem;
+    margin-top: 4rem;
+    color: var(--text-secondary);
+  }
+  .site-footer__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+  }
+  .site-footer__bottom {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  .footer-title {
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+  }
+  .footer-text {
+    font-size: 0.95rem;
+  }
+  .footer-links {
+    list-style: none;
+  }
+  .footer-links li {
+    margin-bottom: 0.75rem;
+  }
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu",
+      "default": "footer"
+    }
+  ]
+}
+{% endschema %}

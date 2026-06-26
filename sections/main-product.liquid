@@ -1,0 +1,81 @@
+<div class="product-section container">
+  <div class="product-gallery">
+    {%- if product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 800 | image_tag: class: 'featured-image' }}
+    {%- else -%}
+      <div class="placeholder-image">Product Image Placeholder</div>
+    {%- endif -%}
+  </div>
+  
+  <div class="product-details">
+    <h1 class="product-title">{{ product.title }}</h1>
+    <div class="product-price">{{ product.price | money }}</div>
+    
+    {%- form 'product', product -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <button type="submit" name="add" class="btn btn-primary product-add-btn" {% unless product.available %}disabled{% endunless %}>
+        {%- if product.available -%}
+          Add to Cart
+        {%- else -%}
+          Sold Out
+        {%- endif -%}
+      </button>
+    {%- endform -%}
+    
+    <div class="product-description rte">
+      {{ product.description }}
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-top: 2rem;
+  }
+  @media (min-width: 768px) {
+    .product-section {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+  .featured-image {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+  .placeholder-image {
+    background-color: var(--bg-secondary);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--text-muted);
+  }
+  .product-title {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+  }
+  .product-price {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .product-add-btn {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .product-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Details",
+  "settings": []
+}
+{% endschema %}
