@@ -64,29 +64,48 @@
     "brands_slider_pecJwQ": {
       "type": "brands-slider",
       "blocks": {
+        "brand_kpmcmY": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465437003562432.webp",
+            "brand_name": "مياه تانيا"
+          }
+        },
         "brand_4mJeCK": {
           "type": "brand",
           "settings": {
-            "brand_name": "مياه تانيا"
+            "brand_image": "shopify://shop_images/17465418524058502.webp",
+            "brand_name": "مياه ابار حائل"
           }
         },
         "brand_3jYb9y": {
           "type": "brand",
           "settings": {
-            "brand_name": "مياه تانيا"
+            "brand_image": "shopify://shop_images/17465238817076914.webp",
+            "brand_name": "مياه جود"
           }
         },
-        "brand_kpmcmY": {
+        "brand_hNUKQt": {
           "type": "brand",
           "settings": {
-            "brand_name": "مياه تانيا"
+            "brand_image": "shopify://shop_images/17465436866644117.webp",
+            "brand_name": "مياه صفا مكة"
+          }
+        },
+        "brand_P3cgkq": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465436775607305.webp",
+            "brand_name": "مياه نوفا"
           }
         }
       },
       "block_order": [
+        "brand_kpmcmY",
         "brand_4mJeCK",
         "brand_3jYb9y",
-        "brand_kpmcmY"
+        "brand_hNUKQt",
+        "brand_P3cgkq"
       ],
       "name": "سلايدر العلامات التجارية",
       "settings": {
