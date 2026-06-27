@@ -144,6 +144,7 @@
         "brand_APDemw": {
           "type": "brand",
           "settings": {
+            "brand_image": "shopify://shop_images/17671653903510213.webp",
             "brand_name": "مياه هنا"
           }
         }
