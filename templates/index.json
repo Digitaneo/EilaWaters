@@ -24,9 +24,46 @@
         "show_qr": true,
         "qr_text": "امسح الكود وحمل تطبيق آبار"
       }
+    },
+    "eilawaters_features_grid_Hz6ckx": {
+      "type": "eilawaters-features-grid",
+      "name": "Eilawaters Grid Features",
+      "settings": {
+        "bg_color": "#ffffff",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#e2e8f0",
+        "text_color": "#000000",
+        "desc_color": "#4a5568",
+        "badge_bg_color": "#fed7e2",
+        "badge_text_color": "#9b2c2c",
+        "btn_bg_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "img_1": "shopify://shop_images/store_ar.png",
+        "title_1": "أكثر من ٢٠٠ علامة تجارية للمياه المعبأة",
+        "desc_1": "يمكنك الطلب مباشرة من المتجر",
+        "btn_text_1": "اطلب من المتجر الآن",
+        "btn_link_1": "",
+        "img_2": "shopify://shop_images/s_2_ar.png",
+        "title_2": "تتبع طلبك بكل سهولة!",
+        "desc_2": "تابع طلبك وموعد وصوله - لحظة بلحظة.",
+        "img_3": "shopify://shop_images/s_1_ar.png",
+        "badge_3": "للمساجد والمنازل!",
+        "title_3": "نوصل لأي مكان!",
+        "img_4": "shopify://shop_images/s_4_ar.png",
+        "badge_4": "متواجدون من أجلك",
+        "title_4": "دعم 24/7",
+        "desc_4": "تحتاج مساعدة؟ فريقنا جاهز للمساعدة بأي وقت، طول اليوم.",
+        "img_5": "shopify://shop_images/s_3_ar.png",
+        "title_5": "حدد وقت التوصيل اللي يناسبك",
+        "img_6": "shopify://shop_images/s_5_ar.png",
+        "title_6": "خيارات دفع متعددة"
+      }
     }
   },
   "order": [
-    "hero-banner"
+    "hero-banner",
+    "eilawaters_features_grid_Hz6ckx"
   ]
 }
