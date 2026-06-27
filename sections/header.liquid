@@ -7,9 +7,13 @@
   if section.settings.show_announcement_desktop or section.settings.show_announcement_mobile
     assign show_announcement = true
   endif
+  assign transparent_header_enabled = false
+  if section.settings.enable_transparent_header and request.page_type == 'index'
+    assign transparent_header_enabled = true
+  endif
 -%}
 
-<div class="header-group{% if section.settings.enable_transparent_header %} header-group--transparent{% endif %}" id="header-group">
+<div class="header-group{% if transparent_header_enabled %} header-group--transparent{% endif %}" id="header-group">
 
 {%- if show_announcement -%}
   <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
@@ -19,7 +23,7 @@
   </div>
 {%- endif -%}
 
-<header class="site-header{% if section.settings.enable_sticky_header %} site-header--sticky{% endif %}{% if section.settings.enable_transparent_header %} site-header--transparent{% endif %} site-header--trans-text-{{ section.settings.transparent_text_color }}" id="site-header" data-sticky="{{ section.settings.enable_sticky_header }}" data-transparent="{{ section.settings.enable_transparent_header }}">
+<header class="site-header{% if section.settings.enable_sticky_header %} site-header--sticky{% endif %}{% if transparent_header_enabled %} site-header--transparent{% endif %} site-header--trans-text-{{ section.settings.transparent_text_color }}" id="site-header" data-sticky="{{ section.settings.enable_sticky_header }}" data-transparent="{{ transparent_header_enabled }}">
   <div class="container site-header__container">
     
     <!-- Desktop: Logo (First) -->
@@ -96,6 +100,14 @@
           </div>
         {%- endform -%}
       </div>
+
+      <!-- Search Link -->
+      <button type="button" class="header-action-item header-search header-search-trigger" aria-label="{% if is_rtl %}بحث{% else %}Search{% endif %}">
+        <svg class="icon icon-search" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
 
       <!-- Cart Trigger -->
       <button type="button" class="header-action-item header-cart-trigger" aria-label="{{ 'cart.title' | t }}">
@@ -234,6 +246,32 @@
   </div>
 </div>
 
+<!-- Search Drawer -->
+<div class="search-drawer-overlay" id="search-drawer-overlay"></div>
+<div class="search-drawer" id="search-drawer">
+  <div class="search-drawer__header">
+    <h2 class="search-drawer__title">{% if is_rtl %}البحث في المتجر{% else %}Search store{% endif %}</h2>
+    <button type="button" class="search-drawer__close" id="search-drawer-close-btn" aria-label="{% if is_rtl %}إغلاق البحث{% else %}Close search{% endif %}">&times;</button>
+  </div>
+
+  <div class="search-drawer__body">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form" id="search-drawer-form">
+      <input type="hidden" name="type" value="product">
+      <div class="search-drawer__input-wrap">
+        <svg class="icon icon-search" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="search" name="q" id="search-drawer-input" class="search-drawer__input" autocomplete="off" placeholder="{% if is_rtl %}ابحث عن المنتجات...{% else %}Search products...{% endif %}">
+      </div>
+    </form>
+
+    <div class="search-drawer__results" id="search-drawer-results">
+      <p class="search-drawer__hint">{% if is_rtl %}اكتب اسم المنتج لعرض النتائج.{% else %}Type a product name to see results.{% endif %}</p>
+    </div>
+  </div>
+</div>
+
 <!-- Cart Drawer (Slide-out Cart) -->
 <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
 <div class="cart-drawer" id="cart-drawer">
@@ -344,6 +382,141 @@
     });
     if (cartClose) cartClose.addEventListener('click', closeCartDrawer);
     if (cartOverlay) cartOverlay.addEventListener('click', closeCartDrawer);
+
+    /* ============ Search Drawer ============ */
+    const searchDrawer = document.getElementById('search-drawer');
+    const searchOverlay = document.getElementById('search-drawer-overlay');
+    const searchClose = document.getElementById('search-drawer-close-btn');
+    const searchInput = document.getElementById('search-drawer-input');
+    const searchResults = document.getElementById('search-drawer-results');
+    const searchForm = document.getElementById('search-drawer-form');
+    const searchEmptyText = {{ is_rtl | json }} ? {{ 'لا توجد منتجات مطابقة.' | json }} : {{ 'No matching products found.' | json }};
+    const searchHintText = {{ is_rtl | json }} ? {{ 'اكتب اسم المنتج لعرض النتائج.' | json }} : {{ 'Type a product name to see results.' | json }};
+    const searchLoadingText = {{ is_rtl | json }} ? {{ 'جار البحث...' | json }} : {{ 'Searching...' | json }};
+    const searchErrorText = {{ is_rtl | json }} ? {{ 'تعذر تحميل نتائج البحث.' | json }} : {{ 'Could not load search results.' | json }};
+    let searchTimer = null;
+    let searchController = null;
+
+    const closeSearchDrawer = () => {
+      if (searchDrawer) searchDrawer.classList.remove('active');
+      if (searchOverlay) searchOverlay.classList.remove('active');
+      unlockScroll();
+    };
+
+    const openSearchDrawer = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      lockScroll();
+      if (searchDrawer) searchDrawer.classList.add('active');
+      if (searchOverlay) searchOverlay.classList.add('active');
+      window.setTimeout(() => {
+        if (searchInput) searchInput.focus();
+      }, 180);
+    };
+
+    const moneyFormat = (value) => {
+      if (!value) return '';
+      if (typeof value === 'string') return value;
+      return value.toString();
+    };
+
+    const escapeHtml = (value) => {
+      return String(value || '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+    };
+
+    const renderSearchResults = (products, term) => {
+      if (!searchResults) return;
+      if (!term) {
+        searchResults.innerHTML = `<p class="search-drawer__hint">${searchHintText}</p>`;
+        return;
+      }
+      if (!products.length) {
+        searchResults.innerHTML = `<p class="search-drawer__empty">${searchEmptyText}</p>`;
+        return;
+      }
+
+      const productMarkup = products.map(product => {
+        const productTitle = escapeHtml(product.title);
+        const productUrl = escapeHtml(product.url);
+        const productPrice = escapeHtml(moneyFormat(product.price));
+        const image = product.featured_image && product.featured_image.url
+          ? `<img src="${escapeHtml(product.featured_image.url)}" alt="${escapeHtml(product.featured_image.alt || product.title)}" loading="lazy">`
+          : `<div class="search-drawer__placeholder"></div>`;
+        const price = product.price ? `<span class="search-drawer__price">${productPrice}</span>` : '';
+        return `
+          <a href="${productUrl}" class="search-drawer__item">
+            <div class="search-drawer__image">${image}</div>
+            <div class="search-drawer__info">
+              <span class="search-drawer__name">${productTitle}</span>
+              ${price}
+            </div>
+          </a>
+        `;
+      }).join('');
+
+      searchResults.innerHTML = `
+        <div class="search-drawer__list">${productMarkup}</div>
+        <button type="submit" form="search-drawer-form" class="btn btn-primary search-drawer__view-all">
+          {% if is_rtl %}عرض كل النتائج{% else %}View all results{% endif %}
+        </button>
+      `;
+    };
+
+    const fetchSearchResults = (term) => {
+      if (!searchResults) return;
+      const query = term.trim();
+      if (searchController) searchController.abort();
+
+      if (query.length < 2) {
+        renderSearchResults([], '');
+        return;
+      }
+
+      searchResults.innerHTML = `<p class="search-drawer__hint">${searchLoadingText}</p>`;
+      searchController = new AbortController();
+      const suggestUrl = `${window.Shopify?.routes?.root || '/'}search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last`;
+
+      fetch(suggestUrl, { signal: searchController.signal })
+        .then(response => response.json())
+        .then(data => {
+          const products = data.resources && data.resources.results && data.resources.results.products
+            ? data.resources.results.products
+            : [];
+          renderSearchResults(products, query);
+        })
+        .catch(error => {
+          if (error.name === 'AbortError') return;
+          searchResults.innerHTML = `<p class="search-drawer__empty">${searchErrorText}</p>`;
+        });
+    };
+
+    document.querySelectorAll('.header-search-trigger').forEach(btn => {
+      btn.addEventListener('click', openSearchDrawer);
+    });
+    if (searchClose) searchClose.addEventListener('click', closeSearchDrawer);
+    if (searchOverlay) searchOverlay.addEventListener('click', closeSearchDrawer);
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        window.clearTimeout(searchTimer);
+        searchTimer = window.setTimeout(() => fetchSearchResults(searchInput.value), 220);
+      });
+    }
+    if (searchForm) {
+      searchForm.addEventListener('submit', (e) => {
+        if (!searchInput || searchInput.value.trim().length === 0) {
+          e.preventDefault();
+          searchInput?.focus();
+        }
+      });
+    }
 
     /* ============ Language Disclosure ============ */
     const disclosureButton = document.querySelector('.disclosure__button');

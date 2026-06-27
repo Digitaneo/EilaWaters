@@ -1,6 +1,12 @@
-<div class="collection-section container">
+<div class="collection-section container ew-collection-rtl" style="--primary-color: {{ section.settings.primary_color }}; --text-dark: {{ section.settings.text_color_dark }};">
   <header class="collection-header">
-    <h1 class="collection-title">{{ collection.title }}</h1>
+    <h1 class="collection-title">
+      {%- if section.settings.title != blank -%}
+        {{ section.settings.title }}
+      {%- else -%}
+        {{ collection.title }}
+      {%- endif -%}
+    </h1>
     {%- if collection.description != blank -%}
       <div class="collection-description rte">{{ collection.description }}</div>
     {%- endif -%}
@@ -8,24 +14,80 @@
 
   <div class="product-grid">
     {%- for product in collection.products -%}
-      <article class="product-card">
+      {% assign first_variant = product.selected_or_first_available_variant %}
+      <article class="product-card" id="product-card-{{ product.id }}">
+        
+        <button type="button" class="product-card__quick-add" 
+                data-product-handle="{{ product.handle }}"
+                data-product-meta="{{ product.metafields.custom.packages.value }}"
+                aria-label="إضافة سريعة للسلة">
+          +
+        </button>
+
         <a href="{{ product.url }}" class="product-card__link">
           <div class="product-card__image-wrapper">
             {%- if product.featured_image != blank -%}
-              {{ product.featured_image | image_url: width: 400 | image_tag: class: 'product-card__image' }}
+              {{ product.featured_image | image_url: width: 500 | image_tag: class: 'product-card__image', loading: 'lazy' }}
             {%- else -%}
-              <div class="product-card__placeholder">No Image</div>
+              <div class="product-card__placeholder">لا توجد صورة</div>
             {%- endif -%}
           </div>
+          
           <div class="product-card__info">
             <h2 class="product-card__title">{{ product.title }}</h2>
-            <span class="product-card__price">{{ product.price | money }}</span>
+            
+            <p class="product-card__meta">
+              {%- if product.metafields.custom.packages.value != blank -%}
+                {{ product.metafields.custom.packages.value }}
+              {%- else -%}
+                جاهز للتوصيل
+              {%- endif -%}
+            </p>
+            
+            <div class="product-card__price-wrapper">
+              <span class="product-card__price">{{ product.price | money_without_currency }}</span>
+              <span class="product-card__currency">{{ cart.currency.symbol }}</span>
+            </div>
           </div>
         </a>
       </article>
     {%- else -%}
-      <p class="no-products">No products found in this collection.</p>
+      <p class="no-products">لم يتم العثور على منتجات في هذه المجموعة.</p>
     {%- endfor -%}
+  </div>
+</div>
+
+<div id="ew-quick-add-modal" class="ew-modal" aria-hidden="true">
+  <div class="ew-modal__overlay" onclick="closeEwModal()"></div>
+  <div class="ew-modal__inner">
+    <button type="button" class="ew-modal__close" onclick="closeEwModal()">&times;</button>
+    
+    <div class="ew-modal__body">
+      <div class="ew-modal__image-wrapper">
+        <img id="ew-modal-img" src="" alt="">
+      </div>
+      
+      <h3 id="ew-modal-title" class="ew-modal__title"></h3>
+      
+      <p id="ew-modal-meta" class="ew-modal__meta"></p>
+      
+      <div class="ew-modal__price-container">
+        <span id="ew-modal-price" class="ew-modal__price"></span>
+        <span id="ew-modal-currency" class="ew-modal__currency" style="font-size: 14px; margin-right: 4px;"></span>
+      </div>
+
+      <div id="ew-modal-variants-container" class="ew-modal__variants-container"></div>
+
+      <div class="ew-modal__quantity-selector">
+        <button type="button" class="ew-qty-btn" onclick="adjustEwQty(1)">+</button>
+        <input type="number" id="ew-modal-qty" value="1" min="1" readonly>
+        <button type="button" class="ew-qty-btn" onclick="adjustEwQty(-1)">&minus;</button>
+      </div>
+
+      <button type="button" id="ew-modal-submit-btn" class="ew-modal__submit-btn" onclick="addEwProductToCart()">
+        أضف إلى السلة
+      </button>
+    </div>
   </div>
 </div>
 
@@ -38,72 +100,496 @@
   .collection-title {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    font-weight: 800;
+    color: var(--text-dark, #1e293b);
   }
   .collection-description {
-    color: var(--text-secondary);
+    color: #64748b;
     max-width: 600px;
     margin: 0 auto;
   }
+
   .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 2rem;
+    gap: 24px;
   }
+
   .product-card {
-    border-radius: 8px;
+    position: relative;
+    border-radius: 16px;
     overflow: hidden;
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
   }
   .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+    border-color: var(--primary-color, #00c7f2);
   }
-  .product-card__image-wrapper {
-    aspect-ratio: 1;
-    overflow: hidden;
-    background-color: var(--bg-secondary);
-  }
-  .product-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--transition-normal);
-  }
-  .product-card:hover .product-card__image {
-    transform: scale(1.05);
-  }
-  .product-card__placeholder {
-    height: 100%;
+
+  .product-card__quick-add {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color, #00c7f2);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-muted);
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
+  .product-card__quick-add:hover {
+    filter: brightness(0.9);
+    transform: scale(1.05);
+  }
+
+  .product-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 0 0 20px 0;
+  }
+
+  /* حل مشكلة أبعاد الصور وظهورها كاملة */
+  .product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    box-sizing: border-box;
+  }
+  
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* يضمن احتواء الصورة بالكامل دون أي قص */
+    transition: transform 0.3s ease;
+  }
+  .product-card:hover .product-card__image {
+    transform: scale(1.02);
+  }
+  .product-card__placeholder {
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
   .product-card__info {
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 15px;
   }
   .product-card__title {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark, #1e293b);
+    margin: 0;
+    line-height: 1.4;
+    padding: 10px;
+  }
+  .product-card__meta {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+  }
+
+  /* تعديل طريقة عرض السعر: القيمة ثم العملة (من اليمين لليسار طبيعياً) */
+  .product-card__price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    color: var(--primary-color, #00c7f2);
+    font-weight: 800;
+    font-size: 16px;
+    direction: rtl; 
   }
   .product-card__price {
-    font-weight: 600;
-    color: var(--accent);
+    direction: ltr;
   }
-  .no-products {
-    grid-column: 1 / -1;
+  .product-card__currency {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  /* تنسيق خيارات المتغيرات داخل البوب اب */
+  .ew-modal__variants-container {
+    margin-bottom: 20px;
+    text-align: right;
+  }
+  .ew-variant-select-wrapper {
+    margin-bottom: 12px;
+  }
+  .ew-variant-label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--text-dark, #1e293b);
+  }
+  .ew-variant-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* استايل المودال */
+  .ew-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .ew-modal.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  .ew-modal__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+  .ew-modal__inner {
+    position: relative;
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 440px;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    z-index: 1001;
     text-align: center;
-    color: var(--text-muted);
-    padding: 4rem 0;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    direction: rtl;
+  }
+  .ew-modal.is-visible .ew-modal__inner {
+    transform: translateY(0);
+  }
+  .ew-modal__close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .ew-modal__image-wrapper {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .ew-modal__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .ew-modal__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark, #1e293b);
+    margin: 0 0 4px 0;
+  }
+  .ew-modal__price-container {
+    color: var(--primary-color, #00c7f2);
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+  }
+
+  .ew-modal__quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    background-color: #f8fafc;
+  }
+  .ew-qty-btn {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ew-qty-btn:hover {
+    background-color: #edf2f7;
+  }
+  #ew-modal-qty {
+    width: 50px;
+    height: 40px;
+    border: none;
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark, #1e293b);
+  }
+
+  .ew-modal__submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color, #00c7f2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .ew-modal__submit-btn:hover {
+    filter: brightness(0.9);
+  }
+
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .product-card__title {
+      font-size: 13px;
+    }
   }
 </style>
 
+<script>
+  let currentProductData = null;
+  const ewModal = document.getElementById('ew-quick-add-modal');
+  const ewModalImg = document.getElementById('ew-modal-img');
+  const ewModalTitle = document.getElementById('ew-modal-title');
+  const ewModalPrice = document.getElementById('ew-modal-price');
+  const ewModalCurrency = document.getElementById('ew-modal-currency');
+  const ewModalQtyInput = document.getElementById('ew-modal-qty');
+  const ewSubmitBtn = document.getElementById('ew-modal-submit-btn');
+  const ewVariantsContainer = document.getElementById('ew-modal-variants-container');
+  // تعريف متغير الحقل المخصص في جافاسكريبت
+  const ewModalMeta = document.getElementById('ew-modal-meta');
+
+  document.querySelectorAll('.product-card__quick-add').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productHandle = this.getAttribute('data-product-handle');
+      
+      // جلب النص المخصص الممرر من الزر وحقنه في النافذة
+      const productMeta = this.getAttribute('data-product-meta') || '';
+      ewModalMeta.textContent = productMeta;
+      
+      // جلب بيانات المنتج بشكل ديناميكي وجلب جميع المتغيرات والخيارات
+      fetch(`${window.Shopify.routes.root}products/${productHandle}.js`)
+        .then(res => res.json())
+        .then(product => {
+          currentProductData = product;
+          
+          ewModalImg.src = product.featured_image || '';
+          ewModalImg.alt = product.title;
+          ewModalTitle.textContent = product.title;
+          
+          // إعداد العملة والسعر بشكل صحيح
+          const formattedPrice = (product.price / 100).toFixed(2);
+          ewModalPrice.textContent = formattedPrice;
+          ewModalCurrency.textContent = "{{ cart.currency.symbol }}";
+          
+          ewModalQtyInput.value = "1";
+          ewSubmitBtn.innerText = "أضف إلى السلة";
+          ewSubmitBtn.disabled = false;
+
+          // توليد القوائم المنسدلة لخيارات المنتج المتغيرة المتوفرة
+          ewVariantsContainer.innerHTML = '';
+          if (product.variants.length > 1) {
+            product.options.forEach((option, index) => {
+              let selectHtml = `<div class="ew-variant-select-wrapper">
+                <label class="ew-variant-label">${option.name}</label>
+                <select class="ew-variant-select ew-option-selector" data-index="${index}" onchange="updateEwModalVariant()">`;
+              
+              option.values.forEach(value => {
+                selectHtml += `<option value="${value}">${value}</option>`;
+              });
+              
+              selectHtml += `</select></div>`;
+              ewVariantsContainer.innerHTML += selectHtml;
+            });
+          }
+
+          updateEwModalVariant();
+          ewModal.classList.add('is-visible');
+          ewModal.setAttribute('aria-hidden', 'false');
+        })
+        .catch(err => console.error("Error fetching product data:", err));
+    });
+  });
+
+  // تحديث المتغير المختار والسعر بناء على الخيارات المنتقاة
+  function updateEwModalVariant() {
+    if (!currentProductData) return;
+    
+    const selectors = document.querySelectorAll('.ew-option-selector');
+    let selectedOptions = [];
+    selectors.forEach(select => {
+      selectedOptions.push(select.value);
+    });
+
+    // البحث عن المتغير المطابق للخيارات
+    let matchedVariant = currentProductData.variants.find(variant => {
+      return selectedOptions.every((option, i) => variant.options[i] === option);
+    });
+
+    if (!matchedVariant && currentProductData.variants.length > 0) {
+      matchedVariant = currentProductData.variants[0];
+    }
+
+    if (matchedVariant) {
+      ewSubmitBtn.setAttribute('data-selected-variant-id', matchedVariant.id);
+      const formattedPrice = (matchedVariant.price / 100).toFixed(2);
+      ewModalPrice.textContent = formattedPrice;
+      
+      if (matchedVariant.featured_image) {
+        ewModalImg.src = matchedVariant.featured_image.src;
+      }
+
+      if (matchedVariant.available) {
+        ewSubmitBtn.innerText = "أضف إلى السلة";
+        ewSubmitBtn.disabled = false;
+      } else {
+        ewSubmitBtn.innerText = "غير متوفر";
+        ewSubmitBtn.disabled = true;
+      }
+    }
+  }
+
+  function closeEwModal() {
+    ewModal.classList.remove('is-visible');
+    ewModal.setAttribute('aria-hidden', 'true');
+  }
+
+  function adjustEwQty(amount) {
+    let currentQty = parseInt(ewModalQtyInput.value) || 1;
+    currentQty += amount;
+    if (currentQty < 1) currentQty = 1;
+    ewModalQtyInput.value = currentQty;
+  }
+
+  // معالجة وإصلاح كود الإضافة إلى السلة بشكل متوافق تماماً مع بنية شوبيفاي
+  function addEwProductToCart() {
+    const variantId = ewSubmitBtn.getAttribute('data-selected-variant-id');
+    const quantity = parseInt(ewModalQtyInput.value) || 1;
+
+    if (!variantId) return;
+
+    ewSubmitBtn.innerText = "جاري الإضافة...";
+    ewSubmitBtn.disabled = true;
+
+    let formData = {
+      'items': [{
+        'id': parseInt(variantId),
+        'quantity': quantity
+      }]
+    };
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('خطأ في عملية الإضافة');
+      return response.json();
+    })
+    .then(data => {
+      ewSubmitBtn.innerText = "✓ تم المضافة بنجاح";
+      
+      // تحديث تلقائي مصمم ليعمل مع كافة قوالب شوبيفاي الحديثة (Cart Drawer / Notification)
+      if (document.querySelector('cart-notification') || document.querySelector('cart-drawer') || document.getElementById('cart-icon-bubble')) {
+         document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+         if(window.location.reload) {
+            // يمكنك إلغاء تفعيل السطر التالي إذا كان قالبك يفتح السلة الجانبية تلقائياً
+            // window.location.reload(); 
+         }
+      }
+      
+      setTimeout(() => { closeEwModal(); }, 1200);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      ewSubmitBtn.innerText = "فشلت الإضافة، حاول مجدداً";
+      ewSubmitBtn.disabled = false;
+    });
+  }
+</script>
+
 {% schema %}
 {
-  "name": "Collection Grid",
-  "settings": []
+  "name": "Collection Grid Pro",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "عنوان القسم المخصص",
+      "default": "المنتجات"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "اللون الرئيسي (السماوي والأزرار)",
+      "default": "#00c7f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color_dark",
+      "label": "لون النصوص والعناوين",
+      "default": "#1e293b"
+    }
+  ]
 }
 {% endschema %}

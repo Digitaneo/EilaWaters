@@ -1,0 +1,535 @@
+{%- style -%}
+  /* معرفات فريدة لمنع التداخل */
+  .ew-grid-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    direction: rtl; /* متوافق مع اللغة العربية */
+    font-family: inherit;
+  }
+
+  .ew-grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  /* تنسيق شبكة العرض الفليكس والجريد */
+  .ew-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* البطاقة العريضة العلوية */
+  .ew-grid-card-full {
+    background: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+    min-height: 280px;
+  }
+
+  /* الصف الثاني والثالث */
+  .ew-grid-row-2, .ew-grid-row-3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  /* البطاقات العادية */
+  .ew-grid-card {
+    background: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px;
+    position: relative;
+  }
+
+  /* بطاقة تتبع طلبك (نص يمين، صورة يسار وبأسفل) */
+  .ew-card-tracking {
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    padding-bottom: 0;
+  }
+  .ew-card-tracking .ew-card-content {
+    align-self: center;
+    padding-bottom: 30px;
+  }
+
+  /* نصوص التنسيق الداخلي للبطاقات */
+  .ew-card-content {
+    max-width: 50%;
+    z-index: 2;
+  }
+  
+  .ew-grid-card-full .ew-card-content {
+    max-width: 45%;
+    text-align: right;
+  }
+
+  .ew-card-badge {
+    display: inline-block;
+    background-color: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .ew-card-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+  }
+
+  .ew-card-desc {
+    font-size: 16px;
+    color: {{ section.settings.desc_color }};
+    margin: 0 0 20px 0;
+    line-height: 1.6;
+  }
+
+  /* زر الطلب */
+  .ew-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: {{ section.settings.btn_bg_color }};
+    color: {{ section.settings.btn_text_color }} !important;
+    padding: 12px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    transition: opacity 0.3s ease;
+  }
+  .ew-card-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* تنسيق الصور */
+  .ew-card-img-wrapper {
+    max-width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ew-card-img-wrapper img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* تعديلات بطاقات الصف الثالث الصغير */
+  .ew-row-3-left {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .ew-card-mini {
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 20px 30px;
+  }
+  .ew-card-mini .ew-card-content {
+    max-width: 60%;
+  }
+  .ew-card-mini .ew-card-img-wrapper {
+    max-width: 35%;
+  }
+  .ew-card-mini .ew-card-title {
+    font-size: 22px;
+    margin: 0;
+  }
+
+  /* التوافق مع الهواتف والشاشات الصغيرة (Responsive) */
+  @media (max-width: 768px) {
+    .ew-grid-card-full {
+      flex-direction: column-reverse;
+      padding: 20px;
+      text-align: center;
+    }
+    .ew-grid-card-full .ew-card-content, .ew-card-content {
+      max-width: 100%;
+      text-align: center;
+    }
+    .ew-grid-row-2, .ew-grid-row-3 {
+      grid-template-columns: 1fr;
+    }
+    .ew-card-tracking {
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    .ew-card-tracking .ew-card-content {
+      padding-bottom: 15px;
+    }
+    .ew-card-img-wrapper {
+      max-width: 80%;
+      margin-top: 15px;
+    }
+    .ew-card-mini {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+    .ew-card-mini .ew-card-content, .ew-card-mini .ew-card-img-wrapper {
+      max-width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<div class="ew-grid-section-{{ section.id }}">
+  <div class="ew-grid-container">
+    <div class="ew-grid-wrapper">
+      
+      <!-- الكرت العلوي العريض -->
+      <div class="ew-grid-card-full">
+        <div class="ew-card-img-wrapper">
+          {% if section.settings.img_1 != blank %}
+            <img src="{{ section.settings.img_1 | image_url: width: 600 }}" alt="{{ section.settings.title_1 }}" loading="lazy">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag }}
+          {% endif %}
+        </div>
+        <div class="ew-card-content">
+          <h2 class="ew-card-title">{{ section.settings.title_1 }}</h2>
+          <p class="ew-card-desc">{{ section.settings.desc_1 }}</p>
+          {% if section.settings.btn_link_1 != blank %}
+            <a href="{{ section.settings.btn_link_1 }}" class="ew-card-btn">
+              {{ section.settings.btn_text_1 }} &rarr;
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- الصف الثاني (كرتين متساويين) -->
+      <div class="ew-grid-row-2">
+        <!-- كرت تتبع طلبك -->
+        <div class="ew-grid-card ew-card-tracking">
+          <div class="ew-card-img-wrapper">
+            {% if section.settings.img_2 != blank %}
+              <img src="{{ section.settings.img_2 | image_url: width: 500 }}" alt="{{ section.settings.title_2 }}" loading="lazy">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+          <div class="ew-card-content">
+            <h2 class="ew-card-title">{{ section.settings.title_2 }}</h2>
+            <p class="ew-card-desc">{{ section.settings.desc_2 }}</p>
+          </div>
+        </div>
+
+        <!-- كرت نوصل لأي مكان -->
+        <div class="ew-grid-card">
+          <div class="ew-card-content" style="max-width:100%; text-align:center; margin-bottom:15px;">
+            {% if section.settings.badge_3 != blank %}
+              <span class="ew-card-badge">{{ section.settings.badge_3 }}</span>
+            {% endif %}
+            <h2 class="ew-card-title" style="font-size:36px;">{{ section.settings.title_3 }}</h2>
+          </div>
+          <div class="ew-card-img-wrapper" style="max-width:100%;">
+            {% if section.settings.img_3 != blank %}
+              <img src="{{ section.settings.img_3 | image_url: width: 500 }}" alt="{{ section.settings.title_3 }}" loading="lazy">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- الصف الثالث (كرت دعم عملاء + كرتين صغيرين على اليسار) -->
+      <div class="ew-grid-row-3">
+        <!-- كرت دعم العملاء 24/7 -->
+        <div class="ew-grid-card">
+          <div class="ew-card-content" style="max-width:100%; text-align:center;">
+            {% if section.settings.badge_4 != blank %}
+              <span class="ew-card-badge">{{ section.settings.badge_4 }}</span>
+            {% endif %}
+            <h2 class="ew-card-title" style="font-size:32px;">{{ section.settings.title_4 }}</h2>
+            <p class="ew-card-desc">{{ section.settings.desc_4 }}</p>
+          </div>
+          <div class="ew-card-img-wrapper" style="max-width:100%; margin-top:20px;">
+            {% if section.settings.img_4 != blank %}
+              <img src="{{ section.settings.img_4 | image_url: width: 500 }}" alt="{{ section.settings.title_4 }}" loading="lazy">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- العمود الأيسر يحتوي على كرتين صغيرين عموديين -->
+        <div class="ew-row-3-left">
+          <!-- كرت وقت التوصيل -->
+          <div class="ew-grid-card ew-card-mini">
+            <div class="ew-card-img-wrapper">
+              {% if section.settings.img_5 != blank %}
+                <img src="{{ section.settings.img_5 | image_url: width: 200 }}" alt="{{ section.settings.title_5 }}" loading="lazy">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
+            <div class="ew-card-content">
+              <h2 class="ew-card-title">{{ section.settings.title_5 }}</h2>
+            </div>
+          </div>
+
+          <!-- كرت خيارات الدفع -->
+          <div class="ew-grid-card ew-card-mini">
+            <div class="ew-card-img-wrapper">
+              {% if section.settings.img_6 != blank %}
+                <img src="{{ section.settings.img_6 | image_url: width: 200 }}" alt="{{ section.settings.title_6 }}" loading="lazy">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
+            <div class="ew-card-content">
+              <h2 class="ew-card-title">{{ section.settings.title_6 }}</h2>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Eilawaters Grid Features",
+  "settings": [
+    {
+      "type": "header",
+      "content": "إعدادات الألوان العامة للقسم"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "لون خلفية القسم الرئيسية",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "لون خلفية البطاقات",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "لون حدود البطاقات",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "لون العناوين الرئيسية",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "لون النصوص الوصفية",
+      "default": "#4a5568"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "لون خلفية الشارة (Badge)",
+      "default": "#fed7e2"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "لون نص الشارة",
+      "default": "#9b2c2c"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "لون خلفية الزر",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "لون نص الزر",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "المسافات (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة علوية",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة سفلية",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 1: العريضة العلوية"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_1",
+      "label": "صورة المنتجات المجمعة"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "العنوان",
+      "default": "أكثر من ٢٠٠ علامة تجارية للمياه المعبأة"
+    },
+    {
+      "type": "text",
+      "id": "desc_1",
+      "label": "الوصف",
+      "default": "يمكنك الطلب مباشرة من المتجر"
+    },
+    {
+      "type": "text",
+      "id": "btn_text_1",
+      "label": "نص الزر",
+      "default": "اطلب من المتجر الآن"
+    },
+    {
+      "type": "url",
+      "id": "btn_link_1",
+      "label": "رابط الزر"
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 2: تتبع طلبك"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_2",
+      "label": "صورة الهاتف والتتبع"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "العنوان",
+      "default": "تتبع طلبك بكل سهولة!"
+    },
+    {
+      "type": "text",
+      "id": "desc_2",
+      "label": "الوصف",
+      "default": "تابع طلبك وموعد وصوله - لحظة بلحظة."
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 3: نوصل لأي مكان"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_3",
+      "label": "صورة الخريطة والمندوب"
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "شارة البطاقة",
+      "default": "للمساجد والمنازل!"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "العنوان",
+      "default": "نوصل لأي مكان!"
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 4: دعم 24/7"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_4",
+      "label": "صورة موظف الدعم"
+    },
+    {
+      "type": "text",
+      "id": "badge_4",
+      "label": "شارة البطاقة",
+      "default": "متواجدون من أجلك"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "العنوان",
+      "default": "دعم 24/7"
+    },
+    {
+      "type": "text",
+      "id": "desc_4",
+      "label": "الوصف",
+      "default": "تحتاج مساعدة؟ فريقنا جاهز للمساعدة بأي وقت، طول اليوم."
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 5: وقت التوصيل"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_5",
+      "label": "صورة المنبه/الساعة"
+    },
+    {
+      "type": "text",
+      "id": "title_5",
+      "label": "العنوان",
+      "default": "حدد وقت التوصيل اللي يناسبك"
+    },
+    {
+      "type": "header",
+      "content": "البطاقة 6: خيارات الدفع"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_6",
+      "label": "صورة الدفع الإلكتروني"
+    },
+    {
+      "type": "text",
+      "id": "title_6",
+      "label": "العنوان",
+      "default": "خيارات دفع متعددة"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Eilawaters Grid Features"
+    }
+  ]
+}
+{% endschema %}

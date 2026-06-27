@@ -1,81 +1,602 @@
-<div class="product-section container">
-  <div class="product-gallery">
-    {%- if product.featured_image != blank -%}
-      {{ product.featured_image | image_url: width: 800 | image_tag: class: 'featured-image' }}
-    {%- else -%}
-      <div class="placeholder-image">Product Image Placeholder</div>
-    {%- endif -%}
-  </div>
+<div class="product-page-container container ew-collection-rtl" style="--primary-color: #00c7f2; --text-dark: #1e293b;">
   
-  <div class="product-details">
-    <h1 class="product-title">{{ product.title }}</h1>
-    <div class="product-price">{{ product.price | money }}</div>
+  <div class="product-top-layout-wrapper">
     
-    {%- form 'product', product -%}
-      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-      <button type="submit" name="add" class="btn btn-primary product-add-btn" {% unless product.available %}disabled{% endunless %}>
-        {%- if product.available -%}
-          Add to Cart
-        {%- else -%}
-          Sold Out
-        {%- endif -%}
-      </button>
-    {%- endform -%}
+    <main class="product-main-content">
+      <div class="product-essential-wrapper">
+        
+        <div class="product-gallery-area">
+          <div class="product-main-image" onclick="openLightbox()">
+            <div class="image-inner-card">
+              <img id="main-gallery-img" src="{{ product.featured_image | image_url: width: 800 }}" data-index="0" alt="{{ product.title }}">
+              <div class="zoom-hint-icon">🔍</div>
+            </div>
+          </div>
+
+          {% if product.images.size > 1 %}
+            <div class="product-thumbnails-grid">
+              {% for image in product.images %}
+                <div class="thumb-item-card {% if forloop.first %}active-thumb{% endif %}" onclick="switchGalleryImage(this, '{{ image | image_url: width: 800 }}', {{ forloop.index0 }})">
+                  <img src="{{ image | image_url: width: 150 }}" alt="{{ product.title }}">
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="product-details-info">
+          <h1 class="main-product-title">{{ product.title }}</h1>
+          <div class="main-product-price">
+            <span class="price-val">{{ product.price | money_with_currency }}</span>
+          </div>
+          
+          <div class="product-meta-specs">
+            <p>📋 التغليف: {{ product.metafields.custom.packages.value | default: '40 عبوة / كرتون' }}</p>
+            <p>📍 التوصيل إلى: مكة المكرمة</p>
+          </div>
+
+          {% form 'product', product %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            
+            <div class="quantity-selector-container">
+              <button type="button" class="qty-btn-adjust" onclick="changeMainQty(1)">+</button>
+              <input type="number" id="quantity-main-input" name="quantity" value="1" min="1" readonly>
+              <button type="button" class="qty-btn-adjust" onclick="changeMainQty(-1)">&minus;</button>
+            </div>
+
+            <div class="qty-and-add-wrapper">
+              <button type="submit" class="custom-add-to-cart-btn">🛒 أضف إلى السلة</button>
+            </div>
+          {% endform %}
+
+          <div class="product-share-box">
+            <span class="share-title-text">🔗 شارك المنتج عبر</span>
+            <div class="share-social-icons">
+              <a href="https://api.whatsapp.com/send?text={{ shop.url | append: product.url }}" target="_blank" title="واتساب" class="share-icon-btn whatsapp-color">💬</a>
+              <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: product.url }}&text={{ product.title }}" target="_blank" title="تويتر" class="share-icon-btn twitter-color">𝕏</a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" title="فيسبوك" class="share-icon-btn facebook-color">f</a>
+              <button type="button" onclick="copyProductLink()" class="share-icon-btn copy-color" title="نسخ الرابط">📋</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <aside class="product-sidebar">
+      
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">منتجات لنفس العلامة التجارية</h3>
+        <div class="sidebar-products-list">
+          {% assign current_product_id = product.id %}
+          {% assign count = 0 %}
+          
+          {% for related_product in collections.all.products %}
+            {% if related_product.vendor == product.vendor and related_product.id != current_product_id and count < 3 %}
+              <a href="{{ related_product.url }}" class="sidebar-product-item">
+                <div class="sidebar-product-img">
+                  <img src="{{ related_product.featured_image | image_url: width: 80 }}" alt="{{ related_product.title }}" loading="lazy">
+                </div>
+                <div class="sidebar-product-info">
+                  <h4>{{ related_product.title }}</h4>
+                  <p class="sidebar-product-meta">
+                    {{ related_product.metafields.custom.packages.value | default: 'عبوات / كرتون' }}
+                  </p>
+                  <div class="sidebar-product-rating">⭐⭐⭐⭐•</div>
+                  <span class="sidebar-product-price">{{ related_product.price | money_with_currency }} {{ cart.currency.symbol }}</span>
+                </div>
+              </a>
+              {% assign count = count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">علامات تجارية أخرى</h3>
+        <div class="sidebar-brands-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'other_brand' %}
+              <a href="{{ block.settings.brand_link }}" class="sidebar-brand-item">
+                <span class="brand-name-text">{{ block.settings.brand_name }}</span>
+                {% if block.settings.brand_logo != blank %}
+                  <img src="{{ block.settings.brand_logo | image_url: width: 40 }}" alt="{{ block.settings.brand_name }}" class="brand-logo-img">
+                {% else %}
+                  <span class="brand-logo-placeholder">شعار</span>
+                {% endif %}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      
+    </aside>
+
+  </div>
+
+  <div class="product-description-tabs">
+    <div class="tabs-headers">
+      <button class="tab-btn active" onclick="switchProductTab(event, 'tab-desc')">الوصف</button>
+      <button class="tab-btn" onclick="switchProductTab(event, 'tab-specs')">المواصفات</button>
+      <button class="tab-btn" onclick="switchProductTab(event, 'tab-features')">المميزات</button>
+    </div>
     
-    <div class="product-description rte">
+    <div id="tab-desc" class="tab-content-body current-tab-content">
       {{ product.description }}
     </div>
+    
+    <div id="tab-specs" class="tab-content-body" style="display: none;">
+      {% if product.metafields.custom.description != blank %}
+        {{ product.metafields.custom.description | metafield_tag }}
+      {% else %}
+        <p class="no-metafields-hint">لم يتم إضافة مواصفات مخصصة لهذا المنتج في حقل custom.description بعد.</p>
+      {% endif %}
+    </div>
+
+    <div id="tab-features" class="tab-content-body" style="display: none;">
+      {% if product.metafields.custom.Features != blank %}
+        {{ product.metafields.custom.Features | metafield_tag }}
+      {% else %}
+        <p class="no-metafields-hint">لم يتم إضافة مميزات مخصصة لهذا المنتج في حقل custom.Features بعد.</p>
+      {% endif %}
+    </div>
   </div>
+
+</div>
+
+<div id="product-lightbox-modal" class="lightbox-modal">
+  <span class="lightbox-close-btn" onclick="closeLightbox()">&times;</span>
+  <button class="lightbox-nav-btn prev-btn" onclick="navigateLightbox(-1)">&#10095;</button>
+  <div class="lightbox-content-box">
+    <img id="lightbox-active-img" src="" alt="معاينة ممتدة">
+  </div>
+  <button class="lightbox-nav-btn next-btn" onclick="navigateLightbox(1)">&#10094;</button>
 </div>
 
 <style>
-  .product-section {
+  .ew-collection-rtl {
+    direction: rtl !important;
+    text-align: right;
+  }
+  
+  .product-page-container {
+    padding: 30px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  /* تخطيط القسم العلوي (منتج يمين + جانب يسار) */
+  .product-top-layout-wrapper {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    padding-top: 2rem;
+    grid-template-columns: 1fr 320px; 
+    gap: 30px;
+    margin-bottom: 30px; /* مسافة قبل قسم التبويبات السفلي */
   }
-  @media (min-width: 768px) {
-    .product-section {
-      grid-template-columns: 1.2fr 1fr;
-    }
+
+  /* الحاوية الأساسية للمنتج */
+  .product-essential-wrapper {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr; 
+    gap: 35px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    box-sizing: border-box;
   }
-  .featured-image {
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+
+  /* منطقة معرض الصور */
+  .product-gallery-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 100%;
+    overflow: hidden;
   }
-  .placeholder-image {
-    background-color: var(--bg-secondary);
-    aspect-ratio: 1;
+  .product-main-image {
+    cursor: zoom-in;
+    position: relative;
+    max-width: 100%;
+  }
+  .image-inner-card {
+    border: 1px solid #edf2f7;
+    border-radius: 16px;
+    padding: 20px;
+    background: #ffffff;
+    width: 100%;
+    height: 480px; 
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    color: var(--text-muted);
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    overflow: hidden;
   }
-  .product-title {
-    font-size: 2.25rem;
-    margin-bottom: 1rem;
+  .image-inner-card:hover {
+    border-color: var(--primary-color);
   }
-  .product-price {
-    font-size: 1.5rem;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+  .product-main-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; 
+    display: block;
   }
-  .product-add-btn {
+  .zoom-hint-icon {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* شبكة الصور المصغرة */
+  .product-thumbnails-grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    max-width: 100%;
+  }
+  .thumb-item-card {
+    width: 75px;
+    height: 75px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 6px;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+  .thumb-item-card:hover, .thumb-item-card.active-thumb {
+    border-color: var(--primary-color);
+  }
+  .thumb-item-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* تفاصيل المنتج الجانبية */
+  .product-details-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
+  }
+  .main-product-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 10px 0;
+  }
+  .main-product-price {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+  .product-meta-specs {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+  }
+  .product-meta-specs p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #475569;
+  }
+
+  /* أزرار اختيار الكمية والسلة */
+  .quantity-selector-container {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #f8fafc;
+  }
+  .qty-btn-adjust {
+    width: 45px;
+    height: 45px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #64748b;
+  }
+  .qty-btn-adjust:hover { background: #e2e8f0; }
+  #quantity-main-input {
+    width: 60px;
+    height: 45px;
+    border: none;
+    border-left: 1px solid #cbd5e1;
+    border-right: 1px solid #cbd5e1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    background: #ffffff;
+  }
+  .custom-add-to-cart-btn {
     width: 100%;
-    margin-bottom: 2rem;
+    max-width: 320px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 199, 242, 0.25);
+    transition: all 0.2s ease;
   }
-  .product-description {
-    font-size: 1rem;
-    color: var(--text-secondary);
+
+  /* العمود الجانبي الأيسر */
+  .product-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .sidebar-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .sidebar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 20px 0;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+  }
+  .sidebar-product-item {
+    display: flex;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    padding: 12px 0;
+    border-bottom: 1px dashed #edf2f7;
+    align-items: center;
+  }
+  .sidebar-product-img img { width: 60px; height: 60px; object-fit: contain; }
+  .sidebar-product-info h4 { font-size: 13px; margin: 0; color: #0084ff; font-weight: bold; }
+  .sidebar-product-meta { font-size: 11px; color: #94a3b8; }
+  .sidebar-product-price { font-size: 13px; font-weight: bold; }
+
+  .sidebar-brands-list { display: flex; flex-direction: column; gap: 12px; }
+  .sidebar-brand-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.25s;
+  }
+  .sidebar-brand-item:hover { border-color: var(--primary-color); background: #f4fdff; transform: translateX(3px); }
+  .brand-logo-img { width: 35px; height: 35px; object-fit: contain; }
+
+  /* مشاركة المنتج */
+  .product-share-box { margin-top: 25px; display: flex; flex-direction: column; gap: 8px; }
+  .share-title-text { font-size: 13px; color: #64748b; font-weight: 600; }
+  .share-social-icons { display: flex; gap: 10px; }
+  .share-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .whatsapp-color:hover { background: #25d366; color: white; }
+  .twitter-color:hover { background: #000000; color: white; }
+  .facebook-color:hover { background: #1877f2; color: white; }
+  .copy-color:hover { background: var(--primary-color); color: white; }
+
+  /* قسم التبويبات الممتد على كامل الصفحة */
+  .product-description-tabs {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 30px;
+    background: #ffffff;
+    box-sizing: border-box;
+  }
+  .tabs-headers { border-bottom: 1px solid #edf2f7; margin-bottom: 20px; display: flex; gap: 15px; }
+  .tab-btn { padding: 12px 25px; border: none; background: none; font-weight: 800; font-size: 15px; cursor: pointer; color: #64748b; border-bottom: 3px solid transparent; }
+  .tab-btn.active { border-bottom: 3px solid var(--primary-color); color: var(--primary-color); }
+  .tab-content-body { line-height: 1.8; color: #334155; font-size: 15px; }
+  .no-metafields-hint { font-size: 13px; color: #94a3b8; font-style: italic; }
+
+  /* نافذة المعاينة المكبرة (Lightbox) */
+  .lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.95);
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-content-box {
+    max-width: 85%;
+    max-height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-content-box img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .lightbox-close-btn {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: #f8fafc;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .lightbox-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 15px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .lightbox-nav-btn:hover { background: var(--primary-color); }
+  .prev-btn { right: 40px; }
+  .next-btn { left: 40px; }
+
+  /* شاشات الجوال والأجهزة الذكية */
+  @media (max-width: 991px) {
+    .product-top-layout-wrapper { grid-template-columns: 1fr; }
+    .product-essential-wrapper { grid-template-columns: 1fr; }
+    .image-inner-card { height: 350px; }
+    .product-gallery-area { order: -1; }
   }
 </style>
 
+<script>
+  const productImagesArray = [];
+  {% for image in product.images %}
+    productImagesArray.push('{{ image | image_url: width: 1200 }}');
+  {% endfor %}
+
+  function switchGalleryImage(element, newSrc, index) {
+    const mainImg = document.getElementById('main-gallery-img');
+    mainImg.src = newSrc;
+    mainImg.setAttribute('data-index', index);
+    
+    document.querySelectorAll('.thumb-item-card').forEach(card => card.classList.remove('active-thumb'));
+    element.classList.add('active-thumb');
+  }
+
+  function openLightbox() {
+    const mainImg = document.getElementById('main-gallery-img');
+    const currentIndex = parseInt(mainImg.getAttribute('data-index')) || 0;
+    
+    const lightbox = document.getElementById('product-lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-active-img');
+    
+    lightboxImg.src = productImagesArray[currentIndex];
+    lightboxImg.setAttribute('data-current-lightbox-idx', currentIndex);
+    lightbox.style.display = 'flex';
+  }
+
+  function closeLightbox() {
+    document.getElementById('product-lightbox-modal').style.display = 'none';
+  }
+
+  function navigateLightbox(direction) {
+    const lightboxImg = document.getElementById('lightbox-active-img');
+    let currentIndex = parseInt(lightboxImg.getAttribute('data-current-lightbox-idx')) || 0;
+    
+    currentIndex += direction;
+    
+    if (currentIndex >= productImagesArray.length) {
+      currentIndex = 0;
+    } else if (currentIndex < 0) {
+      currentIndex = productImagesArray.length - 1;
+    }
+    
+    lightboxImg.src = productImagesArray[currentIndex];
+    lightboxImg.setAttribute('data-current-lightbox-idx', currentIndex);
+  }
+
+  function changeMainQty(amt) {
+    const input = document.getElementById('quantity-main-input');
+    let current = parseInt(input.value) || 1;
+    current += amt;
+    if (current < 1) current = 1;
+    input.value = current;
+  }
+
+  // تبديل التبويبات ليشمل التبويب الثالث الجديد
+  function switchProductTab(event, tabId) {
+    const tabContents = document.querySelectorAll('.tab-content-body');
+    tabContents.forEach(content => content.style.display = 'none');
+    
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabId).style.display = 'block';
+    event.currentTarget.classList.add('active');
+  }
+
+  function copyProductLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert("✓ تم نسخ رابط المنتج بنجاح لجهازك!");
+    });
+  }
+</script>
+
 {% schema %}
 {
-  "name": "Product Details",
-  "settings": []
+  "name": "صفحة منتج مخصصة بالجانب",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "other_brand",
+      "name": "علامة تجارية جانبية",
+      "settings": [
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "اسم العلامة",
+          "default": "مياه جود"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_logo",
+          "label": "شعار العلامة"
+        },
+        {
+          "type": "url",
+          "id": "brand_link",
+          "label": "رابط صفحة العلامة"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

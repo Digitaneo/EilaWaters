@@ -16,10 +16,10 @@
       "label": "صورة الخلفية"
     },
     {
-      "type": "video",
-      "id": "bg_video",
-      "label": "فيديو الخلفية",
-      "info": "يتم عرضه بدلاً من الصورة في حال تحميله."
+      "type": "image_picker",
+      "id": "bg_mobile_image",
+      "label": "صورة الخلفية للهاتف",
+      "info": "تظهر على الهاتف فقط، وتبقى صورة الخلفية الأساسية للكمبيوتر."
     },
     {
       "type": "checkbox",
@@ -129,17 +129,6 @@
   background-position: center;
   background-repeat: no-repeat;
   padding: 80px 0;
-}
-
-/* Background Video */
-.hero-banner-sec__video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
 }
 
 /* Dark Overlay */
@@ -321,6 +310,7 @@
 /* Responsive fixes */
 @media (max-width: 768px) {
   .hero-banner-sec {
+    background-image: var(--hero-bg-mobile, var(--hero-bg-desktop));
     min-height: 70vh;
     padding: 60px 0;
   }
@@ -343,19 +333,31 @@
     align-self: center;
   }
 }
+
+body:has(.header-group--transparent) #MainContent .hero-banner-sec {
+  padding-top: 110px;
+}
+
+body:has(.header-group--transparent) #MainContent .hero-banner-sec__container {
+  padding-top: 45px;
+}
+
+@media (max-width: 1023px) {
+  body:has(.header-group--transparent) #MainContent .hero-banner-sec {
+    padding-top: 95px;
+  }
+
+  body:has(.header-group--transparent) #MainContent .hero-banner-sec__container {
+    padding-top: 40px;
+  }
+}
 {%- endstyle -%}
 
 <section class="hero-banner-sec" 
          data-overlay="{{ section.settings.overlay_dark }}"
          data-align="{{ section.settings.content_alignment }}"
          data-color="{{ section.settings.text_color }}"
-         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2000 }}');{% else %}background-color: #f8fafc;{% endif %}">
-  
-  {%- if section.settings.bg_video != blank -%}
-    <video autoplay muted loop playsinline class="hero-banner-sec__video">
-      <source src="{{ section.settings.bg_video | file_url }}" type="video/mp4">
-    </video>
-  {%- endif -%}
+         style="{% if section.settings.bg_image != blank %}--hero-bg-desktop: url('{{ section.settings.bg_image | image_url: width: 2000 }}'); background-image: var(--hero-bg-desktop);{% else %}background-color: #f8fafc;{% endif %}{% if section.settings.bg_mobile_image != blank %} --hero-bg-mobile: url('{{ section.settings.bg_mobile_image | image_url: width: 900 }}');{% endif %}">
 
   <div class="container hero-banner-sec__container">
     <div class="hero-banner-sec__wrapper">

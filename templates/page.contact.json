@@ -1,0 +1,12 @@
+{
+  "name": "صفحة التواصل الاحترافية",
+  "sections": {
+    "main-contact": {
+      "type": "contact-page-custom",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main-contact"
+  ]
+}

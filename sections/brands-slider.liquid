@@ -1,0 +1,280 @@
+<div class="brands-section container ew-collection-rtl" style="--primary-color: {{ section.settings.primary_color }}; --text-dark: {{ section.settings.text_color_dark }};">
+  
+  {%- if section.settings.brands_title != blank -%}
+    <header class="collection-header">
+      <h2 class="collection-title">
+        {{ section.settings.brands_title }}
+      </h2>
+    </header>
+  {%- endif -%}
+
+  <div class="brands-marquee-wrapper">
+    <div class="brands-marquee-track" id="brandsTrack">
+      <!-- التكرار الأول للعلامات التجارية -->
+      <div class="brands-marquee-content">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'brand' -%}
+            <div class="brand-item" {{ block.shopify_attributes }}>
+              <div class="brand-item__image-wrapper">
+                {%- if block.settings.brand_image != blank -%}
+                  {{ block.settings.brand_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
+                {%- else -%}
+                  <div class="brand-item__placeholder">شعار</div>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.brand_name != blank -%}
+                <span class="brand-item__name">{{ block.settings.brand_name }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      
+      <!-- تكرار مكرر لضمان حركة مستمرة (Infinity Scroll) دون انقطاع -->
+      <div class="brands-marquee-content" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'brand' -%}
+            <div class="brand-item">
+              <div class="brand-item__image-wrapper">
+                {%- if block.settings.brand_image != blank -%}
+                  {{ block.settings.brand_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
+                {%- else -%}
+                  <div class="brand-item__placeholder">شعار</div>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.brand_name != blank -%}
+                <span class="brand-item__name">{{ block.settings.brand_name }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ================= تنسيقات السلايدر ================= */
+  .ew-collection-rtl {
+    direction: rtl;
+    font-family: inherit;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .brands-section .collection-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+  }
+
+  .brands-section .collection-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-dark, #1e293b);
+  }
+
+  .brands-marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+    background: #ffffff;
+    position: relative;
+    cursor: grab;
+  }
+  
+  .brands-marquee-wrapper:active {
+    cursor: grabbing;
+  }
+
+  .brands-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+  /* ميزة التوقف التلقائي بمجرد مرور الماوس */
+  .brands-marquee-wrapper:hover .brands-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .brands-marquee-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  /* تنسيق مطابق تماماً للصورة المرفقة image (15).jpg */
+  .brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 120px;
+    text-align: center;
+    user-select: none;
+  }
+
+  .brand-item__image-wrapper {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .brand-item:hover .brand-item__image-wrapper {
+    transform: translateY(-4px);
+    border-color: var(--primary-color, #00c7f2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  }
+
+  .brand-item__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .brand-item__placeholder {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  .brand-item__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark, #1e293b);
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  
+  .brand-item:hover .brand-item__name {
+    color: var(--primary-color, #00c7f2);
+  }
+
+
+  @media (max-width: 480px) {
+    .brands-section .collection-title {
+      font-size: 1.8rem;
+    }
+    .brands-marquee-content {
+      gap: 25px;
+    }
+    .brand-item {
+      width: 95px;
+    }
+    .brand-item__image-wrapper {
+      width: 80px;
+      height: 80px;
+      border-radius: 14px;
+      padding: 8px;
+    }
+    .brand-item__name {
+      font-size: 12px;
+    }
+  }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const track = document.getElementById('brandsTrack');
+
+    // نكرر المحتوى مرة إضافية
+    track.innerHTML += track.innerHTML;
+
+    let position = 0;
+    const speed = 0.6;
+
+    let paused = false;
+
+    track.parentElement.addEventListener('mouseenter', () => paused = true);
+    track.parentElement.addEventListener('mouseleave', () => paused = false);
+
+    function animate() {
+
+        if (!paused) {
+
+            position += speed;
+
+            const halfWidth = track.scrollWidth / 2;
+
+            if (position >= halfWidth) {
+                position = 0;
+            }
+
+            track.style.transform = `translateX(${position}px)`;
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+});
+</script>
+{% schema %}
+{
+  "name": "سلايدر العلامات التجارية",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brands_title",
+      "label": "عنوان القسم",
+      "default": "العلامات التجارية"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "اللون الرئيسي (عند التمرير بالماوس)",
+      "default": "#00c7f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color_dark",
+      "label": "لون النصوص والعناوين",
+      "default": "#1e293b"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "علامة تجارية",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "brand_image",
+          "label": "شعار العلامة التجارية"
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "اسم العلامة التجارية",
+          "default": "مياه تانيا"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "سلايدر العلامات التجارية",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" }
+      ]
+    }
+  ]
+}
+{% endschema %}

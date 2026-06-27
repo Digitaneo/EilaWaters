@@ -1,0 +1,371 @@
+{%- style -%}
+  /* معرفات فريدة لمنع التداخل مع القالب الجاهز */
+  .ew-faq-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    direction: rtl; /* اتجاه عربي بالكامل */
+    font-family: inherit;
+  }
+
+  .ew-faq-container {
+    max-width: 800px; /* عرض مثالي ومريح للقراءة */
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .ew-faq-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ew-faq-section-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 10px 0;
+  }
+
+  .ew-faq-section-subtitle {
+    font-size: 16px;
+    color: {{ section.settings.subtitle_color }};
+    margin: 0;
+  }
+
+  .ew-faq-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* تصميم عناصر الأسئلة */
+  .ew-faq-item {
+    background-color: {{ section.settings.item_bg_color }};
+    border: 1px solid {{ section.settings.item_border_color }};
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .ew-faq-item.is-open {
+    border-color: {{ section.settings.item_active_border_color }};
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+  }
+
+  /* ترويسة السؤال للتفاعل */
+  .ew-faq-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: right;
+    font-family: inherit;
+    gap: 15px;
+  }
+
+  .ew-faq-question {
+    font-size: 18px;
+    font-weight: 700;
+    color: {{ section.settings.question_color }};
+    margin: 0;
+    transition: color 0.3s ease;
+  }
+
+  .ew-faq-item.is-open .ew-faq-question {
+    color: {{ section.settings.item_active_border_color }};
+  }
+
+  /* أيقونة فتح وإغلاق السؤال */
+  .ew-faq-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ew-faq-icon::before,
+  .ew-faq-icon::after {
+    content: "";
+    position: absolute;
+    background-color: {{ section.settings.question_color }};
+    transition: background-color 0.3s ease;
+  }
+
+  /* الخط الأفقي للأيقونة */
+  .ew-faq-icon::before {
+    top: 11px;
+    left: 4px;
+    width: 16px;
+    height: 2px;
+  }
+
+  /* الخط العمودي للأيقونة (يختفي عند الفتح) */
+  .ew-faq-icon::after {
+    top: 4px;
+    left: 11px;
+    width: 2px;
+    height: 16px;
+  }
+
+  .ew-faq-item.is-open .ew-faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .ew-faq-item.is-open .ew-faq-icon::before,
+  .ew-faq-item.is-open .ew-faq-icon::after {
+    background-color: {{ section.settings.item_active_border_color }};
+  }
+
+  /* جزء الإجابة المخفي */
+  .ew-faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ew-faq-answer {
+    padding: 0 24px 24px 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: {{ section.settings.answer_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .ew-faq-section-title {
+      font-size: 28px;
+    }
+    .ew-faq-question {
+      font-size: 16px;
+    }
+    .ew-faq-answer {
+      font-size: 14px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="ew-faq-section-{{ section.id }}">
+  <div class="ew-faq-container">
+    
+    <!-- رأس القسم الرئيسي للأسئلة -->
+    {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <div class="ew-faq-header">
+        {% if section.settings.title != blank %}
+          <h2 class="ew-faq-section-title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="ew-faq-section-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- قائمة الأسئلة التفاعلية -->
+    <div class="ew-faq-wrapper">
+      {% for block in section.blocks %}
+        {% if block.settings.question != blank and block.settings.answer != blank %}
+          <div class="ew-faq-item" {{ block.shopify_attributes }}>
+            <button class="ew-faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span class="ew-faq-question">{{ block.settings.question }}</span>
+              <span class="ew-faq-icon"></span>
+            </button>
+            <div class="ew-faq-content">
+              <p class="ew-faq-answer">
+                {{ block.settings.answer | newline_to_br }}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function toggleFaq(button) {
+    const item = button.parentElement;
+    const content = button.nextElementSibling;
+    const isOpen = item.classList.contains('is-open');
+
+    // إغلاق أي سؤال مفتوح آخر في نفس القسم للحفاظ على ترتيب الصفحة (اختياري)
+    const activeItems = item.parentElement.querySelectorAll('.ew-faq-item.is-open');
+    activeItems.forEach(activeItem => {
+      if (activeItem !== item) {
+        activeItem.classList.remove('is-open');
+        activeItem.querySelector('.ew-faq-trigger').setAttribute('aria-expanded', 'false');
+        activeItem.querySelector('.ew-faq-content').style.maxHeight = '0';
+      }
+    });
+
+    if (!isOpen) {
+      item.classList.add('is-open');
+      button.setAttribute('aria-expanded', 'true');
+      content.style.maxHeight = content.scrollHeight + 'px';
+    } else {
+      item.classList.remove('is-open');
+      button.setAttribute('aria-expanded', 'false');
+      content.style.maxHeight = '0';
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Eilawaters FAQ Accordion",
+  "settings": [
+    {
+      "type": "header",
+      "content": "نصوص القسم الرئيسية"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "عنوان القسم الرئيسي",
+      "default": "الأسئلة الشائعة"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "العنوان الفرعي",
+      "default": "هنا ستجد إجابات سريعة لأكثر استفسارات عملائنا شيوعاً حول خدماتنا."
+    },
+    {
+      "type": "header",
+      "content": "تخصيص الألوان"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "لون خلفية القسم",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "لون عنوان القسم",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "لون العنوان الفرعي",
+      "default": "#64748b"
+    },
+    {
+      "type": "color",
+      "id": "item_bg_color",
+      "label": "لون خلفية بطاقة السؤال",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "لون حدود بطاقة السؤال",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "لون خط السؤال الرئيسي",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "لون خط الإجابة",
+      "default": "#475569"
+    },
+    {
+      "type": "color",
+      "id": "item_active_border_color",
+      "label": "لون التأثير النشط (الرئيسي للقالب)",
+      "default": "#005088"
+    },
+    {
+      "type": "header",
+      "content": "المسافات (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة علوية",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة سفلية",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "سؤال وجواب",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "السؤال",
+          "default": "اكتب السؤال هنا"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "الإجابة",
+          "default": "اكتب الإجابة التفصيلية والاحترافية هنا"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Eilawaters FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "كيف أطلب المياه لقطاع الأعمال؟",
+            "answer": "يمكنك تقديم طلب مخصص لقطاع الأعمال بسهولة عبر الاتصال المباشر بقسم المبيعات لدينا عبر الرقم الموحد، أو بملء نموذج طلب المبيعات المخصص في الموقع لنقوم بالتواصل معك وتوفير أفضل عروض الأسعار."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "كم يستغرق وقت التوصيل؟",
+            "answer": "يستغرق توصيل الطلب في العادة من 24 إلى 48 ساعة عمل كحد أقصى من لحظة تأكيد الطلب، ونقوم بإشعارك عبر الرسائل القصيرة لتتبع حركة المندوب حتى وصوله إليك."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "كم رسوم التوصيل؟",
+            "answer": "توصيل طلبات المياه مجاني بالكامل عند وصول قيمة طلبك للحد الأدنى للتوصيل الخاص بمنطقتك، وفي حال قل الطلب عن هذا الحد يُحتسب رسم رمزي بسيط يظهر لك بوضوح في صفحة إتمام الشراء."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "هل تتوفر خدمة التوصيل للتطبيق؟",
+            "answer": "نعم، بكل تأكيد! نوفر تطبيقاً هاتفياً متكاملاً على متجري App Store و Google Play يسهل عليك جدولة المواعيد والتوصيل التلقائي لضمان عدم انقطاع المياه عن منزلك أو منشأتك."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
