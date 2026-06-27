@@ -133,6 +133,19 @@
             "brand_image": "shopify://shop_images/17465435799126536.webp",
             "brand_name": "مياه هلل"
           }
+        },
+        "brand_winR77": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465431118688514.webp",
+            "brand_name": "مياه نجد"
+          }
+        },
+        "brand_APDemw": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "مياه هنا"
+          }
         }
       },
       "block_order": [
@@ -145,7 +158,9 @@
         "brand_xBypn3",
         "brand_kCab9P",
         "brand_yCnJfp",
-        "brand_WFE3n3"
+        "brand_WFE3n3",
+        "brand_winR77",
+        "brand_APDemw"
       ],
       "name": "سلايدر العلامات التجارية",
       "settings": {
