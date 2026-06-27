@@ -38,7 +38,7 @@
             "type": "link_list",
             "settings": {
               "title": "روابط سريعة",
-              "menu": ""
+              "menu": "link-list"
             }
           }
         },
