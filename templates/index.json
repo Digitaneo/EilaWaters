@@ -60,10 +60,92 @@
         "img_6": "shopify://shop_images/s_5_ar.png",
         "title_6": "خيارات دفع متعددة"
       }
+    },
+    "brands_slider_pecJwQ": {
+      "type": "brands-slider",
+      "blocks": {
+        "brand_4mJeCK": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "مياه تانيا"
+          }
+        },
+        "brand_3jYb9y": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "مياه تانيا"
+          }
+        },
+        "brand_kpmcmY": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "مياه تانيا"
+          }
+        }
+      },
+      "block_order": [
+        "brand_4mJeCK",
+        "brand_3jYb9y",
+        "brand_kpmcmY"
+      ],
+      "name": "سلايدر العلامات التجارية",
+      "settings": {
+        "brands_title": "العلامات التجارية",
+        "primary_color": "#00c7f2",
+        "text_color_dark": "#1e293b"
+      }
+    },
+    "eilawaters_faq_KXDDkA": {
+      "type": "eilawaters-faq",
+      "blocks": {
+        "faq_item_aeyQGk": {
+          "type": "faq_item",
+          "settings": {
+            "question": "كيف أطلب المياه لقطاع الأعمال؟",
+            "answer": "الكميات الكبيرة لقطاع الأعمال بجميع أنواعه نوفّر لها طريقة طلب خاصة عبر الإيميل أو الرقم الموحد الموجود في أسفل الصفحة."
+          }
+        },
+        "faq_item_L9tapw": {
+          "type": "faq_item",
+          "settings": {
+            "question": "كم يستغرق وقت التوصيل؟",
+            "answer": "أنت اللي تحدد وقت التوصيل بنفسك! ابتداءً من التوصيل الفوري من أقرب مندوب لك إلى التوصيل المجدول لأسبوع قدام."
+          }
+        },
+        "faq_item_NPqNEq": {
+          "type": "faq_item",
+          "settings": {
+            "question": "كم رسوم التوصيل؟",
+            "answer": "عملية نقل وتوصيل المياه المعبأة من مصانعها إلى مكانك هي عملية مجانية 100% (ببلاش)"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_aeyQGk",
+        "faq_item_L9tapw",
+        "faq_item_NPqNEq"
+      ],
+      "name": "Eilawaters FAQ Accordion",
+      "settings": {
+        "title": "الأسئلة الشائعة",
+        "subtitle": "هنا ستجد إجابات سريعة لأكثر استفسارات عملائنا شيوعاً حول خدماتنا.",
+        "bg_color": "#f8fafc",
+        "title_color": "#0f172a",
+        "subtitle_color": "#64748b",
+        "item_bg_color": "#ffffff",
+        "item_border_color": "#e2e8f0",
+        "question_color": "#0f172a",
+        "answer_color": "#475569",
+        "item_active_border_color": "#005088",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
     "hero-banner",
-    "eilawaters_features_grid_Hz6ckx"
+    "eilawaters_features_grid_Hz6ckx",
+    "brands_slider_pecJwQ",
+    "eilawaters_faq_KXDDkA"
   ]
 }
