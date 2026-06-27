@@ -2,59 +2,50 @@
   
   {%- if section.settings.brands_title != blank -%}
     <header class="collection-header">
-      <h2 class="collection-title">
-        {{ section.settings.brands_title }}
-      </h2>
+      <h2 class="collection-title">{{ section.settings.brands_title }}</h2>
     </header>
   {%- endif -%}
 
   <div class="brands-marquee-wrapper">
     <div class="brands-marquee-track" id="brandsTrack">
-      <!-- التكرار الأول للعلامات التجارية -->
       <div class="brands-marquee-content">
         {%- for block in section.blocks -%}
-          {%- if block.type == 'brand' -%}
-            <div class="brand-item" {{ block.shopify_attributes }}>
-              <div class="brand-item__image-wrapper">
-                {%- if block.settings.brand_image != blank -%}
-                  {{ block.settings.brand_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
-                {%- else -%}
-                  <div class="brand-item__placeholder">شعار</div>
-                {%- endif -%}
-              </div>
-              {%- if block.settings.brand_name != blank -%}
-                <span class="brand-item__name">{{ block.settings.brand_name }}</span>
+          {%- assign collection = block.settings.collection -%}
+          <a href="{{ collection.url | default: '#' }}" class="brand-item" {{ block.shopify_attributes }}>
+            <div class="brand-item__image-wrapper">
+              {%- if collection.featured_image != blank -%}
+                {{ collection.featured_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
+              {%- else -%}
+                <div class="brand-item__placeholder">لا توجد صورة</div>
               {%- endif -%}
             </div>
-          {%- endif -%}
+            <span class="brand-item__name">{{ collection.title | default: 'تصنيف غير محدد' }}</span>
+          </a>
         {%- endfor -%}
       </div>
       
-      <!-- تكرار مكرر لضمان حركة مستمرة (Infinity Scroll) دون انقطاع -->
       <div class="brands-marquee-content" aria-hidden="true">
         {%- for block in section.blocks -%}
-          {%- if block.type == 'brand' -%}
-            <div class="brand-item">
-              <div class="brand-item__image-wrapper">
-                {%- if block.settings.brand_image != blank -%}
-                  {{ block.settings.brand_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
-                {%- else -%}
-                  <div class="brand-item__placeholder">شعار</div>
-                {%- endif -%}
-              </div>
-              {%- if block.settings.brand_name != blank -%}
-                <span class="brand-item__name">{{ block.settings.brand_name }}</span>
+          {%- assign collection = block.settings.collection -%}
+          <div class="brand-item">
+            <div class="brand-item__image-wrapper">
+              {%- if collection.featured_image != blank -%}
+                {{ collection.featured_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
+              {%- else -%}
+                <div class="brand-item__placeholder">لا توجد صورة</div>
               {%- endif -%}
             </div>
-          {%- endif -%}
+            <span class="brand-item__name">{{ collection.title | default: 'تصنيف غير محدد' }}</span>
+          </div>
         {%- endfor -%}
       </div>
     </div>
   </div>
 </div>
+      
 
 <style>
-  /* ================= تنسيقات السلايدر ================= */
+  /* ================= تنسيقات السلايدر المحدثة ================= */
   .ew-collection-rtl {
     direction: rtl;
     font-family: inherit;
@@ -86,17 +77,14 @@
     cursor: grab;
   }
   
-  .brands-marquee-wrapper:active {
-    cursor: grabbing;
-  }
+  .brands-marquee-wrapper:active { cursor: grabbing; }
 
   .brands-marquee-track {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-}
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
 
-  /* ميزة التوقف التلقائي بمجرد مرور الماوس */
   .brands-marquee-wrapper:hover .brands-marquee-track {
     animation-play-state: paused;
   }
@@ -109,7 +97,7 @@
     padding: 0 20px;
   }
 
-  /* تنسيق مطابق تماماً للصورة المرفقة image (15).jpg */
+  /* تنسيق العنصر كـ رابط */
   .brand-item {
     display: flex;
     flex-direction: column;
@@ -118,6 +106,8 @@
     width: 120px;
     text-align: center;
     user-select: none;
+    text-decoration: none; /* إزالة خط الرابط */
+    color: inherit;       /* الحفاظ على لون النص */
   }
 
   .brand-item__image-wrapper {
@@ -164,26 +154,12 @@
     color: var(--primary-color, #00c7f2);
   }
 
-
   @media (max-width: 480px) {
-    .brands-section .collection-title {
-      font-size: 1.8rem;
-    }
-    .brands-marquee-content {
-      gap: 25px;
-    }
-    .brand-item {
-      width: 95px;
-    }
-    .brand-item__image-wrapper {
-      width: 80px;
-      height: 80px;
-      border-radius: 14px;
-      padding: 8px;
-    }
-    .brand-item__name {
-      font-size: 12px;
-    }
+    .brands-section .collection-title { font-size: 1.8rem; }
+    .brands-marquee-content { gap: 25px; }
+    .brand-item { width: 95px; }
+    .brand-item__image-wrapper { width: 80px; height: 80px; border-radius: 14px; padding: 8px; }
+    .brand-item__name { font-size: 12px; }
   }
 </style>
 <script>
@@ -226,55 +202,25 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 {% schema %}
 {
-  "name": "سلايدر العلامات التجارية",
+  "name": "سلايدر التصنيفات",
   "settings": [
-    {
-      "type": "text",
-      "id": "brands_title",
-      "label": "عنوان القسم",
-      "default": "العلامات التجارية"
-    },
-    {
-      "type": "color",
-      "id": "primary_color",
-      "label": "اللون الرئيسي (عند التمرير بالماوس)",
-      "default": "#00c7f2"
-    },
-    {
-      "type": "color",
-      "id": "text_color_dark",
-      "label": "لون النصوص والعناوين",
-      "default": "#1e293b"
-    }
+    { "type": "text", "id": "brands_title", "label": "عنوان القسم", "default": "تسوق حسب التصنيف" },
+    { "type": "color", "id": "primary_color", "label": "اللون الرئيسي", "default": "#00c7f2" },
+    { "type": "color", "id": "text_color_dark", "label": "لون النصوص", "default": "#1e293b" }
   ],
   "blocks": [
     {
-      "type": "brand",
-      "name": "علامة تجارية",
+      "type": "collection",
+      "name": "تصنيف",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "brand_image",
-          "label": "شعار العلامة التجارية"
-        },
-        {
-          "type": "text",
-          "id": "brand_name",
-          "label": "اسم العلامة التجارية",
-          "default": "مياه تانيا"
+          "type": "collection",
+          "id": "collection",
+          "label": "اختر التصنيف"
         }
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "سلايدر العلامات التجارية",
-      "blocks": [
-        { "type": "brand" },
-        { "type": "brand" },
-        { "type": "brand" }
-      ]
-    }
-  ]
+  "presets": [{ "name": "سلايدر التصنيفات", "blocks": [{ "type": "collection" }] }]
 }
 {% endschema %}
