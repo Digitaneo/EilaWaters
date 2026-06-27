@@ -16,7 +16,7 @@
           "show_announcement_desktop": true,
           "show_announcement_mobile": true,
           "announcement_text": "أفضل تطبيق لطلب توصيل المياه للمنازل",
-          "logo": "shopify://shop_images/hero_ar.png",
+          "logo": "shopify://shop_images/eilawaters_logo.webp",
           "menu": "main-menu",
           "delivery_text": "عرعر",
           "enable_sticky_header": true,
@@ -27,7 +27,31 @@
       "footer": {
         "type": "footer",
         "settings": {
-          "footer_menu": "footer"
+          "store_name": "ايلا للمياة",
+          "logo_width": 120,
+          "firm_name": "مكتب أيلا يحي احمد ابوعله للخدمات الالكترونية",
+          "contact_title": "تواصل معنا",
+          "address": "المملكة العربية السعودية، مدينة عرعر",
+          "phone": "0510804290",
+          "email": "contact@eilawaters.com",
+          "tax_number": "312183879200003",
+          "cr_number": "7038794942",
+          "social_instagram": "",
+          "social_tiktok": "",
+          "social_snapchat": "",
+          "social_x": "",
+          "bg_color": "#0b0f19",
+          "border_color": "#1e293b",
+          "title_color": "#ffffff",
+          "text_color": "#cbd5e1",
+          "muted_text_color": "#64748b",
+          "accent_color": "#38bdf8",
+          "input_bg_color": "#1e293b",
+          "input_border_color": "#334155",
+          "btn_bg_color": "#ffffff",
+          "btn_text_color": "#000000",
+          "padding_top": 60,
+          "padding_bottom": 32
         }
       }
     },
