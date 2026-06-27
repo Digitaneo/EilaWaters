@@ -1,12 +1,134 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Collection",
   "sections": {
     "main": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "title": "المنتجات",
+        "primary_color": "#00c7f2",
+        "text_color_dark": "#1e293b"
+      }
+    },
+    "brands_slider_ACzyVW": {
+      "type": "brands-slider",
+      "blocks": {
+        "brand_r4gQ6p": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465437003562432.webp",
+            "brand_name": "مياه تانيا"
+          }
+        },
+        "brand_VCre6c": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465418524058502.webp",
+            "brand_name": "مياه ابار حائل"
+          }
+        },
+        "brand_zU433T": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465238817076914.webp",
+            "brand_name": "مياه جود"
+          }
+        },
+        "brand_JQ9hUm": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465436866644117.webp",
+            "brand_name": "مياه صفا مكة"
+          }
+        },
+        "brand_xRPphw": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465436775607305.webp",
+            "brand_name": "مياه نوفا"
+          }
+        },
+        "brand_nDmni9": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465436031971969.webp",
+            "brand_name": "مياه بيرين"
+          }
+        },
+        "brand_6njLFY": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465421716437654.webp",
+            "brand_name": "مياه اوسكا"
+          }
+        },
+        "brand_MwXrbn": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17664831653645249.webp",
+            "brand_name": "مياه اجيال"
+          }
+        },
+        "brand_PdPykb": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465423583123097.webp",
+            "brand_name": "مياه أكويا"
+          }
+        },
+        "brand_GxxKTq": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465435799126536.webp",
+            "brand_name": "مياه هلل"
+          }
+        },
+        "brand_KyMfkb": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17465431118688514.webp",
+            "brand_name": "مياه نجد"
+          }
+        },
+        "brand_jFm9Mx": {
+          "type": "brand",
+          "settings": {
+            "brand_image": "shopify://shop_images/17671653903510213.webp",
+            "brand_name": "مياه هنا"
+          }
+        }
+      },
+      "block_order": [
+        "brand_r4gQ6p",
+        "brand_VCre6c",
+        "brand_zU433T",
+        "brand_JQ9hUm",
+        "brand_xRPphw",
+        "brand_nDmni9",
+        "brand_6njLFY",
+        "brand_MwXrbn",
+        "brand_PdPykb",
+        "brand_GxxKTq",
+        "brand_KyMfkb",
+        "brand_jFm9Mx"
+      ],
+      "name": "سلايدر العلامات التجارية",
+      "settings": {
+        "brands_title": "العلامات التجارية",
+        "primary_color": "#00c7f2",
+        "text_color_dark": "#1e293b"
+      }
     }
   },
   "order": [
+    "brands_slider_ACzyVW",
     "main"
   ]
 }
