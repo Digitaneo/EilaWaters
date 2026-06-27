@@ -64,104 +64,36 @@
     "brands_slider_pecJwQ": {
       "type": "brands-slider",
       "blocks": {
-        "brand_kpmcmY": {
-          "type": "brand",
+        "collection_EgjCW4": {
+          "type": "collection",
           "settings": {
-            "brand_image": "shopify://shop_images/17465437003562432.webp",
-            "brand_name": "مياه تانيا"
+            "collection": "frontpage"
           }
         },
-        "brand_4mJeCK": {
-          "type": "brand",
+        "collection_6t63ab": {
+          "type": "collection",
           "settings": {
-            "brand_image": "shopify://shop_images/17465418524058502.webp",
-            "brand_name": "مياه ابار حائل"
+            "collection": "nova-water"
           }
         },
-        "brand_3jYb9y": {
-          "type": "brand",
+        "collection_hfMcQN": {
+          "type": "collection",
           "settings": {
-            "brand_image": "shopify://shop_images/17465238817076914.webp",
-            "brand_name": "مياه جود"
+            "collection": "frontpage"
           }
         },
-        "brand_hNUKQt": {
-          "type": "brand",
+        "collection_9JLPXd": {
+          "type": "collection",
           "settings": {
-            "brand_image": "shopify://shop_images/17465436866644117.webp",
-            "brand_name": "مياه صفا مكة"
-          }
-        },
-        "brand_P3cgkq": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465436775607305.webp",
-            "brand_name": "مياه نوفا"
-          }
-        },
-        "brand_DG6Q8E": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465436031971969.webp",
-            "brand_name": "مياه بيرين"
-          }
-        },
-        "brand_xBypn3": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465421716437654.webp",
-            "brand_name": "مياه اوسكا"
-          }
-        },
-        "brand_kCab9P": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17664831653645249.webp",
-            "brand_name": "مياه اجيال"
-          }
-        },
-        "brand_yCnJfp": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465423583123097.webp",
-            "brand_name": "مياه أكويا"
-          }
-        },
-        "brand_WFE3n3": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465435799126536.webp",
-            "brand_name": "مياه هلل"
-          }
-        },
-        "brand_winR77": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17465431118688514.webp",
-            "brand_name": "مياه نجد"
-          }
-        },
-        "brand_APDemw": {
-          "type": "brand",
-          "settings": {
-            "brand_image": "shopify://shop_images/17671653903510213.webp",
-            "brand_name": "مياه هنا"
+            "collection": "nova-water"
           }
         }
       },
       "block_order": [
-        "brand_kpmcmY",
-        "brand_4mJeCK",
-        "brand_3jYb9y",
-        "brand_hNUKQt",
-        "brand_P3cgkq",
-        "brand_DG6Q8E",
-        "brand_xBypn3",
-        "brand_kCab9P",
-        "brand_yCnJfp",
-        "brand_WFE3n3",
-        "brand_winR77",
-        "brand_APDemw"
+        "collection_EgjCW4",
+        "collection_6t63ab",
+        "collection_hfMcQN",
+        "collection_9JLPXd"
       ],
       "name": "سلايدر العلامات التجارية",
       "settings": {
