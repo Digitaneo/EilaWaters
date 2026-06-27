@@ -1,0 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "show_announcement_desktop": true,
+          "show_announcement_mobile": true,
+          "announcement_text": "أفضل تطبيق لطلب توصيل المياه للمنازل",
+          "logo": "shopify://shop_images/hero_ar.png",
+          "menu": "main-menu",
+          "delivery_text": "عرعر",
+          "enable_sticky_header": true,
+          "enable_transparent_header": true,
+          "transparent_text_color": "dark"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "footer_menu": "footer"
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}

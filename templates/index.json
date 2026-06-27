@@ -1,10 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Home Page",
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
-      "settings": {}
+      "settings": {
+        "bg_image": "shopify://shop_images/hero_ar.png",
+        "overlay_dark": false,
+        "content_alignment": "start",
+        "text_color": "dark",
+        "pre_title": "تطبيق آبار",
+        "title": "أفضل تطبيق لطلب توصيل المياه للمنازل والمساجد",
+        "subtitle": "اطلب مياه الشرب المفضلة لديك بكل سهولة وسرعة من خلال تطبيق آبار لنوصلها لك أينما كنت.",
+        "button_text": "تسوق الآن",
+        "button_link": "shopify://collections/all",
+        "show_qr": true,
+        "qr_text": "امسح الكود وحمل تطبيق آبار"
+      }
     }
   },
-  "order": ["hero-banner"]
+  "order": [
+    "hero-banner"
+  ]
 }
