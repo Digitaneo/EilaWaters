@@ -12,6 +12,30 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "other_brand_FfhnXL": {
+          "type": "other_brand",
+          "settings": {
+            "brand_name": "مياه جالونات",
+            "brand_logo": "shopify://shop_images/jalounat.webp",
+            "brand_link": "shopify://collections/jalounat"
+          }
+        },
+        "other_brand_KMw7WF": {
+          "type": "other_brand",
+          "settings": {
+            "brand_name": "مياه مايلز",
+            "brand_logo": "shopify://shop_images/Miles.webp",
+            "brand_link": "shopify://collections/miles"
+          }
+        },
+        "other_brand_mUz6Ry": {
+          "type": "other_brand",
+          "settings": {
+            "brand_name": "مياه الشافيه",
+            "brand_logo": "shopify://shop_images/Al-Shafiah.webp",
+            "brand_link": "shopify://collections/al-shafiah"
+          }
+        },
         "other_brand_CL697b": {
           "type": "other_brand",
           "settings": {
@@ -38,6 +62,9 @@
         }
       },
       "block_order": [
+        "other_brand_FfhnXL",
+        "other_brand_KMw7WF",
+        "other_brand_mUz6Ry",
         "other_brand_CL697b",
         "other_brand_qQwwTw",
         "other_brand_x4Tp9F"
