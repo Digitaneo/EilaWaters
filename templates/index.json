@@ -67,25 +67,37 @@
         "collection_EgjCW4": {
           "type": "collection",
           "settings": {
-            "collection": "frontpage"
+            "collection": "mashar"
           }
         },
         "collection_6t63ab": {
           "type": "collection",
           "settings": {
-            "collection": "nova-water"
+            "collection": "miles"
           }
         },
         "collection_hfMcQN": {
           "type": "collection",
           "settings": {
-            "collection": "frontpage"
+            "collection": "faline"
           }
         },
         "collection_9JLPXd": {
           "type": "collection",
           "settings": {
-            "collection": "nova-water"
+            "collection": "al-shafiah"
+          }
+        },
+        "collection_FUtUVA": {
+          "type": "collection",
+          "settings": {
+            "collection": "zulal"
+          }
+        },
+        "collection_WJkcMH": {
+          "type": "collection",
+          "settings": {
+            "collection": "jalounat"
           }
         }
       },
@@ -93,7 +105,9 @@
         "collection_EgjCW4",
         "collection_6t63ab",
         "collection_hfMcQN",
-        "collection_9JLPXd"
+        "collection_9JLPXd",
+        "collection_FUtUVA",
+        "collection_WJkcMH"
       ],
       "name": "سلايدر العلامات التجارية",
       "settings": {
