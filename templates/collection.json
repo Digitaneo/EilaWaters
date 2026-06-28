@@ -9,6 +9,14 @@
  */
 {
   "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "title": "المنتجات",
+        "primary_color": "#00c7f2",
+        "text_color_dark": "#1e293b"
+      }
+    },
     "brands_slider_ACzyVW": {
       "type": "brands-slider",
       "blocks": {
@@ -59,22 +67,14 @@
       ],
       "name": "سلايدر العلامات التجارية",
       "settings": {
-        "brands_title": "العلامات التجارية",
-        "primary_color": "#00c7f2",
-        "text_color_dark": "#1e293b"
-      }
-    },
-    "main": {
-      "type": "main-collection",
-      "settings": {
-        "title": "المنتجات",
+        "brands_title": "مزيد من العلامات التجارية",
         "primary_color": "#00c7f2",
         "text_color_dark": "#1e293b"
       }
     }
   },
   "order": [
-    "brands_slider_ACzyVW",
-    "main"
+    "main",
+    "brands_slider_ACzyVW"
   ]
 }
