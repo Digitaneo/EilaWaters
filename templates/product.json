@@ -12,6 +12,14 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "other_brand_CL697b": {
+          "type": "other_brand",
+          "settings": {
+            "brand_name": "مياه فالين",
+            "brand_logo": "shopify://shop_images/Faline.webp",
+            "brand_link": "shopify://collections/faline"
+          }
+        },
         "other_brand_qQwwTw": {
           "type": "other_brand",
           "settings": {
@@ -30,6 +38,7 @@
         }
       },
       "block_order": [
+        "other_brand_CL697b",
         "other_brand_qQwwTw",
         "other_brand_x4Tp9F"
       ],
