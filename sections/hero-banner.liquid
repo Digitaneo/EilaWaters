@@ -349,25 +349,6 @@ body:has(.header-group--transparent) #MainContent .hero-banner-sec__container {
       {%- if section.settings.button_text != blank and section.settings.button_link != blank -%}
         <a href="{{ section.settings.button_link }}" class="hero-banner-sec__btn">{{ section.settings.button_text }}</a>
       {%- endif -%}
-
-      {%- if section.settings.show_qr -%}
-        <div class="hero-banner-sec__qr-card">
-          <span class="hero-banner-sec__qr-text">{{ section.settings.qr_text }}</span>
-          <div class="hero-banner-sec__qr-img-wrapper">
-            {%- if section.settings.qr_image != blank -%}
-              {{ section.settings.qr_image | image_url: width: 120 | image_tag: class: 'hero-banner-sec__qr-img', loading: 'lazy' }}
-            {%- else -%}
-              <!-- Inline fallback SVG representing a QR Code -->
-              <svg class="hero-banner-sec__qr-img" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="3" width="6" height="6" rx="1" />
-                <rect x="15" y="3" width="6" height="6" rx="1" />
-                <rect x="3" y="15" width="6" height="6" rx="1" />
-                <path d="M15 15h1v1h-1zM18 18h1v1h-1zM15 18h1v1h-1zM18 15h1v1h-1zM20 15h1v1h-1zM20 18h1v1h-1zM15 20h3v1h-3zM19 20h2v1h-2zM9 9h2v2H9zM12 9h1v1h-1z" />
-              </svg>
-            {%- endif -%}
-          </div>
-        </div>
-      {%- endif -%}
     </div>
   </div>
 </section>
