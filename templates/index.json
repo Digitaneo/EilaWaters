@@ -12,7 +12,7 @@
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
-        "bg_image": "shopify://shop_images/hero_ar.png",
+        "bg_image": "shopify://shop_images/banner_pc1.webp",
         "overlay_dark": true,
         "content_alignment": "start",
         "text_color": "dark",
@@ -20,9 +20,7 @@
         "title": "شريكك الموثوق في توفير المياه النقية للمنازل والمساجد",
         "subtitle": "اطلب مياهك المفضلة بضغطة زر؛ نصلك بأسرع وقت لنوفر عليك عناء البحث وتعب التوصيل.",
         "button_text": "تسوق الآن",
-        "button_link": "shopify://collections/all",
-        "show_qr": true,
-        "qr_text": "امسح الكود وحمل تطبيق آبار"
+        "button_link": "shopify://collections/all"
       }
     },
     "eilawaters_features_grid_Hz6ckx": {
