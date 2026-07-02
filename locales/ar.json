@@ -525,7 +525,8 @@
         "payment_method": "طريقة الدفع",
         "payments": "المدفوعات",
         "billing_address_title": "عنوان الفواتير",
-        "fact_billing_address_label": "عنوان الفواتير"
+        "fact_billing_address_label": "عنوان الفواتير",
+        "same_billing_address_label": "نفس عنوان الشحن"
       },
       "shipping": {
         "delivery_title": "التوصيل",
@@ -592,6 +593,9 @@
         "individual_violations_title": {
           "PaymentViolations": "عنوان الفواتير"
         }
+      },
+      "billing": {
+        "same_as_shipping": "نفس عنوان الشحن"
       }
     },
     "notices": {
