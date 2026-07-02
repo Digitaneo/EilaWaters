@@ -507,7 +507,10 @@
         "region_label": "المنطقة",
         "region_placeholder": "المنطقة",
         "region_none": "لا يوجد تحديد",
-        "prefecture_label": "محافظة"
+        "prefecture_label": "محافظة",
+        "postal_code_label": "الرمز البريدي",
+        "optional_postal_code_label": "الرمز البريدي (اختياري)",
+        "postal_code_placeholder": "الرمز البريدي"
       },
       "payment_gateway": {
         "cash_on_delivery_label": "الدفع عند الاستلام (COD)"
@@ -528,6 +531,9 @@
       "order": {
         "cash_on_delivery": "الدفع عند الاستلام (COD)"
       }
+    },
+    "addresses": {
+      "postal_code": "الرمز البريدي"
     }
   },
   "customer_accounts": {
