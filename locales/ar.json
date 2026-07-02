@@ -517,7 +517,8 @@
         "cash_on_delivery_label": "الدفع عند الاستلام (COD)"
       },
       "payment": {
-        "card_security_notice": "جميع المعاملات آمنة ومشفرة."
+        "card_security_notice": "جميع المعاملات آمنة ومشفرة.",
+        "billing_must_match_shipping_notice": "يجب أن يتطابق عنوان الفوترة الخاص بطريقة الدفع مع عنوان الشحن"
       },
       "shipping": {
         "delivery_title": "التوصيل",
