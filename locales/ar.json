@@ -372,7 +372,8 @@
         "checkout_again": "تسجيل الخروج مرة أخرى",
         "checkout_on_remote_shop_link_text": "تحقق من %{remoteShopName}",
         "checkout_on_another_store": "اطلع على متجر آخر",
-        "order_status_confirmed_order_with_email": "ستتلقى بريدًا إلكترونيًا عندما يكون طلبك جاهزًا."
+        "order_status_confirmed_order_with_email": "ستتلقى بريدًا إلكترونيًا عندما يكون طلبك جاهزًا.",
+        "login": "تسجيل الدخول"
       },
       "general": {
         "continue_to_payment_plans_button_label": "المتابعة إلى خطط الدفع",
@@ -517,6 +518,9 @@
       "shipping": {
         "delivery_title": "التوصيل",
         "delivery_to": "التوصيل إلى"
+      },
+      "customer_account": {
+        "sign_in_link_label": "تسجيل الدخول"
       }
     },
     "notices": {
@@ -722,7 +726,11 @@
       "adjusted_total": "المجموع المعدّل",
       "due_on_date": "تاريخ الاستحقاق {{date}}",
       "due_on_fulfillment": "مستحق عند الاستيفاء",
-      "due_on_receipt": "تستحق الدفع فور الاستلام"
+      "due_on_receipt": "تستحق الدفع فور الاستلام",
+      "login_card": {
+        "log_in": "تسجيل الدخول"
+      },
+      "log_in": "تسجيل الدخول"
     },
     "addresses": {
       "add_button": "أضف العنوان",
