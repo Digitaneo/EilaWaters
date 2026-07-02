@@ -569,6 +569,19 @@
         "total_price_label": "مجموع السعر",
         "partial_total_label": "المجموع",
         "vat_label_html": "يشمل أيضا {{ amount }} ضريبة"
+      },
+      "marketing": {
+        "disclaimer": {
+          "privacy_policy": "سياسة الخصوصية"
+        },
+        "sms": {
+          "disclaimer": {
+            "privacy_policy": "سياسة الخصوصية"
+          }
+        }
+      },
+      "shop_policies": {
+        "privacy_policy": "سياسة الخصوصية"
       }
     },
     "notices": {
