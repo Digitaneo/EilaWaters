@@ -11,7 +11,25 @@
   "sections": {
     "main-contact": {
       "type": "contact-page-custom",
-      "settings": {}
+      "blocks": {
+        "faq_item_ce3dbX": {
+          "type": "faq_item",
+          "settings": {
+            "question": "كم يستغرق توصيل الطلب؟",
+            "answer": "يستغرق شحن الطلبات وتوصيلها داخل مكة المكرمة وباقي مدن المملكة من 1 إلى 2 أيام عمل كحد أقصى."
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_ce3dbX"
+      ],
+      "settings": {
+        "heading": "تواصل معنا",
+        "subheading": "يسعدنا دائماً الإجابة على استفساراتكم وتلقي آرائكم. اختر الطريقة المناسبة لك.",
+        "whatsapp_number": "",
+        "address_text": "المملكة العربية السعودية، مكة المكرمة",
+        "work_hours": "من الأحد إلى الخميس: 9:00 صباحاً - 5:00 مساءً"
+      }
     }
   },
   "order": [
