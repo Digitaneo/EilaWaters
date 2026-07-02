@@ -525,6 +525,16 @@
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول"
+      },
+      "wallets": {
+        "errors": {
+          "invalid": {
+            "postal_code": "أدخل رمز بريدي صالح"
+          },
+          "missing": {
+            "zip": "أدخل رمز بريدي"
+          }
+        }
       }
     },
     "notices": {
