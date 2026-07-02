@@ -790,7 +790,8 @@
       "subtotal": "المجموع الفرعي",
       "subtotal_label_with_quantity": {
         "one": "المجموع الفرعي"
-      }
+      },
+      "taxes_included": "من الضريبة {{ amount }} يشمل ذلك"
     },
     "addresses": {
       "add_button": "أضف العنوان",
