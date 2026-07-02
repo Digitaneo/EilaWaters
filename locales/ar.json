@@ -518,7 +518,10 @@
       },
       "payment": {
         "card_security_notice": "جميع المعاملات آمنة ومشفرة.",
-        "billing_must_match_shipping_notice": "يجب أن يتطابق عنوان الفوترة الخاص بطريقة الدفع مع عنوان الشحن"
+        "billing_must_match_shipping_notice": "يجب أن يتطابق عنوان الفوترة الخاص بطريقة الدفع مع عنوان الشحن",
+        "title": "الدفع",
+        "payment_method": "طريقة الدفع",
+        "payments": "المدفوعات"
       },
       "shipping": {
         "delivery_title": "التوصيل",
