@@ -560,7 +560,13 @@
         "free_shipping_total_label": "مجاني",
         "subtotal_label": "المجموع الفرعي",
         "shipping_label": "الشحن",
-        "multiple_shipping_lines_label": "مجموع الشحن"
+        "multiple_shipping_lines_label": "مجموع الشحن",
+        "order_total_label": "محموع الطلب",
+        "total_label": "المجموع",
+        "total_due_label": "المجموع المستحق",
+        "total_paid_label": "المجموع المدفوع",
+        "total_price_label": "مجموع السعر",
+        "partial_total_label": "المجموع"
       }
     },
     "notices": {
