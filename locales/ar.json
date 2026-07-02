@@ -524,7 +524,8 @@
         "delivery_title": "التوصيل",
         "delivery_to": "التوصيل إلى",
         "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب.",
-        "shipping_method_title": "طريقة الشحن"
+        "shipping_method_title": "طريقة الشحن",
+        "free_rate_label": "مجاني"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
@@ -545,6 +546,14 @@
           "shipping_method_title": "طريقة الشحن",
           "change_shipping_method_link_label": "اختر طريقة الشحن"
         }
+      },
+      "delivery_options": {
+        "free_total_label": "مجاني"
+      },
+      "order_summary": {
+        "free_shipping_discount_label": "توصيل مجاني",
+        "free_total_label": "مجاني",
+        "free_shipping_total_label": "مجاني"
       }
     },
     "notices": {
@@ -760,7 +769,9 @@
       "log_in": "تسجيل الدخول",
       "marketing_checkbox_label": "أرسلي آخر العروض",
       "shipping": {
-        "method": "طريقة الشحن"
+        "method": "طريقة الشحن",
+        "free": "مجاني",
+        "free_shipping_discount": "توصيل مجاني"
       }
     },
     "addresses": {
