@@ -513,6 +513,10 @@
       },
       "payment": {
         "card_security_notice": "جميع المعاملات آمنة ومشفرة."
+      },
+      "shipping": {
+        "delivery_title": "التوصيل",
+        "delivery_to": "التوصيل إلى"
       }
     },
     "notices": {
