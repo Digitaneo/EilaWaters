@@ -12,7 +12,6 @@
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
-        "bg_image": "shopify://shop_images/banner_pc1.webp",
         "overlay_dark": false,
         "content_alignment": "start",
         "text_color": "dark",
