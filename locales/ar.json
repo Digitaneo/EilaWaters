@@ -566,7 +566,8 @@
         "total_due_label": "المجموع المستحق",
         "total_paid_label": "المجموع المدفوع",
         "total_price_label": "مجموع السعر",
-        "partial_total_label": "المجموع"
+        "partial_total_label": "المجموع",
+        "vat_label_html": "من الضريبة {{ amount }} يشمل ذلك"
       }
     },
     "notices": {
