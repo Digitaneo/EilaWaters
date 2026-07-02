@@ -446,7 +446,8 @@
           "add_file": "إضافة ملف",
           "invalid_file_type": "نوع الملف غير مدعوم",
           "dragged_over": "اسحب الملف للتحميل"
-        }
+        },
+        "choose_shipping_method": "اختر طريقة الشحن"
       },
       "embed": {
         "header": {
@@ -521,7 +522,8 @@
       "shipping": {
         "delivery_title": "التوصيل",
         "delivery_to": "التوصيل إلى",
-        "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب."
+        "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب.",
+        "shipping_method_title": "طريقة الشحن"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
@@ -535,6 +537,12 @@
           "missing": {
             "zip": "أدخل رمز بريدي"
           }
+        }
+      },
+      "review": {
+        "blocks": {
+          "shipping_method_title": "طريقة الشحن",
+          "change_shipping_method_link_label": "اختر طريقة الشحن"
         }
       }
     },
@@ -749,7 +757,10 @@
         "log_in": "تسجيل الدخول"
       },
       "log_in": "تسجيل الدخول",
-      "marketing_checkbox_label": "أرسلي آخر العروض"
+      "marketing_checkbox_label": "أرسلي آخر العروض",
+      "shipping": {
+        "method": "طريقة الشحن"
+      }
     },
     "addresses": {
       "add_button": "أضف العنوان",
