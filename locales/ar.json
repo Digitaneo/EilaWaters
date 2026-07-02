@@ -510,6 +510,9 @@
       },
       "payment_gateway": {
         "cash_on_delivery_label": "الدفع عند الاستلام (COD)"
+      },
+      "payment": {
+        "card_security_notice": "جميع المعاملات آمنة ومشفرة."
       }
     },
     "notices": {
