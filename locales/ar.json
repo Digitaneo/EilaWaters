@@ -507,6 +507,14 @@
         "region_placeholder": "المنطقة",
         "region_none": "لا يوجد تحديد",
         "prefecture_label": "محافظة"
+      },
+      "payment_gateway": {
+        "cash_on_delivery_label": "الدفع عند الاستلام (COD)"
+      }
+    },
+    "notices": {
+      "order": {
+        "cash_on_delivery": "الدفع عند الاستلام (COD)"
       }
     }
   },
@@ -674,7 +682,7 @@
           "gift_card": "بطاقة هدية",
           "store_credit": "رصيد المتجر",
           "money_order": "حوالة بريدية",
-          "cash_on_delivery": "الدفع عند الاستلام",
+          "cash_on_delivery": "الدفع عند الاستلام (COD)",
           "bank_deposit": "إيداع بنكي",
           "manual": "دليل"
         },
