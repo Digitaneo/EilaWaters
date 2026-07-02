@@ -26,7 +26,7 @@
     "add_more": "إضافة المزيد من المنتجات",
     "clear": "إفراغ السلة",
     "checkout": "الذهاب للدفع",
-    "subtotal": "المجموع"
+    "subtotal": "المجموع الفرعي"
   },
   "header": {
     "deliver_to": "التوصيل إلى",
@@ -556,7 +556,8 @@
       "order_summary": {
         "free_shipping_discount_label": "توصيل مجاني",
         "free_total_label": "مجاني",
-        "free_shipping_total_label": "مجاني"
+        "free_shipping_total_label": "مجاني",
+        "subtotal_label": "المجموع الفرعي"
       }
     },
     "notices": {
@@ -775,6 +776,10 @@
         "method": "طريقة الشحن",
         "free": "مجاني",
         "free_shipping_discount": "توصيل مجاني"
+      },
+      "subtotal": "المجموع الفرعي",
+      "subtotal_label_with_quantity": {
+        "one": "المجموع الفرعي"
       }
     },
     "addresses": {
