@@ -567,7 +567,7 @@
         "total_paid_label": "المجموع المدفوع",
         "total_price_label": "مجموع السعر",
         "partial_total_label": "المجموع",
-        "vat_label_html": "من الضريبة {{ amount }} يشمل ذلك"
+        "vat_label_html": "يشمل أيضا {{ amount }} ضريبة"
       }
     },
     "notices": {
@@ -791,7 +791,7 @@
       "subtotal_label_with_quantity": {
         "one": "المجموع الفرعي"
       },
-      "taxes_included": "من الضريبة {{ amount }} يشمل ذلك"
+      "taxes_included": "يشمل أيضا {{ amount }} ضريبة"
     },
     "addresses": {
       "add_button": "أضف العنوان",
