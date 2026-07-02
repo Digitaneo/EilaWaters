@@ -524,7 +524,8 @@
         "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب."
       },
       "customer_account": {
-        "sign_in_link_label": "تسجيل الدخول"
+        "sign_in_link_label": "تسجيل الدخول",
+        "save_my_information_label": "احفظ هذه المعلومات لاستخدامها في المرة القادمة"
       },
       "wallets": {
         "errors": {
