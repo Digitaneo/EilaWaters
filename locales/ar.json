@@ -730,7 +730,8 @@
       "login_card": {
         "log_in": "تسجيل الدخول"
       },
-      "log_in": "تسجيل الدخول"
+      "log_in": "تسجيل الدخول",
+      "marketing_checkbox_label": "أرسلي آخر العروض"
     },
     "addresses": {
       "add_button": "أضف العنوان",
