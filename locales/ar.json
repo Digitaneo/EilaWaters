@@ -528,7 +528,8 @@
         "delivery_to": "التوصيل إلى",
         "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب.",
         "shipping_method_title": "طريقة الشحن",
-        "free_rate_label": "مجاني"
+        "free_rate_label": "مجاني",
+        "title": "الشحن"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
@@ -557,7 +558,9 @@
         "free_shipping_discount_label": "توصيل مجاني",
         "free_total_label": "مجاني",
         "free_shipping_total_label": "مجاني",
-        "subtotal_label": "المجموع الفرعي"
+        "subtotal_label": "المجموع الفرعي",
+        "shipping_label": "الشحن",
+        "multiple_shipping_lines_label": "مجموع الشحن"
       }
     },
     "notices": {
