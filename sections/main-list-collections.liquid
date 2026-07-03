@@ -56,6 +56,18 @@
   .collection-info { padding: 15px; text-align: center; }
   .collection-info h3 { font-size: 18px; color: #1e293b; margin: 0 0 10px 0; }
   .view-btn { font-size: 13px; color: #00c7f2; font-weight: bold; text-transform: uppercase; }
+
+    /* التعديل للعرض على أجهزة الهاتف */
+  @media (max-width: 600px) {
+    .collections-grid {
+      grid-template-columns: repeat(2, 1fr); /* جعل الشبكة تتكون من عمودين */
+      gap: 10px; /* تقليل المسافة قليلاً لتناسب شاشات الهاتف */
+    }
+    
+    .section-title { font-size: 20px; } /* تصغير العنوان قليلاً للهاتف */
+    .collection-info h3 { font-size: 14px; } /* تصغير الخط ليتناسب مع المساحة المحدودة */
+    .view-btn { font-size: 11px; }
+  }
 </style>
 
 {% schema %}
