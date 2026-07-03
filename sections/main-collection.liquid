@@ -547,15 +547,16 @@
       return response.json();
     })
     .then(data => {
-      ewSubmitBtn.innerText = "✓ تم المضافة بنجاح";
+      ewSubmitBtn.innerText = "✓ تم الإضافة بنجاح";
       
       // تحديث تلقائي مصمم ليعمل مع كافة قوالب شوبيفاي الحديثة (Cart Drawer / Notification)
-      if (document.querySelector('cart-notification') || document.querySelector('cart-drawer') || document.getElementById('cart-icon-bubble')) {
-         document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
-         if(window.location.reload) {
-            // يمكنك إلغاء تفعيل السطر التالي إذا كان قالبك يفتح السلة الجانبية تلقائياً
-            // window.location.reload(); 
-         }
+      if (window.fetchCartDrawerItems && window.openCartDrawer) {
+        window.fetchCartDrawerItems();
+        window.openCartDrawer();
+      } else {
+        if (document.querySelector('cart-notification') || document.querySelector('cart-drawer') || document.getElementById('cart-icon-bubble')) {
+           document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+        }
       }
       
       setTimeout(() => { closeEwModal(); }, 1200);

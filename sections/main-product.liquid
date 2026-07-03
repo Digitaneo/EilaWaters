@@ -35,7 +35,7 @@
             <p>📍 التوصيل إلى: مدينة عرعر</p>
           </div>
 
-          {% form 'product', product %}
+          {% form 'product', product, id: 'add-to-cart-form' %}
             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
             
             <div class="quantity-selector-container">
@@ -568,6 +568,55 @@
       alert("✓ تم نسخ رابط المنتج بنجاح لجهازك!");
     });
   }
+
+  // Intercept add to cart form submission to perform AJAX request and open drawer
+  document.addEventListener('DOMContentLoaded', () => {
+    const productForm = document.getElementById('add-to-cart-form');
+    if (productForm) {
+      productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const submitBtn = productForm.querySelector('.custom-add-to-cart-btn');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerText = "جاري الإضافة...";
+        }
+        
+        const formData = new FormData(productForm);
+        
+        fetch((window.Shopify?.routes?.root || '/') + 'cart/add.js', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('خطأ في عملية الإضافة');
+          return response.json();
+        })
+        .then(data => {
+          if (submitBtn) {
+            submitBtn.innerText = "✓ تم الإضافة بنجاح";
+            setTimeout(() => {
+              submitBtn.disabled = false;
+              submitBtn.innerText = "🛒 أضف إلى السلة";
+            }, 2000);
+          }
+          
+          // Trigger the cart drawer update and opening
+          if (window.fetchCartDrawerItems && window.openCartDrawer) {
+            window.fetchCartDrawerItems();
+            window.openCartDrawer();
+          }
+        })
+        .catch(error => {
+          console.error('Error adding to cart:', error);
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "فشلت الإضافة، حاول مجدداً";
+          }
+        });
+      });
+    }
+  });
 </script>
 
 {% schema %}

@@ -192,9 +192,10 @@ img {
 }
 
 /* Sticky (non-transparent) header */
-.header-group:not(.header-group--transparent) {
+#shopify-section-header:has(.site-header--sticky):not(:has(.header-group--transparent)) {
   position: sticky;
   top: 0;
+  z-index: 99;
 }
 
 /* Light text when transparent & not scrolled */
