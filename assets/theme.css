@@ -191,10 +191,16 @@ img {
   display: none;
 }
 
-/* Sticky (non-transparent) header */
-.header-group:not(.header-group--transparent) {
+/* Sticky header wrapper when enabled */
+.header-group.header-group--sticky {
   position: sticky;
   top: 0;
+  z-index: 99;
+}
+
+/* Maintain transparent overlay behavior when sticky is enabled */
+.header-group--transparent.header-group--sticky {
+  position: absolute;
 }
 
 /* Light text when transparent & not scrolled */
