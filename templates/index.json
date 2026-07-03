@@ -14,7 +14,7 @@
       "settings": {
         "bg_image": "shopify://shop_images/Banner_P1.webp",
         "bg_mobile_image": "shopify://shop_images/BANNER_M1_1.webp",
-        "overlay_dark": false,
+        "overlay_dark": true,
         "content_alignment": "center",
         "text_color": "light",
         "pre_title": "ايلا للمياه",
