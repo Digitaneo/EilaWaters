@@ -125,10 +125,18 @@
         "primary_color": "#00c7f2",
         "text_color_dark": "#1e293b"
       }
+    },
+    "related_products_custom_jRPgAg": {
+      "type": "related-products-custom",
+      "name": "منتجات مشابهة (مخصص)",
+      "settings": {
+        "heading": "قد يعجبك أيضاً"
+      }
     }
   },
   "order": [
     "main",
-    "brands_slider_x4wncp"
+    "brands_slider_x4wncp",
+    "related_products_custom_jRPgAg"
   ]
 }
