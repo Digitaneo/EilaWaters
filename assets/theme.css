@@ -1083,6 +1083,10 @@ html[dir="rtl"] .cart-drawer__add-more {
     font-family: 'Cairo', sans-serif !important;
 }
 
+div.product-description-tabs div.tabs-headers button.tab-btn {
+    font-family: 'Cairo', sans-serif;
+}
+
 .whatsapp-color {
     color: #25D366; /* لون واتساب الرسمي */
     display: inline-flex;
