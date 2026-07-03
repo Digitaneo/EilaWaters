@@ -449,7 +449,8 @@
           "dragged_over": "اسحب الملف للتحميل"
         },
         "choose_shipping_method": "اختر طريقة الشحن",
-        "complete_purchase_button_label": "تأكيد الطلب"
+        "complete_purchase_button_label": "تأكيد الطلب",
+        "autocomplete_multi_item": "عنصر متوفر {{number}}"
       },
       "embed": {
         "header": {
@@ -597,6 +598,16 @@
       },
       "billing": {
         "same_as_shipping": "نفس عنوان الشحن"
+      },
+      "remote_merchandise_only": {
+        "detail_item_label": {
+          "other": "عنصر {{count}}"
+        }
+      },
+      "stock": {
+        "item_label": {
+          "other": "عنصر {{count}}"
+        }
       }
     },
     "notices": {
