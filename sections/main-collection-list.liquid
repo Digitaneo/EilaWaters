@@ -1,0 +1,41 @@
+<div class="collections-list-container container">
+  <h2 class="section-title">جميع تصنيفات المتجر</h2>
+  <div class="collections-grid">
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+        <a href="{{ collection.url }}" class="collection-card">
+          <div class="collection-img-wrap">
+            {% if collection.image %}
+              <img src="{{ collection.image | image_url: width: 400 }}" alt="{{ collection.title }}">
+            {% else %}
+              <img src="{{ collection.products.first.featured_image | image_url: width: 400 }}" alt="{{ collection.title }}">
+            {% endif %}
+          </div>
+          <div class="collection-info">
+            <h3>{{ collection.title }}</h3>
+            <span class="view-btn">استعرض المنتجات</span>
+          </div>
+        </a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .collections-list-container { padding: 40px 15px; max-width: 1200px; margin: 0 auto; direction: rtl; }
+  .section-title { font-size: 28px; color: #1e293b; margin-bottom: 30px; text-align: center; border-bottom: 3px solid #00c7f2; display: inline-block; padding-bottom: 5px; }
+  .collections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+  .collection-card { text-decoration: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; transition: 0.3s; display: block; }
+  .collection-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #00c7f2; }
+  .collection-img-wrap img { width: 100%; height: 200px; object-fit: cover; }
+  .collection-info { padding: 15px; text-align: center; }
+  .collection-info h3 { font-size: 18px; color: #1e293b; margin: 0 0 10px 0; }
+  .view-btn { font-size: 13px; color: #00c7f2; font-weight: bold; text-transform: uppercase; }
+</style>
+
+{% schema %}
+{
+  "name": "قائمة التصنيفات (مخصص)",
+  "presets": [{ "name": "قائمة التصنيفات (مخصص)" }]
+}
+{% endschema %}
