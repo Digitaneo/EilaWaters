@@ -486,7 +486,8 @@
 
       searchResults.innerHTML = `<p class="search-drawer__hint">${searchLoadingText}</p>`;
       searchController = new AbortController();
-      const suggestUrl = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last`;
+      const routesRoot = '{{ routes.root_url }}'.replace(/\/$/, '');
+      const suggestUrl = `${routesRoot}/search?q=${encodeURIComponent(query)}&type=product&view=ajax`;
 
       fetch(suggestUrl, { signal: searchController.signal })
         .then(response => response.json())

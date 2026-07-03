@@ -1,0 +1,33 @@
+{% layout none %}
+{%- liquid
+  assign product_count = 0
+  for item in search.results
+    if item.object_type == 'product'
+      assign product_count = product_count | plus: 1
+    endif
+  endfor
+-%}
+{
+  "resources": {
+    "results": {
+      "products": [
+        {%- assign current_count = 0 -%}
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {
+              "id": {{ item.id | json }},
+              "title": {{ item.title | json }},
+              "url": {{ item.url | json }},
+              "price": {{ item.price | json }},
+              "featured_image": {
+                "url": {%- if item.featured_image != blank -%}{{ item.featured_image.src | image_url: width: 300 | json }}{%- else -%}"none"{%- endif -%}
+              }
+            }
+            {%- assign current_count = current_count | plus: 1 -%}
+            {%- if current_count < product_count -%},{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  }
+}
