@@ -612,6 +612,12 @@
       "stock": {
         "item_label": {
           "other": "عنصر {{count}}"
+        },
+        "product_column_header": "المنتجات"
+      },
+      "contextual_availability": {
+        "title": {
+          "other": "المنتجات المتاحة"
         }
       }
     },
@@ -622,6 +628,9 @@
     },
     "addresses": {
       "postal_code": "الرمز البريدي"
+    },
+    "page_titles": {
+      "products": "المنتجات"
     }
   },
   "customer_accounts": {
@@ -715,7 +724,12 @@
       "manage": "إدارة",
       "manage_accessiblity_label": "إدارة الطلب {{orderId}}",
       "group_title_label": "جزء من: {{groupTitle}}",
-      "group_title_label_with_parent": "لـ: {{groupTitle}}"
+      "group_title_label_with_parent": "لـ: {{groupTitle}}",
+      "order_list": {
+        "column_headers": {
+          "products_accessibility_label": "المنتجات"
+        }
+      }
     },
     "order_details": {
       "shipment_timeline": {
