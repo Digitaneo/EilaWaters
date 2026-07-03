@@ -86,33 +86,6 @@
       "label": "رابط الزر",
       "default": "/collections/all"
     },
-    {
-      "type": "header",
-      "content": "رمز الاستجابة السريعة"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_qr",
-      "label": "إظهار رمز الاستجابة السريعة",
-      "default": true
-    },
-    {
-      "type": "image_picker",
-      "id": "qr_image",
-      "label": "صورة الرمز"
-    },
-    {
-      "type": "text",
-      "id": "qr_text",
-      "label": "نص الرمز",
-      "default": "امسح الكود وحمل تطبيق آبار"
-    }
-  ],
-  "presets": [
-    {
-      "name": "بانر البطل",
-      "category": "Banner"
-    }
   ]
 }
 {%- endschema -%}
@@ -125,7 +98,6 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background-image: var(--hero-bg-desktop, var(--hero-bg-mobile));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -260,54 +232,6 @@
   box-shadow: 0 6px 20px rgba(2, 132, 199, 0.2);
 }
 
-/* QR Code Section */
-.hero-banner-sec__qr-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 1.25rem;
-  background-color: #ffffff;
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  margin-top: 2.5rem;
-  align-self: flex-start;
-  max-width: 320px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-.hero-banner-sec[data-align="end"] .hero-banner-sec__qr-card {
-  align-self: flex-end;
-}
-.hero-banner-sec[data-align="center"] .hero-banner-sec__qr-card {
-  align-self: center;
-}
-
-.hero-banner-sec__qr-text {
-  font-family: 'Cairo', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1e293b;
-  line-height: 1.4;
-}
-
-.hero-banner-sec__qr-img-wrapper {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8fafc;
-  border-radius: 8px;
-  padding: 4px;
-  border: 1px solid #e2e8f0;
-}
-
-.hero-banner-sec__qr-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 /* Responsive fixes */
 @media (max-width: 768px) {
   .hero-banner-sec {
@@ -358,7 +282,7 @@ body:has(.header-group--transparent) #MainContent .hero-banner-sec__container {
          data-overlay="{{ section.settings.overlay_dark }}"
          data-align="{{ section.settings.content_alignment }}"
          data-color="{{ section.settings.text_color }}"
-         style="{% if section.settings.bg_image != blank %}--hero-bg-desktop: url('{{ section.settings.bg_image | image_url: width: 2000 }}');{% endif %}{% if section.settings.bg_mobile_image != blank %} --hero-bg-mobile: url('{{ section.settings.bg_mobile_image | image_url: width: 900 }}');{% endif %}{% if section.settings.bg_image == blank and section.settings.bg_mobile_image == blank %}background-color: #f8fafc;{% endif %}">
+         style="{% if section.settings.bg_image != blank %}--hero-bg-desktop: url('{{ section.settings.bg_image | image_url: width: 2000 }}'); background-image: var(--hero-bg-desktop);{% else %}background-color: #f8fafc;{% endif %}{% if section.settings.bg_mobile_image != blank %} --hero-bg-mobile: url('{{ section.settings.bg_mobile_image | image_url: width: 900 }}');{% endif %}">
 
   <div class="container hero-banner-sec__container">
     <div class="hero-banner-sec__wrapper">
@@ -376,25 +300,6 @@ body:has(.header-group--transparent) #MainContent .hero-banner-sec__container {
 
       {%- if section.settings.button_text != blank and section.settings.button_link != blank -%}
         <a href="{{ section.settings.button_link }}" class="hero-banner-sec__btn">{{ section.settings.button_text }}</a>
-      {%- endif -%}
-
-      {%- if section.settings.show_qr -%}
-        <div class="hero-banner-sec__qr-card">
-          <span class="hero-banner-sec__qr-text">{{ section.settings.qr_text }}</span>
-          <div class="hero-banner-sec__qr-img-wrapper">
-            {%- if section.settings.qr_image != blank -%}
-              {{ section.settings.qr_image | image_url: width: 120 | image_tag: class: 'hero-banner-sec__qr-img', loading: 'lazy' }}
-            {%- else -%}
-              <!-- Inline fallback SVG representing a QR Code -->
-              <svg class="hero-banner-sec__qr-img" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="3" width="6" height="6" rx="1" />
-                <rect x="15" y="3" width="6" height="6" rx="1" />
-                <rect x="3" y="15" width="6" height="6" rx="1" />
-                <path d="M15 15h1v1h-1zM18 18h1v1h-1zM15 18h1v1h-1zM18 15h1v1h-1zM20 15h1v1h-1zM20 18h1v1h-1zM15 20h3v1h-3zM19 20h2v1h-2zM9 9h2v2H9zM12 9h1v1h-1z" />
-              </svg>
-            {%- endif -%}
-          </div>
-        </div>
       {%- endif -%}
     </div>
   </div>
