@@ -25,9 +25,34 @@
   .collections-list-container { padding: 40px 15px; max-width: 1200px; margin: 0 auto; direction: rtl; }
   .section-title { font-size: 28px; color: #1e293b; margin-bottom: 30px; text-align: center; border-bottom: 3px solid #00c7f2; display: inline-block; padding-bottom: 5px; }
   .collections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
-  .collection-card { text-decoration: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; transition: 0.3s; display: block; }
+  
+  .collection-card { 
+    text-decoration: none; 
+    background: #fff; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 16px; 
+    overflow: hidden; 
+    transition: 0.3s; 
+    display: block; 
+  }
   .collection-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #00c7f2; }
-  .collection-img-wrap img { width: 100%; height: 200px; object-fit: cover; }
+
+  /* هذا هو الجزء المسؤول عن جعل الصورة مربعة 1:1 */
+  .collection-img-wrap {
+    width: 100%;
+    padding-top: 100%; /* هذه النسبة تجعل الحاوية مربعة تماماً (1:1) */
+    position: relative;
+    overflow: hidden;
+  }
+  .collection-img-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* سيقوم بقص الصورة لتملأ المربع دون تشويه */
+  }
+
   .collection-info { padding: 15px; text-align: center; }
   .collection-info h3 { font-size: 18px; color: #1e293b; margin: 0 0 10px 0; }
   .view-btn { font-size: 13px; color: #00c7f2; font-weight: bold; text-transform: uppercase; }
