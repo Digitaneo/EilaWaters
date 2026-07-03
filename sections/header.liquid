@@ -13,7 +13,7 @@
   endif
 -%}
 
-<div class="header-group{% if transparent_header_enabled %} header-group--transparent{% endif %}" id="header-group">
+<div class="header-group{% if transparent_header_enabled %} header-group--transparent{% endif %}{% if section.settings.enable_sticky_header %} header-group--sticky{% endif %}" id="header-group">
 
 {%- if show_announcement -%}
   <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
@@ -546,6 +546,52 @@
 
     // Expose close drawer functions for inner items
     window.closeCartDrawer = closeCartDrawer;
+
+    document.addEventListener('cart:updated', () => {
+      if (cartDrawer) openCartDrawer();
+    });
+
+    document.querySelectorAll('form[action*="/cart/add"]').forEach(form => {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const submitButton = form.querySelector('[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
+
+        const formData = new FormData(form);
+        const id = formData.get('id');
+        const quantity = parseInt(formData.get('quantity') || '1', 10) || 1;
+
+        if (!id) {
+          if (submitButton) submitButton.disabled = false;
+          form.submit();
+          return;
+        }
+
+        fetch(`${window.Shopify.routes.root}cart/add.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: parseInt(id, 10), quantity }] })
+        })
+          .then(response => {
+            if (!response.ok) throw new Error('Failed to add to cart');
+            return response.json();
+          })
+          .then(data => {
+            const count = data?.item_count ?? 0;
+            const desktopBadge = document.getElementById('cart-count-desktop');
+            const mobileBadge = document.getElementById('cart-count-mobile');
+            if (desktopBadge) desktopBadge.textContent = count;
+            if (mobileBadge) mobileBadge.textContent = count;
+            if (cartDrawer) openCartDrawer();
+          })
+          .catch(error => {
+            console.error('Add to cart failed:', error);
+          })
+          .finally(() => {
+            if (submitButton) submitButton.disabled = false;
+          });
+      });
+    });
   });
 
   /* ============ AJAX Cart Operations ============ */
