@@ -70,9 +70,65 @@
         "other_brand_x4Tp9F"
       ],
       "settings": {}
+    },
+    "brands_slider_x4wncp": {
+      "type": "brands-slider",
+      "blocks": {
+        "collection_KgALAU": {
+          "type": "collection",
+          "settings": {
+            "collection": "mashar"
+          }
+        },
+        "collection_dKNcyq": {
+          "type": "collection",
+          "settings": {
+            "collection": "miles"
+          }
+        },
+        "collection_X4Vn9G": {
+          "type": "collection",
+          "settings": {
+            "collection": "faline"
+          }
+        },
+        "collection_GyCMWA": {
+          "type": "collection",
+          "settings": {
+            "collection": "al-shafiah"
+          }
+        },
+        "collection_UENtfP": {
+          "type": "collection",
+          "settings": {
+            "collection": "zulal"
+          }
+        },
+        "collection_mTpHUt": {
+          "type": "collection",
+          "settings": {
+            "collection": "jalounat"
+          }
+        }
+      },
+      "block_order": [
+        "collection_KgALAU",
+        "collection_dKNcyq",
+        "collection_X4Vn9G",
+        "collection_GyCMWA",
+        "collection_UENtfP",
+        "collection_mTpHUt"
+      ],
+      "name": "سلايدر العلامات التجارية",
+      "settings": {
+        "brands_title": "مزيد من العلامات التجارية",
+        "primary_color": "#00c7f2",
+        "text_color_dark": "#1e293b"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "brands_slider_x4wncp"
   ]
 }
