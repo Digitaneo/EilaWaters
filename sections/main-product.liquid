@@ -96,23 +96,7 @@
         </div>
       </div>
 
-      <div class="sidebar-block">
-        <h3 class="sidebar-title">علامات تجارية أخرى</h3>
-        <div class="sidebar-brands-list">
-          {% for block in section.blocks %}
-            {% if block.type == 'other_brand' %}
-              <a href="{{ block.settings.brand_link }}" class="sidebar-brand-item">
-                <span class="brand-name-text">{{ block.settings.brand_name }}</span>
-                {% if block.settings.brand_logo != blank %}
-                  <img src="{{ block.settings.brand_logo | image_url: width: 40 }}" alt="{{ block.settings.brand_name }}" class="brand-logo-img">
-                {% else %}
-                  <span class="brand-logo-placeholder">شعار</span>
-                {% endif %}
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+
       
     </aside>
 
