@@ -576,7 +576,11 @@
         "total_price_label": "مجموع السعر",
         "partial_total_label": "المجموع",
         "vat_label_html": "يشمل أيضا {{ amount }} ضريبة",
-        "title": "ملخص الطلب"
+        "title": "ملخص الطلب",
+        "subtotal_label_with_quantity": {
+          "one": "المجموع الفرعي · {{ count }} عنصر",
+          "other": "المجموع الفرعي · {{ count }} عنصر"
+        }
       },
       "marketing": {
         "disclaimer": {
