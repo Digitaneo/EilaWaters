@@ -71,18 +71,10 @@
         "primary_color": "#00c7f2",
         "text_color_dark": "#1e293b"
       }
-    },
-    "related_products_custom_CHUVzz": {
-      "type": "related-products-custom",
-      "name": "منتجات مشابهة (مخصص)",
-      "settings": {
-        "heading": "قد يعجبك أيضاً"
-      }
     }
   },
   "order": [
     "main",
-    "brands_slider_ACzyVW",
-    "related_products_custom_CHUVzz"
+    "brands_slider_ACzyVW"
   ]
 }
