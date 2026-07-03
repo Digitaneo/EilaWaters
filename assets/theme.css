@@ -1082,3 +1082,14 @@ html[dir="rtl"] .cart-drawer__add-more {
 .custom-add-to-cart-btn {
     font-family: 'Cairo', sans-serif !important;
 }
+
+.whatsapp-color {
+    color: #25D366; /* لون واتساب الرسمي */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.whatsapp-color svg {
+    width: 24px;  /* يمكنك التحكم في الحجم من هنا */
+    height: 24px;
+}
