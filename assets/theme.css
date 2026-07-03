@@ -1077,3 +1077,8 @@ html[dir="rtl"] .cart-drawer__add-more {
 #ew-modal-submit-btn {
     font-family: 'Cairo', sans-serif !important;
 }
+
+#ew-modal-submit-btn,
+.custom-add-to-cart-btn {
+    font-family: 'Cairo', sans-serif !important;
+}
