@@ -333,6 +333,39 @@
     transition: all 0.2s ease;
   }
 
+  /* العمود الجانبي الأيسر */
+  .product-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .sidebar-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .sidebar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 20px 0;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+  }
+  .sidebar-product-item {
+    display: flex;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    padding: 12px 0;
+    border-bottom: 1px dashed #edf2f7;
+    align-items: center;
+  }
+  .sidebar-product-img img { width: 60px; height: 60px; object-fit: contain; }
+  .sidebar-product-info h4 { font-size: 13px; margin: 0; color: #0084ff; font-weight: bold; }
+  .sidebar-product-meta { font-size: 11px; color: #94a3b8; }
+  .sidebar-product-price { font-size: 13px; font-weight: bold; }
 
   /* مشاركة المنتج */
   .product-share-box { margin-top: 25px; display: flex; flex-direction: column; gap: 8px; }
