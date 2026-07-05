@@ -32,7 +32,7 @@
           "type": "side_image",
           "settings": {
             "png_image": "shopify://shop_images/mashar-1.webp",
-            "image_position": "right",
+            "image_position": "left",
             "marketing_text": "شريكك الموثوق في توفير المياه النقية"
           }
         },
