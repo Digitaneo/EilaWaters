@@ -1,10 +1,10 @@
 {% comment %}
-  Advanced Animated Hero Slider - Fixed Transparent Header Overlap & Dual Backgrounds
+  Advanced Animated Hero Slider v4 - Perfect Padding & Adaptive Height (No Extra Gaps)
 {% endcomment %}
 
 {%- schema -%}
 {
-  "name": "بانر آبار المطور v3",
+  "name": "بانر آبار المطور v4",
   "settings": [
     {
       "type": "header",
@@ -75,7 +75,7 @@
   ],
   "presets": [
     {
-      "name": "بانر آبار المطور v3",
+      "name": "بانر آبار المطور v4",
       "blocks": [
         { "type": "slide" }
       ]
@@ -88,7 +88,8 @@
 .hero-canvas-section {
   position: relative;
   width: 100%;
-  min-height: 85vh;
+  /* تم تقليل الارتفاع الافتراضي لمنع الفراغات الكبيرة بالأسفل في الكمبيوتر */
+  min-height: auto; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,12 +100,11 @@
   direction: rtl;
   background-image: var(--hero-bg-desktop, none);
   
-  /* حل مشكلة الهيدر الشفاف: دفع محتوى البانر لأسفل لحماية اسم المتجر من الاختفاء */
-  padding-top: 140px; 
-  padding-bottom: 60px;
+  /* تباعد متزن للكمبيوتر يضمن الحماية من الهيدر الشفاف الفوقي */
+  padding-top: 150px; 
+  padding-bottom: 50px;
 }
 
-/* طبقة التعتيم لحماية النصوص */
 .hero-canvas-section::before {
   content: '';
   position: absolute;
@@ -122,14 +122,15 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  height: auto;
   z-index: 5;
 }
 
 .hero-canvas-slider {
   position: relative;
   width: 100%;
-  min-height: 480px;
+  /* جعل السلايدر يتكيف عمودياً بدلاً من فرض مساحة ثابتة ضخمة */
+  min-height: auto; 
 }
 
 .hero-canvas-slide {
@@ -151,7 +152,7 @@
   z-index: 4;
 }
 
-/* قلب المحتوى النصي الموحد - يظهر بوضوح فوق الأجنحة والصور */
+/* كتلة النص المركزية المرتفعة بالكامل فوق الصور الجانبية */
 .hero-canvas-center {
   position: relative;
   width: 100%;
@@ -161,34 +162,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 20; /* رفع طبقة النص ليكون دائماً في الأعلى والواجهة */
+  z-index: 20; 
   padding: 0 20px;
   pointer-events: auto;
 }
 
-/* إظهار اسم المتجر الثابت بشكل ممتاز وجذاب */
+/* اسم المتجر الثابت */
 .hero-canvas-pre-title {
   display: block;
   font-family: 'Cairo', sans-serif;
   font-size: clamp(1.2rem, 2.2vw, 1.6rem);
   font-weight: 700;
-  color: #0284c7; /* لون أزرق آبار المتناسق */
-  margin-bottom: 15px;
-  letter-spacing: 0.5px;
+  color: #0284c7; 
+  margin-top: 0px;
+  margin-bottom: 12px;
   z-index: 25;
 }
 .hero-canvas-section[data-overlay="true"] .hero-canvas-pre-title {
   color: #38bdf8;
 }
 
+/* العنوان الرئيسي الكبير المتغير للأبناء */
 .hero-canvas-title {
   font-family: 'Cairo', sans-serif;
-  font-size: clamp(1.6rem, 3.8vw, 3rem);
+  font-size: clamp(1.5rem, 3.8vw, 3rem);
   font-weight: 800;
   line-height: 1.4;
   color: #1e293b;
-  margin: 0 0 25px 0;
-  transform: translateY(20px);
+  margin: 0 0 20px 0;
+  transform: translateY(15px);
   opacity: 0;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -196,14 +198,16 @@
   color: #ffffff;
 }
 
+/* زر الإجراء الثابت المحمي والمقارب للنصوص */
 .hero-canvas-btn-holder {
-  margin-top: 5px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 .hero-canvas-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.9rem 3.2rem;
+  padding: 0.85rem 3.2rem;
   font-family: 'Cairo', sans-serif;
   font-weight: 700;
   font-size: clamp(1rem, 1.6vw, 1.15rem);
@@ -219,7 +223,7 @@
   transform: translateY(-3px);
 }
 
-/* أجنحة الصور الجانبية الممتدة خلف النصوص وبدون فراغات */
+/* الأجنحة الجانبية المطلقة الممتدة لالتحام كامل خلف النصوص */
 .hero-canvas-wing {
   position: absolute;
   top: 50%;
@@ -229,7 +233,7 @@
   max-height: 95%;
   display: flex;
   align-items: center;
-  z-index: 5; /* طبقة تحت النصوص لتداخل فاخر */
+  z-index: 5; 
   pointer-events: none; 
 }
 
@@ -258,7 +262,6 @@
   display: block;
 }
 
-/* حركة ظهور الشريحة النشطة */
 .hero-canvas-slide.is-active .hero-canvas-title {
   transform: translateY(0);
   opacity: 1;
@@ -284,13 +287,13 @@
   100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* نقاط التحكم السفلية */
+/* نقاط التحكم الدائرية المفتوحة التموضع بدون تباعد عشوائي */
 .hero-canvas-dots {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 25px;
   position: relative;
   z-index: 30;
 }
@@ -316,33 +319,44 @@
 }
 
 /* ==========================================================================
-   تعديلات الجوال والشاشات الصغيرة (تأمين تباعد الهيدر الشفاف والأفقي الصارم)
+   إصلاح مشاكل التداخل والمساحة الفارغة بالكامل في وضع الجوال
    ========================================================================== */
 @media (max-width: 767px) {
   .hero-canvas-section {
     background-image: var(--hero-bg-mobile, var(--hero-bg-desktop, none));
-    min-height: 70vh;
-    padding-top: 110px; /* تباعد آمن ومناسب لحجم هيدر الجوال الشفاف */
-    padding-bottom: 40px;
+    min-height: auto; /* إزالة الحد الأدنى الثابت لمنع الفراغ الأسفل المفرط */
+    
+    /* زيادة مسافة الـ padding العلوية لحماية "آيلا للمياه" من هيدر الجوال الشفاف والشعار */
+    padding-top: 175px !important; 
+    padding-bottom: 35px !important;
   }
 
   .hero-canvas-slider {
-    min-height: 400px;
+    min-height: auto;
   }
 
-  /* تداخل كامل وعريض بدون أي فراغات أفقية خلف النصوص */
+  /* زيادة مساحة هامشية علوية مباشرة لاسم المتجر لدفعه تحت القائمة بأمان */
+  .hero-canvas-pre-title {
+    margin-top: 15px !important; 
+    margin-bottom: 10px;
+  }
+
   .hero-canvas-wing {
     width: 45%; 
     max-height: 85%;
   }
 
   .hero-canvas-img-box {
-    max-width: 200px; 
+    max-width: 190px; 
   }
 
   .hero-canvas-center {
-    max-width: 95%;
+    max-width: 100%;
     padding: 0 5px;
+  }
+  
+  .hero-canvas-dots {
+    margin-top: 15px; /* ضغط النقاط ومنع تباعدها */
   }
 }
 {%- endstyle -%}
@@ -367,9 +381,9 @@
             {%- endif -%}
           </div>
 
-          <!-- الصندوق النصي الموحد المحمي من التداخل العلوي -->
+          <!-- الصندوق النصي المحمي تماماً من تداخل الهيدر -->
           <div class="hero-canvas-center">
-            <!-- 1. اسم المتجر الثابت (يظهر الآن في مكانه الصحيح تماماً) -->
+            <!-- 1. اسم المتجر الثابت المدفوع لأسفل الهيدر بأمان -->
             {%- if section.settings.parent_pre_title != blank -%}
               <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
             {%- endif -%}
