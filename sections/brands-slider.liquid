@@ -8,6 +8,7 @@
 
   <div class="brands-marquee-wrapper">
     <div class="brands-marquee-track" id="brandsTrack">
+      
       <div class="brands-marquee-content">
         {%- for block in section.blocks -%}
           {%- assign collection = block.settings.collection -%}
@@ -27,7 +28,7 @@
       <div class="brands-marquee-content" aria-hidden="true">
         {%- for block in section.blocks -%}
           {%- assign collection = block.settings.collection -%}
-          <div class="brand-item">
+          <a href="{{ collection.url | default: '#' }}" class="brand-item">
             <div class="brand-item__image-wrapper">
               {%- if collection.featured_image != blank -%}
                 {{ collection.featured_image | image_url: width: 150 | image_tag: class: 'brand-item__image', loading: 'lazy' }}
@@ -36,170 +37,72 @@
               {%- endif -%}
             </div>
             <span class="brand-item__name">{{ collection.title | default: 'تصنيف غير محدد' }}</span>
-          </div>
+          </a>
         {%- endfor -%}
       </div>
     </div>
   </div>
 </div>
-      
 
 <style>
-  /* ================= تنسيقات السلايدر المحدثة ================= */
-  .ew-collection-rtl {
-    direction: rtl;
-    font-family: inherit;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
-  .brands-section .collection-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding-top: 2rem;
-  }
+  .ew-collection-rtl { direction: rtl; padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto; }
+  .brands-section .collection-header { text-align: center; margin-bottom: 2rem; padding-top: 2rem; }
+  .brands-section .collection-title { font-size: 2.2rem; font-weight: 800; margin: 0; color: var(--text-dark, #1e293b); }
 
-  .brands-section .collection-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin: 0;
-    color: var(--text-dark, #1e293b);
-  }
-
-  .brands-marquee-wrapper {
-    overflow: hidden;
-    width: 100%;
-    padding: 20px 0;
-    background: #ffffff;
-    position: relative;
-    cursor: grab;
-  }
-  
+  .brands-marquee-wrapper { overflow: hidden; width: 100%; padding: 20px 0; background: #ffffff; position: relative; cursor: grab; }
   .brands-marquee-wrapper:active { cursor: grabbing; }
 
-  .brands-marquee-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-  }
+  .brands-marquee-track { display: flex; width: max-content; will-change: transform; }
+  .brands-marquee-wrapper:hover .brands-marquee-track { animation-play-state: paused; }
 
-  .brands-marquee-wrapper:hover .brands-marquee-track {
-    animation-play-state: paused;
-  }
+  .brands-marquee-content { display: flex; align-items: center; gap: 40px; padding: 0 20px; }
 
-  .brands-marquee-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 40px;
-    padding: 0 20px;
-  }
-
-  /* تنسيق العنصر كـ رابط */
   .brand-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 120px;
-    text-align: center;
-    user-select: none;
-    text-decoration: none; /* إزالة خط الرابط */
-    color: inherit;       /* الحفاظ على لون النص */
+    display: flex; flex-direction: column; align-items: center; gap: 12px; width: 120px; text-align: center;
+    text-decoration: none; color: inherit; pointer-events: auto; cursor: pointer;
   }
 
   .brand-item__image-wrapper {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    border-radius: 18px;
-    border: 1px solid #e2e8f0;
-    padding: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    box-sizing: border-box;
+    width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
+    background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; padding: 12px;
+    transition: transform 0.3s ease, border-color 0.3s ease; box-sizing: border-box;
   }
 
-  .brand-item:hover .brand-item__image-wrapper {
-    transform: translateY(-4px);
-    border-color: var(--primary-color, #00c7f2);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  }
-
-  .brand-item__image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .brand-item__placeholder {
-    font-size: 13px;
-    color: #94a3b8;
-  }
-
-  .brand-item__name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-dark, #1e293b);
-    white-space: nowrap;
-    transition: color 0.2s ease;
-  }
-  
-  .brand-item:hover .brand-item__name {
-    color: var(--primary-color, #00c7f2);
-  }
+  .brand-item:hover .brand-item__image-wrapper { transform: translateY(-4px); border-color: var(--primary-color, #00c7f2); }
+  .brand-item__image { width: 100%; height: 100%; object-fit: contain; }
+  .brand-item__name { font-size: 14px; font-weight: 600; color: var(--text-dark); white-space: nowrap; transition: color 0.2s ease; }
+  .brand-item:hover .brand-item__name { color: var(--primary-color, #00c7f2); }
 
   @media (max-width: 480px) {
     .brands-section .collection-title { font-size: 1.8rem; }
-    .brands-marquee-content { gap: 25px; }
     .brand-item { width: 95px; }
-    .brand-item__image-wrapper { width: 80px; height: 80px; border-radius: 14px; padding: 8px; }
-    .brand-item__name { font-size: 12px; }
+    .brand-item__image-wrapper { width: 80px; height: 80px; }
   }
 </style>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
     const track = document.getElementById('brandsTrack');
-
-    // نكرر المحتوى مرة إضافية
-    track.innerHTML += track.innerHTML;
-
     let position = 0;
     const speed = 0.6;
-
     let paused = false;
 
     track.parentElement.addEventListener('mouseenter', () => paused = true);
     track.parentElement.addEventListener('mouseleave', () => paused = false);
 
     function animate() {
-
         if (!paused) {
-
             position += speed;
-
             const halfWidth = track.scrollWidth / 2;
-
-            if (position >= halfWidth) {
-                position = 0;
-            }
-
+            if (position >= halfWidth) position = 0;
             track.style.transform = `translateX(${position}px)`;
         }
-
         requestAnimationFrame(animate);
     }
-
     animate();
-
 });
 </script>
+
 {% schema %}
 {
   "name": "سلايدر التصنيفات",
@@ -213,11 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "type": "collection",
       "name": "تصنيف",
       "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "اختر التصنيف"
-        }
+        { "type": "collection", "id": "collection", "label": "اختر التصنيف" }
       ]
     }
   ],
