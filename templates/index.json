@@ -28,24 +28,25 @@
     "hero_animated_Az7nUR": {
       "type": "hero-animated",
       "blocks": {
-        "side_image_MGkbch": {
-          "type": "side_image",
+        "slide_Xggqyg": {
+          "type": "slide",
           "settings": {
-            "png_image": "shopify://shop_images/pr2.webp",
-            "image_position": "left",
-            "marketing_text": "شريكك الموثوق في توفير المياه النقية"
+            "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
+            "image_right": "shopify://shop_images/pr2.webp",
+            "image_left": "shopify://shop_images/pr2.webp"
           }
         }
       },
       "block_order": [
-        "side_image_MGkbch"
+        "slide_Xggqyg"
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
         "bg_image": "shopify://shop_images/BACKGROUND.webp",
         "overlay_dark": false,
-        "title": "آيلا للمياه",
-        "subtitle": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
+        "parent_pre_title": "آيلا للمياه",
+        "parent_button_text": "تسوق الآن",
+        "parent_button_link": "shopify://collections/all"
       }
     },
     "eilawaters_features_grid_Hz6ckx": {
