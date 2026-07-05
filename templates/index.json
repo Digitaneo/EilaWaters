@@ -51,6 +51,7 @@
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
+        "bg_image": "shopify://shop_images/BACKGROUND.webp",
         "overlay_dark": false,
         "parent_pre_title": "آيلا للمياه",
         "parent_button_text": "تسوق الآن",
