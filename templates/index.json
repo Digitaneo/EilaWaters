@@ -11,6 +11,7 @@
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
+      "disabled": true,
       "settings": {
         "bg_image": "shopify://shop_images/bnr-pc-1.webp",
         "bg_mobile_image": "shopify://shop_images/BANNER_M1_1.webp",
@@ -22,6 +23,36 @@
         "subtitle": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
         "button_text": "تسوق الآن",
         "button_link": "shopify://collections/all"
+      }
+    },
+    "hero_animated_Az7nUR": {
+      "type": "hero-animated",
+      "blocks": {
+        "side_image_gNjt8A": {
+          "type": "side_image",
+          "settings": {
+            "image_position": "right",
+            "marketing_text": "شريكك الموثوق في توفير المياه النقية"
+          }
+        },
+        "side_image_k8rUwt": {
+          "type": "side_image",
+          "settings": {
+            "image_position": "left",
+            "marketing_text": "شريكك الموثوق في توفير المياه النقية"
+          }
+        }
+      },
+      "block_order": [
+        "side_image_gNjt8A",
+        "side_image_k8rUwt"
+      ],
+      "name": "بانر البطل المتحرك",
+      "settings": {
+        "bg_image": "shopify://shop_images/BACKGROUND.webp",
+        "overlay_dark": false,
+        "title": "آيلا للمياه",
+        "subtitle": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
       }
     },
     "eilawaters_features_grid_Hz6ckx": {
@@ -164,6 +195,7 @@
   },
   "order": [
     "hero-banner",
+    "hero_animated_Az7nUR",
     "eilawaters_features_grid_Hz6ckx",
     "brands_slider_pecJwQ",
     "eilawaters_faq_KXDDkA"
