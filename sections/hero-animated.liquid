@@ -1,0 +1,313 @@
+{% comment %}
+  Advanced Hero Banner Section with Animated PNG Blocks (Right/Left)
+{% endcomment %}
+
+{%- schema -%}
+{
+  "name": "بانر البطل المتحرك",
+  "settings": [
+    {
+      "type": "header",
+      "content": "الخلفية العامة"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "صورة الخلفية الأساسية"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_dark",
+      "label": "تفعيل تعتيم الخلفية لزيادة وضوح النص",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "العناوين الثابتة"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "العنوان الرئيسي",
+      "default": "آيلا للمياه"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "العنوان الفرعي",
+      "default": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "side_image",
+      "name": "صورة جانبية متحركة",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "png_image",
+          "label": "اختر الصورة (يفضل PNG شفافة)"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "مكان ظهور الصورة والتحريك",
+          "options": [
+            { "value": "right", "label": "تدخل من اليمين" },
+            { "value": "left", "label": "تدخل من اليسار" }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "text",
+          "id": "marketing_text",
+          "label": "النص التسويقي الخاص بهذه الصورة",
+          "default": "شريكك الموثوق في توفير المياه النقية"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "بانر البطل المتحرك",
+      "blocks": [
+        { "type": "side_image", "settings": { "image_position": "right" } },
+        { "type": "side_image", "settings": { "image_position": "left" } }
+      ]
+    }
+  ]
+}
+{%- endschema -%}
+
+{%- style -%}
+.hero-animated {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f0f4f8;
+  padding: 60px 0;
+}
+
+/* تعتيم الخلفية */
+.hero-animated::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-animated[data-overlay="true"]::before {
+  opacity: 1;
+}
+
+.hero-animated__container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+/* عامود المحتوى النصي في المنتصف */
+.hero-animated__center-content {
+  grid-column: 2;
+  text-align: center;
+  color: #1e293b;
+}
+.hero-animated[data-overlay="true"] .hero-animated__center-content {
+  color: #ffffff;
+}
+
+.hero-animated__title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.hero-animated__subtitle {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  margin: 0 0 2rem 0;
+  opacity: 0.9;
+}
+
+/* الحاوية التسويقية المتغيرة */
+.hero-animated__marketing-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  color: #0284c7;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.hero-animated[data-overlay="true"] .hero-animated__marketing-wrapper {
+  background: rgba(15, 23, 42, 0.6);
+  color: #38bdf8;
+}
+
+/* أعمدة الصور الجانبية */
+.hero-animated__side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 4;
+}
+.hero-animated__side--right {
+  grid-column: 3;
+  align-items: flex-end;
+}
+.hero-animated__side--left {
+  grid-column: 1;
+  align-items: flex-start;
+}
+
+/* تنسيق وحركة الصور المتحركة */
+.hero-animated__img-holder {
+  position: relative;
+  max-width: 180px;
+  width: 100%;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+  opacity: 0;
+}
+
+.hero-animated__img-holder img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* الأنيميشن عند فتح الصفحة */
+.hero-animated__side--right .hero-animated__img-holder {
+  animation: slideInFromRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-animated__side--left .hero-animated__img-holder {
+  animation: slideInFromLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* تأخير الحركة متتالي للصور (Stagger Effect) */
+.hero-animated__img-holder:nth-child(1) { animation-delay: 0.2s; }
+.hero-animated__img-holder:nth-child(2) { animation-delay: 0.5s; }
+.hero-animated__img-holder:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.9) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px) scale(0.9) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
+  }
+}
+
+/* التوافق مع الشاشات الصغيرة والهواتف */
+@media (max-width: 991px) {
+  .hero-animated__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-animated__center-content {
+    grid-column: 1;
+    order: 1;
+  }
+  .hero-animated__side {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    grid-column: 1;
+  }
+  .hero-animated__side--left { order: 2; }
+  .hero-animated__side--right { order: 3; }
+  
+  .hero-animated__img-holder {
+    max-width: 120px;
+  }
+}
+{%- endstyle -%}
+
+<section class="hero-animated" 
+         data-overlay="{{ section.settings.overlay_dark }}"
+         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2000 }}');{% endif %}">
+
+  <div class="hero-animated__container">
+    
+    <!-- الجانب الأيسر (الصور التي تدخل من اليسار) -->
+    <div class="hero-animated__side hero-animated__side--left">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image_position == 'left' and block.settings.png_image != blank -%}
+          <div class="hero-animated__img-holder" {{ block.shopify_attributes }}>
+            <img src="{{ block.settings.png_image | image_url: width: 400 }}" alt="{{ block.settings.png_image.alt | escape }}" loading="lazy">
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- المنتصف (المحتوى النصي الثابت والمتغير) -->
+    <div class="hero-animated__center-content">
+      {%- if section.settings.title != blank -%}
+        <h1 class="hero-animated__title">{{ section.settings.title }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="hero-animated__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      <!-- النصوص التسويقية المجمعة من الكتل المضافة -->
+      <div class="hero-animated__marketing-carousel">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.marketing_text != blank -%}
+            <div class="hero-animated__marketing-wrapper">
+              <span>{{ block.settings.marketing_text }}</span>
+            </div>
+            {%- break -%} {% comment %} يعرض أول نص تسويقي متاح للكتل المضافة كنموذج رائع {% endcomment %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- الجانب الأيمن (الصور التي تدخل من اليمين) -->
+    <div class="hero-animated__side hero-animated__side--right">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image_position == 'right' and block.settings.png_image != blank -%}
+          <div class="hero-animated__img-holder" {{ block.shopify_attributes }}>
+            <img src="{{ block.settings.png_image | image_url: width: 400 }}" alt="{{ block.settings.png_image.alt | escape }}" loading="lazy">
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
