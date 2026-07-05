@@ -43,20 +43,11 @@
             "image_position": "right",
             "marketing_text": "شريكك الموثوق في توفير المياه النقية"
           }
-        },
-        "side_image_k8rUwt": {
-          "type": "side_image",
-          "settings": {
-            "png_image": "shopify://shop_images/mashar-1.webp",
-            "image_position": "left",
-            "marketing_text": "شريكك الموثوق في توفير المياه النقية"
-          }
         }
       },
       "block_order": [
         "side_image_iw7TPy",
-        "side_image_gNjt8A",
-        "side_image_k8rUwt"
+        "side_image_gNjt8A"
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
