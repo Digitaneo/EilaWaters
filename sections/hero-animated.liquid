@@ -1,19 +1,19 @@
 {% comment %}
-  Advanced Hero Banner Section with Animated PNG Blocks (Right/Left)
+  Advanced Animated Hero Slider Section - Fixed Background & Dynamic Slides
 {% endcomment %}
 
 {%- schema -%}
 {
-  "name": "بانر البطل المتحرك",
+  "name": "بانر البطل المتغير",
   "settings": [
     {
       "type": "header",
-      "content": "الخلفية العامة"
+      "content": "الإعدادات الثابتة (الأب)"
     },
     {
       "type": "image_picker",
       "id": "bg_image",
-      "label": "صورة الخلفية الأساسية"
+      "label": "صورة الخلفية الثابتة"
     },
     {
       "type": "checkbox",
@@ -22,57 +22,54 @@
       "default": false
     },
     {
-      "type": "header",
-      "content": "العناوين الثابتة"
-    },
-    {
       "type": "text",
-      "id": "title",
-      "label": "العنوان الرئيسي",
+      "id": "parent_pre_title",
+      "label": "اسم المتجر الثابت (فوق)",
       "default": "آيلا للمياه"
     },
     {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "العنوان الفرعي",
-      "default": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
+      "type": "text",
+      "id": "parent_button_text",
+      "label": "نص الزر الثابت",
+      "default": "تسوق الآن"
+    },
+    {
+      "type": "url",
+      "id": "parent_button_link",
+      "label": "رابط الزر الثابت",
+      "default": "/collections/all"
     }
   ],
   "blocks": [
     {
-      "type": "side_image",
-      "name": "صورة جانبية متحركة",
+      "type": "slide",
+      "name": "شريحة بانر (ابن)",
       "settings": [
         {
+          "type": "textarea",
+          "id": "slide_title",
+          "label": "العنوان الرئيسي المتغير (الخط الكبير)",
+          "default": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
+        },
+        {
           "type": "image_picker",
-          "id": "png_image",
-          "label": "اختر الصورة (يفضل PNG شفافة)"
+          "id": "image_right",
+          "label": "الصورة اليمين (تدخل من اليمين)"
         },
         {
-          "type": "select",
-          "id": "image_position",
-          "label": "مكان ظهور الصورة والتحريك",
-          "options": [
-            { "value": "right", "label": "تدخل من اليمين" },
-            { "value": "left", "label": "تدخل من اليسار" }
-          ],
-          "default": "right"
-        },
-        {
-          "type": "text",
-          "id": "marketing_text",
-          "label": "النص التسويقي الخاص بهذه الصورة",
-          "default": "شريكك الموثوق في توفير المياه النقية"
+          "type": "image_picker",
+          "id": "image_left",
+          "label": "الصورة اليسار (تدخل من اليسار)"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "بانر البطل المتحرك",
+      "name": "بانر البطل المتغير",
       "blocks": [
-        { "type": "side_image", "settings": { "image_position": "right" } },
-        { "type": "side_image", "settings": { "image_position": "left" } }
+        { "type": "slide" },
+        { "type": "slide" }
       ]
     }
   ]
@@ -80,234 +77,358 @@
 {%- endschema -%}
 
 {%- style -%}
-.hero-animated {
+/* الغلاف الخارجي للقسم بالخلفية الثابتة */
+.hero-slider-section {
   position: relative;
   width: 100%;
   min-height: 85vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
   overflow: hidden;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
-  background-color: #f0f4f8;
-  padding: 60px 0;
+  padding: 80px 0;
 }
 
-/* تعتيم الخلفية */
-.hero-animated::before {
+/* طبقة التعتيم لحماية وضوح النصوص */
+.hero-slider-section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
   opacity: 0;
   z-index: 2;
   pointer-events: none;
 }
-.hero-animated[data-overlay="true"]::before {
+.hero-slider-section[data-overlay="true"]::before {
   opacity: 1;
 }
 
-.hero-animated__container {
+/* حاوية السلايدر الداخلية */
+.hero-slider-container {
   position: relative;
-  z-index: 5;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
-  align-items: center;
-  gap: 20px;
+  padding: 0 40px;
+  z-index: 5;
 }
 
-/* عامود المحتوى النصي في المنتصف */
-.hero-animated__center-content {
-  grid-column: 2;
+/* العناصر الثابتة (الأب) */
+.hero-static-pre-title {
+  display: block;
   text-align: center;
-  color: #1e293b;
-}
-.hero-animated[data-overlay="true"] .hero-animated__center-content {
-  color: #ffffff;
-}
-
-.hero-animated__title {
   font-family: 'Cairo', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 800;
-  margin: 0 0 1rem 0;
-  line-height: 1.2;
-}
-
-.hero-animated__subtitle {
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  margin: 0 0 2rem 0;
-  opacity: 0.9;
-}
-
-/* الحاوية التسويقية المتغيرة */
-.hero-animated__marketing-wrapper {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 10px 20px;
-  border-radius: 30px;
-  display: inline-block;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #0284c7;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  margin-bottom: 20px;
+  z-index: 10;
+  position: relative;
 }
-.hero-animated[data-overlay="true"] .hero-animated__marketing-wrapper {
-  background: rgba(15, 23, 42, 0.6);
+.hero-slider-section[data-overlay="true"] .hero-static-pre-title {
   color: #38bdf8;
 }
 
-/* أعمدة الصور الجانبية */
-.hero-animated__side {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  z-index: 4;
-}
-.hero-animated__side--right {
-  grid-column: 3;
-  align-items: flex-end;
-}
-.hero-animated__side--left {
-  grid-column: 1;
-  align-items: flex-start;
-}
-
-/* تنسيق وحركة الصور المتحركة */
-.hero-animated__img-holder {
+.hero-static-btn-wrapper {
+  text-align: center;
+  margin-top: 30px;
+  z-index: 10;
   position: relative;
-  max-width: 180px;
-  width: 100%;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
-  opacity: 0;
+}
+.hero-static-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 3rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  background-color: #0f172a;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+.hero-static-btn:hover {
+  background-color: #0284c7;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.3);
 }
 
-.hero-animated__img-holder img {
+/* هيكلة الشرائح المتحركة */
+.hero-slides-wrapper {
+  position: relative;
   width: 100%;
   height: auto;
-  display: block;
+  min-height: 400px;
+}
+
+.hero-slide-item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
+  align-items: center;
+  gap: 30px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  z-index: 3;
+}
+
+/* الشريحة النشطة فقط تظهر */
+.hero-slide-item.is-active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  z-index: 4;
+}
+
+/* إعدادات وتكبير محتوى الصور الجانبية */
+.hero-slide-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-slide-img-holder {
+  width: 100%;
+  max-width: 320px; /* تم تكبير الحجم ليأخذ مساحة ممتازة وعادلة */
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.18));
+  transform: translateX(0) scale(0.8);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-slide-img-holder img {
+  width: 100%;
+  height: auto;
   object-fit: contain;
+  display: block;
 }
 
-/* الأنيميشن عند فتح الصفحة */
-.hero-animated__side--right .hero-animated__img-holder {
-  animation: slideInFromRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* الجزء الأوسط المخصص للعنوان الكبير */
+.hero-slide-center {
+  text-align: center;
+  padding: 0 10px;
 }
 
-.hero-animated__side--left .hero-animated__img-holder {
-  animation: slideInFromLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.hero-slide-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.4;
+  color: #1e293b;
+  margin: 0;
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-slider-section[data-overlay="true"] .hero-slide-title {
+  color: #ffffff;
 }
 
-/* تأخير الحركة متتالي للصور (Stagger Effect) */
-.hero-animated__img-holder:nth-child(1) { animation-delay: 0.2s; }
-.hero-animated__img-holder:nth-child(2) { animation-delay: 0.5s; }
-.hero-animated__img-holder:nth-child(3) { animation-delay: 0.8s; }
-
-@keyframes slideInFromRight {
-  0% {
-    opacity: 0;
-    transform: translateX(100px) scale(0.9) rotate(5deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1) rotate(0deg);
-  }
+/* تأثيرات التحريك الجمالية للابن النشط */
+.hero-slide-item.is-active .hero-slide-title {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.2s;
 }
 
-@keyframes slideInFromLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-100px) scale(0.9) rotate(-5deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1) rotate(0deg);
-  }
+.hero-slide-item.is-active .hero-slide-side--left .hero-slide-img-holder {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  animation: slideFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* التوافق مع الشاشات الصغيرة والهواتف */
+.hero-slide-item.is-active .hero-slide-side--right .hero-slide-img-holder {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  animation: slideFromRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideFromLeft {
+  0% { opacity: 0; transform: translateX(-120px) scale(0.85) rotate(-4deg); }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+}
+
+@keyframes slideFromRight {
+  0% { opacity: 0; transform: translateX(120px) scale(0.85) rotate(4deg); }
+  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+}
+
+/* تصميم نقاط التحكم الجفلية (Dots) */
+.hero-slider-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  z-index: 10;
+  position: relative;
+}
+
+.hero-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+.hero-slider-section[data-overlay="true"] .hero-dot {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hero-dot.is-active {
+  background: #0284c7;
+  transform: scale(1.3);
+  width: 28px;
+  border-radius: 7px;
+}
+.hero-slider-section[data-overlay="true"] .hero-dot.is-active {
+  background: #38bdf8;
+}
+
+/* التوافق التام مع الهواتف والشاشات الصغيرة */
 @media (max-width: 991px) {
-  .hero-animated__container {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .hero-slider-section {
+    padding: 50px 0;
   }
-  .hero-animated__center-content {
-    grid-column: 1;
+  .hero-slider-container {
+    padding: 0 20px;
+  }
+  .hero-slide-item {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .hero-slide-center {
     order: 1;
   }
-  .hero-animated__side {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    grid-column: 1;
-  }
-  .hero-animated__side--left { order: 2; }
-  .hero-animated__side--right { order: 3; }
+  .hero-slide-side--left { order: 2; }
+  .hero-slide-side--right { order: 3; }
   
-  .hero-animated__img-holder {
-    max-width: 120px;
+  .hero-slide-side {
+    display: inline-flex;
+    width: 48%;
+    float: right;
+  }
+  .hero-slide-item::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .hero-slide-img-holder {
+    max-width: 160px;
   }
 }
 {%- endstyle -%}
 
-<section class="hero-animated" 
+<section class="hero-slider-section" 
          data-overlay="{{ section.settings.overlay_dark }}"
-         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2000 }}');{% endif %}">
+         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2200 }}');{% endif %}">
 
-  <div class="hero-animated__container">
-    
-    <!-- الجانب الأيسر (الصور التي تدخل من اليسار) -->
-    <div class="hero-animated__side hero-animated__side--left">
+  <!-- اسم المتجر الثابت في الأعلى لجميع البانرات -->
+  {%- if section.settings.parent_pre_title != blank -%}
+    <span class="hero-static-pre-title">{{ section.settings.parent_pre_title }}</span>
+  {%- endif -%}
+
+  <div class="hero-slider-container">
+    <div class="hero-slides-wrapper">
+      
       {%- for block in section.blocks -%}
-        {%- if block.settings.image_position == 'left' and block.settings.png_image != blank -%}
-          <div class="hero-animated__img-holder" {{ block.shopify_attributes }}>
-            <img src="{{ block.settings.png_image | image_url: width: 400 }}" alt="{{ block.settings.png_image.alt | escape }}" loading="lazy">
+        <div class="hero-slide-item {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          
+          <!-- الصورة اليسار المتغيرة للابن -->
+          <div class="hero-slide-side hero-slide-side--left">
+            {%- if block.settings.image_left != blank -%}
+              <div class="hero-slide-img-holder">
+                <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="صورة اليسار المتغيرة" loading="lazy">
+              </div>
+            {%- endif -%}
           </div>
-        {%- endif -%}
+
+          <!-- العنوان الرئيسي المتغير لكل ابن -->
+          <div class="hero-slide-center">
+            {%- if block.settings.slide_title != blank -%}
+              <h1 class="hero-slide-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+            {%- endif -%}
+          </div>
+
+          <!-- الصورة اليمين المتغيرة للابن -->
+          <div class="hero-slide-side hero-slide-side--right">
+            {%- if block.settings.image_right != blank -%}
+              <div class="hero-slide-img-holder">
+                <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="صورة اليمين المتغيرة" loading="lazy">
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
       {%- endfor -%}
+
     </div>
 
-    <!-- المنتصف (المحتوى النصي الثابت والمتغير) -->
-    <div class="hero-animated__center-content">
-      {%- if section.settings.title != blank -%}
-        <h1 class="hero-animated__title">{{ section.settings.title }}</h1>
-      {%- endif -%}
-
-      {%- if section.settings.subtitle != blank -%}
-        <p class="hero-animated__subtitle">{{ section.settings.subtitle }}</p>
-      {%- endif -%}
-
-      <!-- النصوص التسويقية المجمعة من الكتل المضافة -->
-      <div class="hero-animated__marketing-carousel">
+    <!-- نقاط التحكم للتنقل بين الأبناء (Dots) -->
+    {%- if section.blocks.size > 1 -%}
+      <div class="hero-slider-dots">
         {%- for block in section.blocks -%}
-          {%- if block.settings.marketing_text != blank -%}
-            <div class="hero-animated__marketing-wrapper">
-              <span>{{ block.settings.marketing_text }}</span>
-            </div>
-            {%- break -%} {% comment %} يعرض أول نص تسويقي متاح للكتل المضافة كنموذج رائع {% endcomment %}
-          {%- endif -%}
+          <button class="hero-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="الذهاب للبانر {{ forloop.index }}"></button>
         {%- endfor -%}
       </div>
-    </div>
-
-    <!-- الجانب الأيمن (الصور التي تدخل من اليمين) -->
-    <div class="hero-animated__side hero-animated__side--right">
-      {%- for block in section.blocks -%}
-        {%- if block.settings.image_position == 'right' and block.settings.png_image != blank -%}
-          <div class="hero-animated__img-holder" {{ block.shopify_attributes }}>
-            <img src="{{ block.settings.png_image | image_url: width: 400 }}" alt="{{ block.settings.png_image.alt | escape }}" loading="lazy">
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-
+    {%- endif -%}
   </div>
+
+  <!-- زر الإجراء الثابت في الأسفل لجميع البانرات -->
+  {%- if section.settings.parent_button_text != blank and section.settings.parent_button_link != blank -%}
+    <div class="hero-static-btn-wrapper">
+      <a href="{{ section.settings.parent_button_link }}" class="hero-static-btn">{{ section.settings.parent_button_text }}</a>
+    </div>
+  {%- endif -%}
+
 </section>
+
+<!-- نظام جافا سكريبت لتأمين التبديل السلس والحركة الدائرية التلقائية -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const section = document.querySelector('.hero-slider-section');
+    if (!section) return;
+
+    const slides = section.querySelectorAll('.hero-slide-item');
+    const dots = section.querySelectorAll('.hero-dot');
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function goToSlide(index) {
+      slides[currentSlide].classList.remove('is-active');
+      dots[currentSlide].classList.remove('is-active');
+      
+      currentSlide = index;
+      
+      slides[currentSlide].classList.add('is-active');
+      dots[currentSlide].classList.add('is-active');
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', function() {
+        const targetIndex = parseInt(this.getAttribute('data-slide-to'));
+        goToSlide(targetIndex);
+      });
+    });
+
+    // تبديل تلقائي كل 5 ثوانٍ لتجربة تصفح تفاعلية وحيوية
+    if (totalSlides > 1) {
+      setInterval(() => {
+        let nextSlide = (currentSlide + 1) % totalSlides;
+        goToSlide(nextSlide);
+      }, 5000);
+    }
+  });
+</script>
