@@ -1,14 +1,14 @@
 {% comment %}
-  Advanced Animated Hero Slider Section - Fixed Background & Dynamic Slides
+  Professional Animated Hero Slider - Tailored for 3000x1378 Aspect Ratio & Strict RTL Mobile Layout
 {% endcomment %}
 
 {%- schema -%}
 {
-  "name": "بانر البطل المتغير",
+  "name": "بانر آبار المطور",
   "settings": [
     {
       "type": "header",
-      "content": "الإعدادات الثابتة (الأب)"
+      "content": "الخلفية العامة"
     },
     {
       "type": "image_picker",
@@ -18,13 +18,17 @@
     {
       "type": "checkbox",
       "id": "overlay_dark",
-      "label": "تفعيل تعتيم الخلفية لزيادة وضوح النص",
+      "label": "تفعيل تعتيم الخلفية (لزيادة وضوح النص)",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "العناصر الثابتة (الأب)"
     },
     {
       "type": "text",
       "id": "parent_pre_title",
-      "label": "اسم المتجر الثابت (فوق)",
+      "label": "اسم المتجر الثابت",
       "default": "آيلا للمياه"
     },
     {
@@ -48,27 +52,26 @@
         {
           "type": "textarea",
           "id": "slide_title",
-          "label": "العنوان الرئيسي المتغير (الخط الكبير)",
+          "label": "العنوان الرئيسي المتغير",
           "default": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
         },
         {
           "type": "image_picker",
           "id": "image_right",
-          "label": "الصورة اليمين (تدخل من اليمين)"
+          "label": "الصورة اليمنى (PNG)"
         },
         {
           "type": "image_picker",
           "id": "image_left",
-          "label": "الصورة اليسار (تدخل من اليسار)"
+          "label": "الصورة اليسرى (PNG)"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "بانر البطل المتغير",
+      "name": "بانر آبار المطور",
       "blocks": [
-        { "type": "slide" },
         { "type": "slide" }
       ]
     }
@@ -77,205 +80,209 @@
 {%- endschema -%}
 
 {%- style -%}
-/* الغلاف الخارجي للقسم بالخلفية الثابتة */
-.hero-slider-section {
+/* محاكاة وتثبيت أبعاد اللوحة الخلفية الأصلية */
+.hero-canvas-section {
   position: relative;
   width: 100%;
-  min-height: 85vh;
+  min-height: 75vh;
+  aspect-ratio: 3000 / 1378; /* الحفاظ التام على أبعاد صورتك وتجنب قطعها */
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  padding: 80px 0;
+  direction: rtl; /* دعم لغة الضاد افتراضياً */
 }
 
-/* طبقة التعتيم لحماية وضوح النصوص */
-.hero-slider-section::before {
+.hero-canvas-section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
   opacity: 0;
   z-index: 2;
   pointer-events: none;
 }
-.hero-slider-section[data-overlay="true"]::before {
+.hero-canvas-section[data-overlay="true"]::before {
   opacity: 1;
 }
 
-/* حاوية السلايدر الداخلية */
-.hero-slider-container {
+/* حاوية العرض الكلية المتجاوبة */
+.hero-canvas-container {
   position: relative;
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
+  height: 100%;
+  max-width: 100%;
+  padding: 0 2%;
   z-index: 5;
-}
-
-/* العناصر الثابتة (الأب) */
-.hero-static-pre-title {
-  display: block;
-  text-align: center;
-  font-family: 'Cairo', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0284c7;
-  margin-bottom: 20px;
-  z-index: 10;
-  position: relative;
-}
-.hero-slider-section[data-overlay="true"] .hero-static-pre-title {
-  color: #38bdf8;
-}
-
-.hero-static-btn-wrapper {
-  text-align: center;
-  margin-top: 30px;
-  z-index: 10;
-  position: relative;
-}
-.hero-static-btn {
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 1rem 3rem;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: #ffffff;
-  background-color: #0f172a;
-  border-radius: 50px;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-.hero-static-btn:hover {
-  background-color: #0284c7;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.3);
 }
 
-/* هيكلة الشرائح المتحركة */
-.hero-slides-wrapper {
+.hero-canvas-slider {
   position: relative;
   width: 100%;
-  height: auto;
-  min-height: 400px;
 }
 
-.hero-slide-item {
+/* الشريحة الابن: تقسيم اللوحة أفقياً إلى 3 أجزاء متناسقة تدعم التداخل */
+.hero-canvas-slide {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1.2fr 2fr 1.2fr;
+  display: flex;
   align-items: center;
-  gap: 30px;
+  justify-content: space-between;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   z-index: 3;
 }
 
-/* الشريحة النشطة فقط تظهر */
-.hero-slide-item.is-active {
+.hero-canvas-slide.is-active {
   position: relative;
   opacity: 1;
   visibility: visible;
   z-index: 4;
 }
 
-/* إعدادات وتكبير محتوى الصور الجانبية */
-.hero-slide-side {
+/* الأجزاء الجانبية (اليمين واليسار) - مجهزة لعدم الانضغاط وتكبير الحجم */
+.hero-canvas-wing {
+  flex: 0 0 28%; /* تخصيص قرابة ثلث المساحة لكل جانب بالتساوي */
+  max-width: 28%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  z-index: 4;
 }
 
-.hero-slide-img-holder {
+.hero-canvas-wing--right {
+  order: 3; /* يظهر يميناً في الـ RTL */
+}
+
+.hero-canvas-wing--left {
+  order: 1; /* يظهر يساراً في الـ RTL */
+}
+
+.hero-canvas-img-box {
   width: 100%;
-  max-width: 320px; /* تم تكبير الحجم ليأخذ مساحة ممتازة وعادلة */
-  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.18));
-  transform: translateX(0) scale(0.8);
+  filter: drop-shadow(0 20px 35px rgba(0,0,0,0.15));
   opacity: 0;
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero-slide-img-holder img {
+.hero-canvas-img-box img {
   width: 100%;
   height: auto;
   object-fit: contain;
   display: block;
 }
 
-/* الجزء الأوسط المخصص للعنوان الكبير */
-.hero-slide-center {
+/* الجزء الأوسط (كتلة المحتوى الموحد الشامل للنصوص والزر) */
+.hero-canvas-center {
+  flex: 0 0 44%;
+  max-width: 44%;
+  order: 2;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
   padding: 0 10px;
 }
 
-.hero-slide-title {
+/* تصحيح تموضع اسم المتجر الثابت ليكون في قلب التراتبية */
+.hero-canvas-pre-title {
   font-family: 'Cairo', sans-serif;
-  font-size: clamp(2rem, 3.8vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.4;
-  color: #1e293b;
-  margin: 0;
-  transform: translateY(30px);
-  opacity: 0;
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-weight: 700;
+  color: #0284c7;
+  margin-bottom: 12px;
 }
-.hero-slider-section[data-overlay="true"] .hero-slide-title {
+.hero-canvas-section[data-overlay="true"] .hero-canvas-pre-title {
+  color: #38bdf8;
+}
+
+/* العنوان الرئيسي الكبير المتغير */
+.hero-canvas-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-canvas-section[data-overlay="true"] .hero-canvas-title {
   color: #ffffff;
 }
 
-/* تأثيرات التحريك الجمالية للابن النشط */
-.hero-slide-item.is-active .hero-slide-title {
-  transform: translateY(0);
+/* زر الإجراء الثابت المتواجد في نهاية التراتبية النصية */
+.hero-canvas-btn-holder {
+  margin-top: 5px;
+}
+.hero-canvas-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 2.5rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  color: #ffffff;
+  background-color: #0f172a;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.hero-canvas-btn:hover {
+  background-color: #0284c7;
+  transform: translateY(-2px);
+}
+
+/* تفعيل حركات الدخول الانسيابية عند النشاط */
+.hero-canvas-slide.is-active .hero-canvas-title {
+  transform: scale(1);
   opacity: 1;
-  transition-delay: 0.2s;
 }
 
-.hero-slide-item.is-active .hero-slide-side--left .hero-slide-img-holder {
-  transform: translateX(0) scale(1);
+.hero-canvas-slide.is-active .hero-canvas-wing--left .hero-canvas-img-box {
   opacity: 1;
-  animation: slideFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.hero-slide-item.is-active .hero-slide-side--right .hero-slide-img-holder {
-  transform: translateX(0) scale(1);
+.hero-canvas-slide.is-active .hero-canvas-wing--right .hero-canvas-img-box {
   opacity: 1;
-  animation: slideFromRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes slideFromLeft {
-  0% { opacity: 0; transform: translateX(-120px) scale(0.85) rotate(-4deg); }
-  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+@keyframes slideInLeft {
+  0% { opacity: 0; transform: translateX(-80px) scale(0.9); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-@keyframes slideFromRight {
-  0% { opacity: 0; transform: translateX(120px) scale(0.85) rotate(4deg); }
-  100% { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(80px) scale(0.9); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* تصميم نقاط التحكم الجفلية (Dots) */
-.hero-slider-dots {
+/* التحكم بالنقاط (Dots) */
+.hero-canvas-dots {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-top: 40px;
-  z-index: 10;
-  position: relative;
+  gap: 10px;
+  margin-top: 25px;
 }
 
-.hero-dot {
-  width: 14px;
-  height: 14px;
+.hero-canvas-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: rgba(30, 41, 59, 0.2);
   border: none;
@@ -283,90 +290,94 @@
   padding: 0;
   transition: all 0.3s ease;
 }
-.hero-slider-section[data-overlay="true"] .hero-dot {
+.hero-canvas-section[data-overlay="true"] .hero-canvas-dot {
   background: rgba(255, 255, 255, 0.3);
 }
 
-.hero-dot.is-active {
+.hero-canvas-dot.is-active {
   background: #0284c7;
-  transform: scale(1.3);
-  width: 28px;
-  border-radius: 7px;
-}
-.hero-slider-section[data-overlay="true"] .hero-dot.is-active {
-  background: #38bdf8;
+  width: 24px;
+  border-radius: 6px;
 }
 
-/* التوافق التام مع الهواتف والشاشات الصغيرة */
-@media (max-width: 991px) {
-  .hero-slider-section {
-    padding: 50px 0;
+/* ==========================================================================
+   حل مشكلة الهواتف العويصة: الحفاظ الصارم على البنية الأفقية (اليسار يسار واليمين يمين)
+   ========================================================================== */
+@media (max-width: 767px) {
+  .hero-canvas-section {
+    aspect-ratio: auto;
+    min-height: 60vh; /* التخلي عن الأبعاد الثابتة على الموبايل لمنع صغر المحتوى */
+    padding: 40px 0;
   }
-  .hero-slider-container {
-    padding: 0 20px;
-  }
-  .hero-slide-item {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .hero-slide-center {
-    order: 1;
-  }
-  .hero-slide-side--left { order: 2; }
-  .hero-slide-side--right { order: 3; }
   
-  .hero-slide-side {
-    display: inline-flex;
-    width: 48%;
-    float: right;
+  .hero-canvas-slide {
+    display: flex !important;
+    flex-direction: row !important; /* إجبار التوزيع الأفقي ومنع النزول أسفل بعض */
+    align-items: center;
+    justify-content: space-between;
   }
-  .hero-slide-item::after {
-    content: "";
-    clear: both;
-    display: table;
+
+  .hero-canvas-wing {
+    flex: 0 0 25% !important; /* تقليص الأجنحة قليلاً لمنح الموبايل مساحة نصية */
+    max-width: 25% !important;
   }
-  .hero-slide-img-holder {
-    max-width: 160px;
+
+  .hero-canvas-center {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding: 0 5px;
+  }
+  
+  .hero-canvas-dots {
+    margin-top: 15px;
   }
 }
 {%- endstyle -%}
 
-<section class="hero-slider-section" 
+<section class="hero-canvas-section" 
          data-overlay="{{ section.settings.overlay_dark }}"
-         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 2200 }}');{% endif %}">
+         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 3000 }}');{% endif %}">
 
-  <!-- اسم المتجر الثابت في الأعلى لجميع البانرات -->
-  {%- if section.settings.parent_pre_title != blank -%}
-    <span class="hero-static-pre-title">{{ section.settings.parent_pre_title }}</span>
-  {%- endif -%}
-
-  <div class="hero-slider-container">
-    <div class="hero-slides-wrapper">
+  <div class="hero-canvas-container">
+    <div class="hero-canvas-slider">
       
       {%- for block in section.blocks -%}
-        <div class="hero-slide-item {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+        <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
           
-          <!-- الصورة اليسار المتغيرة للابن -->
-          <div class="hero-slide-side hero-slide-side--left">
+          <!-- الجناح الأيسر للوحة (صورة اليسار الثابتة مكانها دائماً) -->
+          <div class="hero-canvas-wing hero-canvas-wing--left">
             {%- if block.settings.image_left != blank -%}
-              <div class="hero-slide-img-holder">
-                <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="صورة اليسار المتغيرة" loading="lazy">
+              <div class="hero-canvas-img-box">
+                <img src="{{ block.settings.image_left | image_url: width: 700 }}" alt="صورة اليسار" loading="lazy">
               </div>
             {%- endif -%}
           </div>
 
-          <!-- العنوان الرئيسي المتغير لكل ابن -->
-          <div class="hero-slide-center">
+          <!-- قلب المحتوى (التراتبية الرأسية الصحيحة والنصوص الفوقية) -->
+          <div class="hero-canvas-center">
+            <!-- 1. اسم المتجر الثابت فوق -->
+            {%- if section.settings.parent_pre_title != blank -%}
+              <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
+            {%- endif -%}
+
+            <!-- 2. العنوان الكبير المتغير للابن -->
             {%- if block.settings.slide_title != blank -%}
-              <h1 class="hero-slide-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+              <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+            {%- endif -%}
+
+            <!-- 3. زر الإجراء الثابت تحت -->
+            {%- if section.settings.parent_button_text != blank and section.settings.parent_button_link != blank -%}
+              <div class="hero-canvas-btn-holder">
+                <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
+              </div>
             {%- endif -%}
           </div>
 
-          <!-- الصورة اليمين المتغيرة للابن -->
-          <div class="hero-slide-side hero-slide-side--right">
+          <!-- الجناح الأيمن للوحة (صورة اليمين الثابتة مكانها دائماً) -->
+          <div class="hero-canvas-wing hero-canvas-wing--right">
             {%- if block.settings.image_right != blank -%}
-              <div class="hero-slide-img-holder">
-                <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="صورة اليمين المتغيرة" loading="lazy">
+              <div class="hero-canvas-img-box">
+                <img src="{{ block.settings.image_right | image_url: width: 700 }}" alt="صورة اليمين" loading="lazy">
               </div>
             {%- endif -%}
           </div>
@@ -376,37 +387,29 @@
 
     </div>
 
-    <!-- نقاط التحكم للتنقل بين الأبناء (Dots) -->
+    <!-- نقاط التحكم السفلية (Dots) -->
     {%- if section.blocks.size > 1 -%}
-      <div class="hero-slider-dots">
+      <div class="hero-canvas-dots">
         {%- for block in section.blocks -%}
-          <button class="hero-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="الذهاب للبانر {{ forloop.index }}"></button>
+          <button class="hero-canvas-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="الشريحة {{ forloop.index }}"></button>
         {%- endfor -%}
       </div>
     {%- endif -%}
   </div>
 
-  <!-- زر الإجراء الثابت في الأسفل لجميع البانرات -->
-  {%- if section.settings.parent_button_text != blank and section.settings.parent_button_link != blank -%}
-    <div class="hero-static-btn-wrapper">
-      <a href="{{ section.settings.parent_button_link }}" class="hero-static-btn">{{ section.settings.parent_button_text }}</a>
-    </div>
-  {%- endif -%}
-
 </section>
 
-<!-- نظام جافا سكريبت لتأمين التبديل السلس والحركة الدائرية التلقائية -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const section = document.querySelector('.hero-slider-section');
+    const section = document.querySelector('.hero-canvas-section');
     if (!section) return;
 
-    const slides = section.querySelectorAll('.hero-slide-item');
-    const dots = section.querySelectorAll('.hero-dot');
+    const slides = section.querySelectorAll('.hero-canvas-slide');
+    const dots = section.querySelectorAll('.hero-canvas-dot');
     let currentSlide = 0;
     const totalSlides = slides.length;
 
-    function goToSlide(index) {
+    function changeSlide(index) {
       slides[currentSlide].classList.remove('is-active');
       dots[currentSlide].classList.remove('is-active');
       
@@ -418,16 +421,15 @@
 
     dots.forEach(dot => {
       dot.addEventListener('click', function() {
-        const targetIndex = parseInt(this.getAttribute('data-slide-to'));
-        goToSlide(targetIndex);
+        const target = parseInt(this.getAttribute('data-slide-to'));
+        changeSlide(target);
       });
     });
 
-    // تبديل تلقائي كل 5 ثوانٍ لتجربة تصفح تفاعلية وحيوية
     if (totalSlides > 1) {
       setInterval(() => {
-        let nextSlide = (currentSlide + 1) % totalSlides;
-        goToSlide(nextSlide);
+        let next = (currentSlide + 1) % totalSlides;
+        changeSlide(next);
       }, 5000);
     }
   });
