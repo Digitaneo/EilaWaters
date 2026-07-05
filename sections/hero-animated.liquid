@@ -1,19 +1,24 @@
 {% comment %}
-  Professional Animated Hero Slider - Tailored for 3000x1378 Aspect Ratio & Strict RTL Mobile Layout
+  Advanced Animated Hero Slider - Dual Backgrounds & Zero-Gap Layered Layout
 {% endcomment %}
 
 {%- schema -%}
 {
-  "name": "بانر آبار المطور",
+  "name": "بانر آبار المطور v2",
   "settings": [
     {
       "type": "header",
-      "content": "الخلفية العامة"
+      "content": "الخلفيات المخصصة"
     },
     {
       "type": "image_picker",
-      "id": "bg_image",
-      "label": "صورة الخلفية الثابتة"
+      "id": "bg_image_desktop",
+      "label": "صورة خلفية الكمبيوتر"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "صورة خلفية الهاتف (مخططة للموبايل)"
     },
     {
       "type": "checkbox",
@@ -70,7 +75,7 @@
   ],
   "presets": [
     {
-      "name": "بانر آبار المطور",
+      "name": "بانر آبار المطور v2",
       "blocks": [
         { "type": "slide" }
       ]
@@ -80,12 +85,10 @@
 {%- endschema -%}
 
 {%- style -%}
-/* محاكاة وتثبيت أبعاد اللوحة الخلفية الأصلية */
 .hero-canvas-section {
   position: relative;
   width: 100%;
-  min-height: 75vh;
-  aspect-ratio: 3000 / 1378; /* الحفاظ التام على أبعاد صورتك وتجنب قطعها */
+  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,9 +96,12 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  direction: rtl; /* دعم لغة الضاد افتراضياً */
+  direction: rtl;
+  /* تعيين خلفية الكمبيوتر كافتراضية */
+  background-image: var(--hero-bg-desktop, none);
 }
 
+/* تعتيم الخلفية لحماية النصوص */
 .hero-canvas-section::before {
   content: '';
   position: absolute;
@@ -109,31 +115,27 @@
   opacity: 1;
 }
 
-/* حاوية العرض الكلية المتجاوبة */
 .hero-canvas-container {
   position: relative;
   width: 100%;
-  height: 100%;
   max-width: 100%;
-  padding: 0 2%;
+  height: 100%;
   z-index: 5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .hero-canvas-slider {
   position: relative;
   width: 100%;
+  min-height: 550px;
 }
 
-/* الشريحة الابن: تقسيم اللوحة أفقياً إلى 3 أجزاء متناسقة تدعم التداخل */
+/* الشريحة الابن البنية الجديدة الفائقة لمنع الفراغات أفقياً وعمودياً */
 .hero-canvas-slide {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -147,27 +149,100 @@
   z-index: 4;
 }
 
-/* الأجزاء الجانبية (اليمين واليسار) - مجهزة لعدم الانضغاط وتكبير الحجم */
-.hero-canvas-wing {
-  flex: 0 0 28%; /* تخصيص قرابة ثلث المساحة لكل جانب بالتساوي */
-  max-width: 28%;
+/* قلب المحتوى النصي الموحد - يطفو فوق الصور بأعلى طبقة زائر */
+.hero-canvas-center {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  text-align: center;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 4;
+  justify-content: center;
+  z-index: 10; /* فوق الأجنحة الجانبية لتداخل فاخر */
+  padding: 0 20px;
+  pointer-events: auto;
 }
 
-.hero-canvas-wing--right {
-  order: 3; /* يظهر يميناً في الـ RTL */
+.hero-canvas-pre-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  color: #0284c7;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.hero-canvas-section[data-overlay="true"] .hero-canvas-pre-title {
+  color: #38bdf8;
+}
+
+.hero-canvas-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.4;
+  color: #1e293b;
+  margin: 0 0 25px 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-canvas-section[data-overlay="true"] .hero-canvas-title {
+  color: #ffffff;
+}
+
+.hero-canvas-btn-holder {
+  margin-top: 5px;
+}
+.hero-canvas-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 3rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: #ffffff;
+  background-color: #0f172a;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+.hero-canvas-btn:hover {
+  background-color: #0284c7;
+  transform: translateY(-3px);
+}
+
+/* هندسة الأجنحة المطلقة لإلغاء الفراغات والسماح للصور بالالتقاء بالوسط خلف النص */
+.hero-canvas-wing {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35%; /* زيادة العرض لضمان التداخل والالتقاء في المنتصف */
+  height: auto;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  z-index: 5; /* تحت النص وفوق الخلفية */
+  pointer-events: none; /* لمنع حجب الضغطات عن الأزرار والنصوص */
 }
 
 .hero-canvas-wing--left {
-  order: 1; /* يظهر يساراً في الـ RTL */
+  left: 0; /* جهة اليسار بالكامل */
+  justify-content: flex-start;
+}
+
+.hero-canvas-wing--right {
+  right: 0; /* جهة اليمين بالكامل */
+  justify-content: flex-end;
 }
 
 .hero-canvas-img-box {
   width: 100%;
-  filter: drop-shadow(0 20px 35px rgba(0,0,0,0.15));
+  max-width: 450px; /* تكبير كافٍ للصور ليبرز حجمها الاحترافي */
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.12));
   opacity: 0;
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -179,75 +254,9 @@
   display: block;
 }
 
-/* الجزء الأوسط (كتلة المحتوى الموحد الشامل للنصوص والزر) */
-.hero-canvas-center {
-  flex: 0 0 44%;
-  max-width: 44%;
-  order: 2;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-  padding: 0 10px;
-}
-
-/* تصحيح تموضع اسم المتجر الثابت ليكون في قلب التراتبية */
-.hero-canvas-pre-title {
-  font-family: 'Cairo', sans-serif;
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
-  font-weight: 700;
-  color: #0284c7;
-  margin-bottom: 12px;
-}
-.hero-canvas-section[data-overlay="true"] .hero-canvas-pre-title {
-  color: #38bdf8;
-}
-
-/* العنوان الرئيسي الكبير المتغير */
-.hero-canvas-title {
-  font-family: 'Cairo', sans-serif;
-  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
-  font-weight: 800;
-  line-height: 1.35;
-  color: #1e293b;
-  margin: 0 0 20px 0;
-  transform: scale(0.95);
-  opacity: 0;
-  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hero-canvas-section[data-overlay="true"] .hero-canvas-title {
-  color: #ffffff;
-}
-
-/* زر الإجراء الثابت المتواجد في نهاية التراتبية النصية */
-.hero-canvas-btn-holder {
-  margin-top: 5px;
-}
-.hero-canvas-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.8rem 2.5rem;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 700;
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-  color: #ffffff;
-  background-color: #0f172a;
-  border-radius: 50px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-.hero-canvas-btn:hover {
-  background-color: #0284c7;
-  transform: translateY(-2px);
-}
-
-/* تفعيل حركات الدخول الانسيابية عند النشاط */
+/* تفعيل الحركات للشرائح النشطة */
 .hero-canvas-slide.is-active .hero-canvas-title {
-  transform: scale(1);
+  transform: translateY(0);
   opacity: 1;
 }
 
@@ -262,22 +271,24 @@
 }
 
 @keyframes slideInLeft {
-  0% { opacity: 0; transform: translateX(-80px) scale(0.9); }
+  0% { opacity: 0; transform: translateX(-60px) scale(0.95); }
   100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 @keyframes slideInRight {
-  0% { opacity: 0; transform: translateX(80px) scale(0.9); }
+  0% { opacity: 0; transform: translateX(60px) scale(0.95); }
   100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* التحكم بالنقاط (Dots) */
+/* متحكم النقاط الدائرية */
 .hero-canvas-dots {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 25px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 12;
 }
 
 .hero-canvas-dot {
@@ -301,42 +312,40 @@
 }
 
 /* ==========================================================================
-   حل مشكلة الهواتف العويصة: الحفاظ الصارم على البنية الأفقية (اليسار يسار واليمين يمين)
+   التحكم الذكي بالهواتف وشاشات الموبايل المتجاوبة
    ========================================================================== */
 @media (max-width: 767px) {
   .hero-canvas-section {
-    aspect-ratio: auto;
-    min-height: 60vh; /* التخلي عن الأبعاد الثابتة على الموبايل لمنع صغر المحتوى */
-    padding: 40px 0;
-  }
-  
-  .hero-canvas-slide {
-    display: flex !important;
-    flex-direction: row !important; /* إجبار التوزيع الأفقي ومنع النزول أسفل بعض */
-    align-items: center;
-    justify-content: space-between;
+    /* استبدال الخلفية بصورة الموبايل إذا تم تعيينها */
+    background-image: var(--hero-bg-mobile, var(--hero-bg-desktop, none));
+    min-height: 65vh;
   }
 
+  .hero-canvas-slider {
+    min-height: 450px;
+  }
+
+  /* تكثيف التداخل الأفقي للموبايل لمنع أي فجوات نهائياً */
   .hero-canvas-wing {
-    flex: 0 0 25% !important; /* تقليص الأجنحة قليلاً لمنح الموبايل مساحة نصية */
-    max-width: 25% !important;
+    width: 45%; /* الصور تمتد أفقياً لتلتقي بالمنتصف وتلتحم تماماً خلف النص */
+    max-height: 80%;
+  }
+
+  .hero-canvas-img-box {
+    max-width: 220px; /* مقاس حاد وبورتريه ممتاز للموبايل */
   }
 
   .hero-canvas-center {
-    flex: 0 0 50% !important;
-    max-width: 50% !important;
+    max-width: 90%;
     padding: 0 5px;
-  }
-  
-  .hero-canvas-dots {
-    margin-top: 15px;
   }
 }
 {%- endstyle -%}
 
 <section class="hero-canvas-section" 
          data-overlay="{{ section.settings.overlay_dark }}"
-         style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 3000 }}');{% endif %}">
+         style="{% if section.settings.bg_image_desktop != blank %}--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 3000 }}');{% endif %}
+                {% if section.settings.bg_image_mobile != blank %}--hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 1000 }}');{% endif %}">
 
   <div class="hero-canvas-container">
     <div class="hero-canvas-slider">
@@ -344,28 +353,25 @@
       {%- for block in section.blocks -%}
         <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
           
-          <!-- الجناح الأيسر للوحة (صورة اليسار الثابتة مكانها دائماً) -->
+          <!-- الجناح الأيسر الممتد (التقاء بالوسط من جهة اليسار) -->
           <div class="hero-canvas-wing hero-canvas-wing--left">
             {%- if block.settings.image_left != blank -%}
               <div class="hero-canvas-img-box">
-                <img src="{{ block.settings.image_left | image_url: width: 700 }}" alt="صورة اليسار" loading="lazy">
+                <img src="{{ block.settings.image_left | image_url: width: 800 }}" alt="صورة اليسار" loading="lazy">
               </div>
             {%- endif -%}
           </div>
 
-          <!-- قلب المحتوى (التراتبية الرأسية الصحيحة والنصوص الفوقية) -->
+          <!-- الصندوق النصي الموحد (يطفو فوق الصور في الطبقة العليا) -->
           <div class="hero-canvas-center">
-            <!-- 1. اسم المتجر الثابت فوق -->
             {%- if section.settings.parent_pre_title != blank -%}
               <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
             {%- endif -%}
 
-            <!-- 2. العنوان الكبير المتغير للابن -->
             {%- if block.settings.slide_title != blank -%}
               <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
             {%- endif -%}
 
-            <!-- 3. زر الإجراء الثابت تحت -->
             {%- if section.settings.parent_button_text != blank and section.settings.parent_button_link != blank -%}
               <div class="hero-canvas-btn-holder">
                 <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
@@ -373,11 +379,11 @@
             {%- endif -%}
           </div>
 
-          <!-- الجناح الأيمن للوحة (صورة اليمين الثابتة مكانها دائماً) -->
+          <!-- الجناح الأيمن الممتد (التقاء بالوسط من جهة اليمين) -->
           <div class="hero-canvas-wing hero-canvas-wing--right">
             {%- if block.settings.image_right != blank -%}
               <div class="hero-canvas-img-box">
-                <img src="{{ block.settings.image_right | image_url: width: 700 }}" alt="صورة اليمين" loading="lazy">
+                <img src="{{ block.settings.image_right | image_url: width: 800 }}" alt="صورة اليمين" loading="lazy">
               </div>
             {%- endif -%}
           </div>
@@ -387,11 +393,11 @@
 
     </div>
 
-    <!-- نقاط التحكم السفلية (Dots) -->
+    <!-- نقاط التحكم السفلية المتجاوبة -->
     {%- if section.blocks.size > 1 -%}
       <div class="hero-canvas-dots">
         {%- for block in section.blocks -%}
-          <button class="hero-canvas-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="الشريحة {{ forloop.index }}"></button>
+          <button class="hero-canvas-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="شريحة {{ forloop.index }}"></button>
         {%- endfor -%}
       </div>
     {%- endif -%}
