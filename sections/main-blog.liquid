@@ -1,28 +1,35 @@
 {{ 'artiz-blog.css' | asset_url | stylesheet_tag }}
 
-<!-- تنسيقات مخصصة لإصلاح المظهر وفصل العناصر -->
 <style>
-  /* 1. إخفاء عنوان الصفحة الرئيسي المقتطع وأزرار التصنيفات والوسوم تماماً */
-  .artiz-blog-page__title,
+  /* 1. إخفاء أزرار التصنيفات والوسوم تماماً */
   .artiz-blog__tags,
   .artiz-blog__tags-list {
     display: none !important;
   }
 
-  /* 2. إضافة مسافات أمان جانبية للصفحة بالكامل ومنع الالتصاق بالحواف */
+  /* 2. تنسيق العنوان الجديد لمدونة إيلا للمياه */
+  .ella-blog__main-title {
+    text-align: center !important;
+    color: #0c4a6e !important; /* لون كحلي داكن احترافي */
+    font-size: 32px !important;
+    font-weight: bold !important;
+    margin-top: 20px !important;
+    margin-bottom: 40px !important;
+  }
+
+  /* 3. إضافة مسافات أمان جانبية للصفحة بالكامل ومنع الالتصاق بالحواف */
   .artiz-blog-page {
     max-width: 1240px !important;
     margin: 0 auto !important;
-    padding: 40px 24px !important; 
+    padding: 20px 24px 40px 24px !important; 
     box-sizing: border-box !important;
   }
 
-  /* 3. تحويل شبكة المقالات إلى 3 أعمدة (3 مقالات في السطر) */
+  /* 4. تحويل شبكة المقالات إلى 3 أعمدة (3 مقالات في السطر) */
   .artiz-blog__grid {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 30px !important; 
-    margin-top: 20px !important;
   }
 
   /* إخفاء المقالات التي تتجاوز الـ 12 الأولى ليتم إظهارها عبر الزر */
@@ -30,7 +37,7 @@
     display: none !important;
   }
 
-  /* 4. تنسيق زر "إظهار المزيد" المخصص */
+  /* 5. تنسيق زر "إظهار المزيد" المخصص */
   .artiz-load-more__container {
     text-align: center;
     margin: 40px 0 20px 0;
@@ -54,17 +61,14 @@
     transform: translateY(-2px);
   }
 
-  .artiz-load-more__btn:active {
-    transform: translateY(0);
-  }
-
-  /* 5. التجاوب مع شاشات الجوال والأجهزة اللوحية */
+  /* 6. التجاوب مع شاشات الجوال والأجهزة اللوحية */
   @media screen and (max-width: 992px) {
     .artiz-blog__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
-    .artiz-blog-page {
-      padding: 30px 20px !important;
+    .ella-blog__main-title {
+      font-size: 26px !important;
+      margin-bottom: 30px !important;
     }
   }
 
@@ -74,17 +78,19 @@
       gap: 20px !important;
     }
     .artiz-blog-page {
-      padding: 20px 16px !important;
+      padding: 10px 16px 20px 16px !important;
+    }
+    .ella-blog__main-title {
+      font-size: 22px !important;
+      margin-bottom: 25px !important;
     }
   }
 </style>
 
 <div class="artiz-blog-page" data-section-id="{{ section.id }}">
   
-  {%- comment -%}
-    نقوم بجلب عدد كبير من المقالات في الصفحة الواحدة (مثلاً 240 مقالاً) 
-    لكي نتحكم بإظهار 12 تلو الأخرى ديناميكياً بدون الحاجة لإعادة تحميل الصفحة.
-  {%- endcomment -%}
+  <h1 class="ella-blog__main-title">مدونة إيلا للمياه</h1>
+  
   {%- paginate blog.articles by 240 -%}
     <div class="artiz-blog__grid" id="BlogArticlesGrid">
       {%- for article in blog.articles -%}
@@ -102,23 +108,19 @@
   {%- endpaginate -%}
 </div>
 
-<!-- كود الـ JavaScript الذكي للتحكم بالزر والمقالات المخفية -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.getElementById('LoadMoreBtn');
     if (!loadMoreBtn) return;
 
     loadMoreBtn.addEventListener('click', function() {
-      // جلب جميع المقالات المخفية حالياً
       const hiddenArticles = document.querySelectorAll('.artiz-article-item.is-hidden');
-      
-      // إظهار 12 مقالاً فقط من المقالات المخفية
       const itemsToShow = 12;
+      
       for (let i = 0; i < itemsToShow && i < hiddenArticles.length; i++) {
         hiddenArticles[i].classList.remove('is-hidden');
       }
 
-      // إذا تم إظهار كافة المقالات ولم يعد هناك مقالات مخفية، يتم إخفاء الزر تماماً
       const remainingHidden = document.querySelectorAll('.artiz-article-item.is-hidden');
       if (remainingHidden.length === 0) {
         loadMoreBtn.style.display = 'none';
