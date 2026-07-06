@@ -1,0 +1,41 @@
+{%- comment -%}
+  Artiz Theme – Article Card
+  Usage: {% render 'artiz-article-card', article: article %}
+{%- endcomment -%}
+
+<article class="artiz-article-card">
+  <a href="{{ article.url }}" class="artiz-article-card__image-link">
+    {%- if article.image -%}
+      <img 
+        src="{{ article.image | img_url: '600x400', crop: 'center' }}" 
+        alt="{{ article.image.alt | escape }}" 
+        class="artiz-article-card__image"
+        loading="lazy"
+        width="600"
+        height="400"
+      >
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'artiz-article-card__image' }}
+    {%- endif -%}
+  </a>
+
+  <div class="artiz-article-card__content">
+    <span class="artiz-article-card__date">{{ article.published_at | time_tag: format: 'date' }}</span>
+    <h3 class="artiz-article-card__title">
+      <a href="{{ article.url }}">{{ article.title }}</a>
+    </h3>
+    <div class="artiz-article-card__excerpt">
+      {%- if article.excerpt.size > 0 -%}
+        {{ article.excerpt | strip_html | truncate: 150 }}
+      {%- else -%}
+        {{ article.content | strip_html | truncate: 150 }}
+      {%- endif -%}
+    </div>
+    <div class="artiz-article-card__footer">
+      <a href="{{ article.url }}" class="artiz-article-card__link">
+        {{ read_more_label | default: 'Read More' }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</article>
