@@ -28,14 +28,6 @@
     "hero_animated_Az7nUR": {
       "type": "hero-animated",
       "blocks": {
-        "slide_Xggqyg": {
-          "type": "slide",
-          "settings": {
-            "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
-            "image_right": "shopify://shop_images/mashar-1.webp",
-            "image_left": "shopify://shop_images/pr2.webp"
-          }
-        },
         "slide_FHchCy": {
           "type": "slide",
           "settings": {
@@ -46,7 +38,6 @@
         }
       },
       "block_order": [
-        "slide_Xggqyg",
         "slide_FHchCy"
       ],
       "name": "بانر البطل المتحرك",
