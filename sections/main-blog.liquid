@@ -1,5 +1,6 @@
 {{ 'artiz-blog.css' | asset_url | stylesheet_tag }}
 
+<!-- تنسيقات مخصصة لإصلاح المظهر وفصل العناصر -->
 <style>
   /* 1. إخفاء عنوان الصفحة الرئيسي المقتطع وأزرار التصنيفات والوسوم تماماً */
   .artiz-blog-page__title,
@@ -12,7 +13,7 @@
   .artiz-blog-page {
     max-width: 1240px !important;
     margin: 0 auto !important;
-    padding: 40px 24px !important; /* مسافة أمان ممتازة يميناً ويساراً */
+    padding: 40px 24px !important; 
     box-sizing: border-box !important;
   }
 
@@ -20,14 +21,47 @@
   .artiz-blog__grid {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 30px !important; /* تباعد بين المقالات */
+    gap: 30px !important; 
     margin-top: 20px !important;
   }
 
-  /* 4. جعل التصميم متجاوباً بالكامل مع الشاشات المختلفة */
+  /* إخفاء المقالات التي تتجاوز الـ 12 الأولى ليتم إظهارها عبر الزر */
+  .artiz-article-card.is-hidden {
+    display: none !important;
+  }
+
+  /* 4. تنسيق زر "إظهار المزيد" المخصص */
+  .artiz-load-more__container {
+    text-align: center;
+    margin: 40px 0 20px 0;
+  }
+
+  .artiz-load-more__btn {
+    background-color: #0284c7; /* لون أزرق مائي متناسق مع متجر إيلا */
+    color: #ffffff;
+    border: none;
+    padding: 12px 35px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(2, 132, 199, 0.15);
+  }
+
+  .artiz-load-more__btn:hover {
+    background-color: #0369a1;
+    transform: translateY(-2px);
+  }
+
+  .artiz-load-more__btn:active {
+    transform: translateY(0);
+  }
+
+  /* 5. التجاوب مع شاشات الجوال والأجهزة اللوحية */
   @media screen and (max-width: 992px) {
     .artiz-blog__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* مقالين في السطر للتابلت */
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
     .artiz-blog-page {
       padding: 30px 20px !important;
@@ -36,43 +70,62 @@
 
   @media screen and (max-width: 768px) {
     .artiz-blog__grid {
-      grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* مقال واحد في السطر للجوال */
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
       gap: 20px !important;
     }
     .artiz-blog-page {
-      padding: 20px 16px !important; /* مسافة حماية مخصصة للجوال */
+      padding: 20px 16px !important;
     }
   }
 </style>
 
 <div class="artiz-blog-page" data-section-id="{{ section.id }}">
   
-  {%- paginate blog.articles by section.settings.posts_per_page -%}
-    <div class="artiz-blog__grid">
+  {%- comment -%}
+    نقوم بجلب عدد كبير من المقالات في الصفحة الواحدة (مثلاً 240 مقالاً) 
+    لكي نتحكم بإظهار 12 تلو الأخرى ديناميكياً بدون الحاجة لإعادة تحميل الصفحة.
+  {%- endcomment -%}
+  {%- paginate blog.articles by 240 -%}
+    <div class="artiz-blog__grid" id="BlogArticlesGrid">
       {%- for article in blog.articles -%}
-        {% render 'artiz-article-card', article: article, read_more_label: section.settings.read_more_label %}
+        <div class="artiz-article-item {% if forloop.index > 12 %}is-hidden{% endif %}">
+          {% render 'artiz-article-card', article: article, read_more_label: 'اقرأ المزيد' %}
+        </div>
       {%- endfor -%}
     </div>
 
-    {%- if paginate.pages > 1 -%}
-      <nav class="artiz-pagination" role="navigation">
-        {%- if paginate.previous -%}
-          <a href="{{ paginate.previous.url }}" class="artiz-pagination__item">←</a>
-        {%- endif -%}
-        {%- for part in paginate.parts -%}
-          {%- if part.is_link -%}
-            <a href="{{ part.url }}" class="artiz-pagination__item">{{ part.title }}</a>
-          {%- else -%}
-            <span class="artiz-pagination__item {% if part.title == paginate.current_page %}artiz-pagination__item--active{% endif %}">{{ part.title }}</span>
-          {%- endif -%}
-        {%- endfor -%}
-        {%- if paginate.next -%}
-          <a href="{{ paginate.next.url }}" class="artiz-pagination__item">→</a>
-        {%- endif -%}
-      </nav>
+    {%- if blog.articles_count > 12 -%}
+      <div class="artiz-load-more__container">
+        <button type="button" id="LoadMoreBtn" class="artiz-load-more__btn">إظهار المزيد</button>
+      </div>
     {%- endif -%}
   {%- endpaginate -%}
 </div>
+
+<!-- كود الـ JavaScript الذكي للتحكم بالزر والمقالات المخفية -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('LoadMoreBtn');
+    if (!loadMoreBtn) return;
+
+    loadMoreBtn.addEventListener('click', function() {
+      // جلب جميع المقالات المخفية حالياً
+      const hiddenArticles = document.querySelectorAll('.artiz-article-item.is-hidden');
+      
+      // إظهار 12 مقالاً فقط من المقالات المخفية
+      const itemsToShow = 12;
+      for (let i = 0; i < itemsToShow && i < hiddenArticles.length; i++) {
+        hiddenArticles[i].classList.remove('is-hidden');
+      }
+
+      // إذا تم إظهار كافة المقالات ولم يعد هناك مقالات مخفية، يتم إخفاء الزر تماماً
+      const remainingHidden = document.querySelectorAll('.artiz-article-item.is-hidden');
+      if (remainingHidden.length === 0) {
+        loadMoreBtn.style.display = 'none';
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -85,27 +138,6 @@
       "id": "heading",
       "label": "Custom Heading",
       "info": "Leave blank to use the default blog title (e.g. News)."
-    },
-    {
-      "type": "text",
-      "id": "read_more_label",
-      "label": "Read more label",
-      "default": "Read More"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_tags",
-      "label": "Show categories (Tags)",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "posts_per_page",
-      "min": 3,
-      "max": 24,
-      "step": 3,
-      "default": 12,
-      "label": "Posts per page"
     }
   ]
 }
