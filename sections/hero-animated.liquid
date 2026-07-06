@@ -20,10 +20,7 @@
     }
   ],
   "presets": [
-    {
-      "name": "بانر آبار المطور v6",
-      "blocks": [{ "type": "slide" }]
-    }
+    { "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }
   ]
 }
 {%- endschema -%}
@@ -34,45 +31,43 @@
   background-size: cover; background-position: center;
   background-image: var(--hero-bg-desktop);
   display: flex; align-items: center; justify-content: center;
-  padding: 40px 20px;
+  padding: 50px 20px;
+  overflow: hidden;
 }
-.hero-wrapper {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  width: 100%; max-width: 1200px;
-}
-.hero-wing { width: 25%; display: flex; align-items: flex-end; }
-.hero-wing--left { justify-content: flex-start; }
-.hero-wing--right { justify-content: flex-end; }
-.hero-wing img { max-width: 350px; width: 100%; height: auto; }
 
-.hero-center { width: 50%; text-align: center; z-index: 5; margin-bottom: 50px; }
-.hero-title { font-size: 2.5rem; font-weight: 800; color: #1e293b; margin: 20px 0; }
+/* النص في المنتصف دائماً */
+.hero-center { width: 100%; max-width: 700px; text-align: center; z-index: 10; }
+.hero-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #1e293b; margin: 20px 0; }
 .hero-btn { display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; border-radius: 50px; text-decoration: none; font-weight: bold; }
 
+/* الصور مثبتة في زوايا البانر */
+.hero-wing { position: absolute; bottom: 0; width: 30%; z-index: 5; pointer-events: none; }
+.hero-wing--left { left: 0; }
+.hero-wing--right { right: 0; display: flex; justify-content: flex-end; }
+.hero-wing img { max-width: 350px; width: 100%; height: auto; }
+
 @media (max-width: 767px) {
-  .hero-wrapper { flex-direction: column; align-items: center; }
-  .hero-wing { width: 100%; justify-content: center; order: 2; }
-  .hero-center { width: 100%; order: 1; margin-bottom: 20px; }
-  .hero-wing img { max-width: 180px; }
+  .hero-canvas-section { background-image: var(--hero-bg-mobile); padding-top: 80px; align-items: flex-start; }
+  .hero-wing { width: 45%; }
+  .hero-wing img { max-width: 150px; }
+  .hero-title { font-size: 1.5rem; }
 }
 {%- endstyle -%}
 
 <section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
-  <div class="hero-wrapper">
-    {%- for block in section.blocks -%}
-      <div class="hero-wing hero-wing--left">
-        {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left">{%- endif -%}
-      </div>
+  {%- for block in section.blocks -%}
+    <div class="hero-wing hero-wing--left">
+      {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left">{%- endif -%}
+    </div>
 
-      <div class="hero-center">
-        <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
-        <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
-        <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
-      </div>
+    <div class="hero-center">
+      <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
+      <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
+      <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
+    </div>
 
-      <div class="hero-wing hero-wing--right">
-        {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right">{%- endif -%}
-      </div>
-    {%- endfor -%}
-  </div>
+    <div class="hero-wing hero-wing--right">
+      {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right">{%- endif -%}
+    </div>
+  {%- endfor -%}
 </section>
