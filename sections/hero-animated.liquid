@@ -1,105 +1,60 @@
-{%- schema -%}
-{
-  "name": "بانر آبار المطور v6",
-  "settings": [
-    { "type": "header", "content": "الخلفيات المخصصة" },
-    { "type": "image_picker", "id": "bg_image_desktop", "label": "صورة خلفية الكمبيوتر" },
-    { "type": "image_picker", "id": "bg_image_mobile", "label": "صورة خلفية الهاتف" },
-    { "type": "checkbox", "id": "overlay_dark", "label": "تفعيل تعتيم الخلفية", "default": false },
-    { "type": "header", "content": "العناصر الثابتة" },
-    { "type": "text", "id": "parent_pre_title", "label": "اسم المتجر الثابت", "default": "آيلا للمياه" },
-    { "type": "text", "id": "parent_button_text", "label": "نص الزر الثابت", "default": "تسوق الآن" },
-    { "type": "url", "id": "parent_button_link", "label": "رابط الزر الثابت", "default": "/collections/all" }
-  ],
-  "blocks": [
-    {
-      "type": "slide",
-      "name": "شريحة بانر",
-      "settings": [
-        { "type": "textarea", "id": "slide_title", "label": "العنوان الرئيسي", "default": "نصلك بأسرع وقت" },
-        { "type": "image_picker", "id": "image_right", "label": "الصورة اليمنى (PNG)" },
-        { "type": "image_picker", "id": "image_left", "label": "الصورة اليسرى (PNG)" }
-      ]
-    }
-  ],
-  "presets": [{ "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }]
-}
-{%- endschema -%}
-
 {%- style -%}
 .hero-canvas-section {
   position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
   overflow: hidden; background-size: cover; background-position: center; direction: rtl;
-  background-image: var(--hero-bg-desktop, none); padding-top: 100px; padding-bottom: 0px; min-height: 500px;
+  background-image: var(--hero-bg-desktop, none); padding: 100px 0; min-height: 500px;
 }
-.hero-canvas-container { position: relative; width: 100%; max-width: 1200px; }
+.hero-canvas-container { position: relative; width: 100%; max-width: 1200px; display: flex; align-items: center; justify-content: center; }
 
-/* وضع الصور في الأسفل */
-.hero-canvas-wing { position: absolute; bottom: 0; width: 30%; height: auto; display: flex; z-index: 5; pointer-events: none; }
-.hero-canvas-wing--left { left: 0; justify-content: flex-start; }
-.hero-canvas-wing--right { right: 0; justify-content: flex-end; }
+/* إصلاح التموضع: الصور تكون في الخلفية أو الأطراف */
+.hero-canvas-wing { position: absolute; bottom: 0; width: 35%; height: auto; z-index: 1; pointer-events: none; }
+.hero-canvas-wing--left { left: 0; }
+.hero-canvas-wing--right { right: 0; }
+.hero-canvas-img-box { width: 100%; max-width: 450px; }
+.hero-canvas-img-box img { width: 100%; height: auto; }
 
-.hero-canvas-img-box { width: 100%; max-width: 480px; opacity: 0; transition: all 0.8s ease; }
-.hero-canvas-img-box img { width: 100%; height: auto; display: block; }
-
-/* تحريك الصور */
-.hero-canvas-slide.is-active .hero-canvas-wing--left .hero-canvas-img-box { opacity: 1; animation: slideInLeft 0.8s forwards; }
-.hero-canvas-slide.is-active .hero-canvas-wing--right .hero-canvas-img-box { opacity: 1; animation: slideInRight 0.8s forwards; }
-
-@keyframes slideInLeft { 0% { transform: translateX(-100px); } 100% { transform: translateX(0); } }
-@keyframes slideInRight { 0% { transform: translateX(100px); } 100% { transform: translateX(0); } }
-
-/* المحتوى النصي */
-.hero-canvas-center { text-align: center; z-index: 10; padding: 20px; }
-.hero-canvas-title { font-size: clamp(1.5rem, 3.5vw, 2.8rem); font-weight: 800; margin-bottom: 20px; }
+/* إصلاح النص والزر: ليكون فوق الصور */
+.hero-canvas-center { position: relative; z-index: 10; text-align: center; padding: 20px; }
+.hero-canvas-title { font-size: clamp(1.5rem, 3.5vw, 2.8rem); font-weight: 800; color: #1e293b; margin-bottom: 20px; }
+.hero-canvas-btn { 
+  display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; 
+  text-decoration: none; border-radius: 50px; font-weight: 700; transition: 0.3s;
+}
+.hero-canvas-btn:hover { background: #0284c7; }
 
 @media (max-width: 767px) {
-  .hero-canvas-section { background-image: var(--hero-bg-mobile, var(--hero-bg-desktop)) !important; padding-top: 80px; }
-  .hero-canvas-wing { width: 45%; }
-  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 220px; margin-left: -10px; }
-  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 220px; }
-  .hero-canvas-slide { flex-direction: column; }
+  .hero-canvas-section { padding-top: 50px; }
+  .hero-canvas-wing { width: 50%; }
+  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 180px; }
+  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 180px; }
+  .hero-canvas-title { font-size: 1.5rem; }
 }
 {%- endstyle -%}
 
-<section class="hero-canvas-section" data-overlay="{{ section.settings.overlay_dark }}"
-  style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
-  
+<section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
   <div class="hero-canvas-container">
-    <div class="hero-canvas-slider">
-      {%- for block in section.blocks -%}
-        <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" style="{% unless forloop.first %}display:none;{% endunless %}">
-          <div class="hero-canvas-wing hero-canvas-wing--left">
-            {%- if block.settings.image_left != blank -%}
-              <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Image"></div>
-            {%- endif -%}
-          </div>
-          
-          <div class="hero-canvas-center">
-            <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
-            <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
-            <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
-          </div>
-
-          <div class="hero-canvas-wing hero-canvas-wing--right">
-            {%- if block.settings.image_right != blank -%}
-              <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Image"></div>
-            {%- endif -%}
-          </div>
+    {%- for block in section.blocks -%}
+      <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" style="width: 100%; display: {% if forloop.first %}flex{% else %}none{% endif %}; align-items: center; justify-content: center;">
+        
+        <div class="hero-canvas-wing hero-canvas-wing--left">
+          {%- if block.settings.image_left != blank -%}
+            <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left"></div>
+          {%- endif -%}
         </div>
-      {%- endfor -%}
-    </div>
+
+        <div class="hero-canvas-center">
+          <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
+          <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+          <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
+        </div>
+
+        <div class="hero-canvas-wing hero-canvas-wing--right">
+          {%- if block.settings.image_right != blank -%}
+            <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right"></div>
+          {%- endif -%}
+        </div>
+
+      </div>
+    {%- endfor -%}
   </div>
 </section>
-
-<script>
-  // تفعيل تبديل الشرائح البسيط
-  setInterval(() => {
-    const active = document.querySelector('.hero-canvas-slide.is-active');
-    let next = active.nextElementSibling || document.querySelector('.hero-canvas-slide');
-    active.classList.remove('is-active');
-    active.style.display = 'none';
-    next.classList.add('is-active');
-    next.style.display = 'flex';
-  }, 5000);
-</script>
