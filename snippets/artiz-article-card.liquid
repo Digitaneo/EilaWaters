@@ -3,9 +3,112 @@
   Usage: {% render 'artiz-article-card', article: article %}
 {%- endcomment -%}
 
-<!-- تم إضافة تنسيق سريع هنا لإعطاء مسافة عن الجوانب وإضافة مسافة أسفل كل بطاقة -->
-<article class="artiz-article-card" style="padding: 0 16px; margin-bottom: 32px; box-sizing: border-box;">
-  <a href="{{ article.url }}" class="artiz-article-card__image-link" style="display: block; width: 100%; overflow: hidden; border-radius: 8px;">
+<style>
+/* 1. إخفاء عنوان الصفحة الرئيسي وأزرار الوسوم لمنع التشوه البصري */
+.main-blog h1, 
+.blog-title,
+[class*="blog"] h1,
+.artiz-blog__tags,
+.blog-tags,
+[class*="tags"] {
+    display: none !important;
+}
+
+/* 2. تنسيق بطاقة المقال الفردية لتبدو ككتلة منظمة */
+.artiz-article-card {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 100%; /* لتوحيد ارتفاع الكروت بجانب بعضها */
+    padding: 0 !important;
+    margin-bottom: 20px !important;
+    box-sizing: border-box;
+}
+
+/* 3. توحيد مقاس غلاف الصورة لمنع ظهور صور أكبر من أخرى */
+.artiz-article-card__image-link {
+    display: block !important;
+    width: 100% !important;
+    height: 220px !important; /* ارتفاع مثالي ومتناسق للصور */
+    overflow: hidden !important;
+    position: relative;
+}
+
+.artiz-article-card__image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* قص تلقائي ذكي للصورة دون تشويه أبعادها */
+    transition: transform 0.3s ease;
+}
+
+.artiz-article-card:hover .artiz-article-card__image {
+    transform: scale(1.03); /* تأثير حركة ناعم عند تمرير الماوس */
+}
+
+/* 4. ضبط محاذاة النصوص والمسافات الداخلية عن الحواف */
+.artiz-article-card__content {
+    padding: 20px 12px 15px 12px !important;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.artiz-article-card__date {
+    display: block;
+    font-size: 13px;
+    color: #888888;
+    margin-bottom: 8px;
+}
+
+.artiz-article-card__title {
+    margin: 0 0 10px 0 !important;
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+    font-weight: bold;
+}
+
+.artiz-article-card__title a {
+    text-decoration: none !important;
+    color: #222222 !important;
+}
+
+.artiz-article-card__excerpt {
+    font-size: 14px;
+    color: #555555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex-grow: 1; /* دفع زر القراءة لأسفل الكارت دائماً */
+}
+
+.artiz-article-card__footer {
+    margin-top: auto;
+}
+
+.artiz-article-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0284c7 !important; /* لون أزرق مائي متناسق مع هوية إيلا للمياه */
+    text-decoration: none !important;
+}
+
+/* دعم شاشات الجوال */
+@media screen and (max-width: 768px) {
+    .artiz-article-card__image-link {
+        height: 180px !important;
+    }
+    .artiz-article-card__title {
+        font-size: 16px !important;
+    }
+}
+</style>
+
+<article class="artiz-article-card">
+  <a href="{{ article.url }}" class="artiz-article-card__image-link">
     {%- if article.image -%}
       <img 
         src="{{ article.image | img_url: '600x400', crop: 'center' }}" 
@@ -14,97 +117,29 @@
         loading="lazy"
         width="600"
         height="400"
-        style="width: 100%; height: auto; display: block;"
       >
     {%- else -%}
       {{ 'image' | placeholder_svg_tag: 'artiz-article-card__image' }}
     {%- endif -%}
   </a>
 
-  <!-- تم إضافة padding داخلي هنا حتى لا تلتصق النصوص بحواف الشاشة في الجوال -->
-  <div class="artiz-article-card__content" style="padding: 16px 4px 0 4px;">
-    <span class="artiz-article-card__date" style="display: block; font-size: 14px; margin-bottom: 8px; color: #6b7280;">
-      {{ article.published_at | time_tag: format: 'date' }}
-    </span>
-    <h3 class="artiz-article-card__title" style="margin-top: 0; margin-bottom: 12px; font-size: 20px;">
-      <a href="{{ article.url }}" style="text-decoration: none; color: inherit;">{{ article.title }}</a>
+  <div class="artiz-article-card__content">
+    <span class="artiz-article-card__date">{{ article.published_at | time_tag: format: 'date' }}</span>
+    <h3 class="artiz-article-card__title">
+      <a href="{{ article.url }}">{{ article.title }}</a>
     </h3>
-    <div class="artiz-article-card__excerpt" style="margin-bottom: 16px; color: #4b5563;">
+    <div class="artiz-article-card__excerpt">
       {%- if article.excerpt.size > 0 -%}
-        {{ article.excerpt | strip_html | truncate: 150 }}
+        {{ article.excerpt | strip_html | truncate: 120 }}
       {%- else -%}
-        {{ article.content | strip_html | truncate: 150 }}
+        {{ article.content | strip_html | truncate: 120 }}
       {%- endif -%}
     </div>
     <div class="artiz-article-card__footer">
-      <a href="{{ article.url }}" class="artiz-article-card__link" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-        {{ read_more_label | default: 'Read More' }}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform: scaleX(-1);"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <a href="{{ article.url }}" class="artiz-article-card__link">
+        {{ read_more_label | default: 'اقرأ المزيد' }}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transform: scaleX(-1);"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
   </div>
-</article>s
-<style>
-/* 1. إخفاء عنوان الصفحة الرئيسي المقتطع */
-.main-blog h1, 
-.blog-title,
-[class*="blog"] h1 {
-    display: none !important;
-}
-
-/* 2. إخفاء منطقة أزرار الوسوم بالكامل (كل الوسوم / نصائح وإرشادات) */
-.artiz-blog__tags,
-.blog-tags,
-[class*="tags"] {
-    display: none !important;
-}
-
-/* 3. تحويل عرض التدوينات إلى شبكة من 3 أعمدة في السطر الواحد */
-/* تأكد من تطبيق هذا على الحاوية الأب التي تضم كروت المقالات */
-.blog-articles,
-.artiz-blog__articles,
-main .grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 24px !important;
-    padding: 40px 20px !important;
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-}
-
-/* 4. ضبط أبعاد كارت التدوينة والصورة لتبدو متناسقة وتلقائية */
-.artiz-article-card {
-    padding: 0 !important;
-    margin-bottom: 0 !important;
-    display: flex;
-    flex-direction: column;
-}
-
-.artiz-article-card__image-link {
-    width: 100% !important;
-    height: 220px !important; /* تحديد ارتفاع ثابت ومناسب للصور لتصبح متناسقة بجانب بعضها */
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.artiz-article-card__image {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important; /* لضمان عدم تشوه الصورة عند قصها تلقائياً */
-}
-
-/* 5. دعم الهواتف المحمولة: تحويل العرض إلى تدوينة واحدة أو تدوينتين في السطر لتناسب الشاشات الصغيرة */
-@media screen and (max-width: 768px) {
-    .blog-articles,
-    .artiz-blog__articles,
-    main .grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* تدوينة واحدة في السطر للجوال */
-        gap: 16px !important;
-        padding: 20px 15px !important;
-    }
-    
-    .artiz-article-card__image-link {
-        height: 200px !important;
-    }
-}
-</style>
+</article>
