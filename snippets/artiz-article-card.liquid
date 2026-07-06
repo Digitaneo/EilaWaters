@@ -4,105 +4,105 @@
 {%- endcomment -%}
 
 <style>
-/* 1. إخفاء عنوان الصفحة الرئيسي وأزرار الوسوم لمنع التشوه البصري */
-.main-blog h1, 
-.blog-title,
-[class*="blog"] h1,
-.artiz-blog__tags,
-.blog-tags,
-[class*="tags"] {
-    display: none !important;
-}
-
-/* 2. تنسيق بطاقة المقال الفردية لتبدو ككتلة منظمة */
+/* 1. تنسيق بطاقة المقال الفردية ككتلة مستقلة ومنظمة داخل الشبكة */
 .artiz-article-card {
     display: flex !important;
     flex-direction: column !important;
-    background: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-    height: 100%; /* لتوحيد ارتفاع الكروت بجانب بعضها */
+    background: #ffffff !important;
+    border: 1px solid #eef2f6 !important; /* إطار خفيف وناعم لتحديد كروت المقالات */
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    height: 100% !important; /* لتوحيد ارتفاع الكروت بجانب بعضها تماماً */
     padding: 0 !important;
-    margin-bottom: 20px !important;
-    box-sizing: border-box;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02); /* ظلال خفيفة لإعطاء مظهر احترافي */
 }
 
-/* 3. توحيد مقاس غلاف الصورة لمنع ظهور صور أكبر من أخرى */
+/* 2. تثبيت أبعاد غلاف الصورة ومنع ظهور صور بأحجام متفاوتة */
 .artiz-article-card__image-link {
     display: block !important;
     width: 100% !important;
-    height: 220px !important; /* ارتفاع مثالي ومتناسق للصور */
+    height: 220px !important; /* الارتفاع المثالي لشبكة الـ 3 مقالات */
     overflow: hidden !important;
-    position: relative;
+    position: relative !important;
 }
 
 .artiz-article-card__image {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* قص تلقائي ذكي للصورة دون تشويه أبعادها */
-    transition: transform 0.3s ease;
+    object-fit: cover !important; /* قص ذكي وتلقائي للصورة دون تشويه أبعادها */
+    transition: transform 0.3s ease !important;
 }
 
 .artiz-article-card:hover .artiz-article-card__image {
-    transform: scale(1.03); /* تأثير حركة ناعم عند تمرير الماوس */
+    transform: scale(1.04) !important; /* حركة تفاعلية ناعمة لغلاف المقال عند تمرير الماوس */
 }
 
-/* 4. ضبط محاذاة النصوص والمسافات الداخلية عن الحواف */
+/* 3. ضبط المسافات الداخلية للمحتوى النصي عن الحواف */
 .artiz-article-card__content {
-    padding: 20px 12px 15px 12px !important;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+    padding: 20px 16px !important; /* مسافة أمان ممتازة لحماية النصوص من الالتصاق حواف الكارت */
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
 }
 
 .artiz-article-card__date {
-    display: block;
-    font-size: 13px;
-    color: #888888;
-    margin-bottom: 8px;
+    display: block !important;
+    font-size: 13px !important;
+    color: #888888 !important;
+    margin-bottom: 8px !important;
 }
 
 .artiz-article-card__title {
     margin: 0 0 10px 0 !important;
     font-size: 18px !important;
-    line-height: 1.4 !important;
-    font-weight: bold;
+    line-height: 1.5 !important;
+    font-weight: bold !important;
 }
 
 .artiz-article-card__title a {
     text-decoration: none !important;
-    color: #222222 !important;
+    color: #1e293b !important; /* لون داكن مريح للعين */
+    transition: color 0.2s ease !important;
+}
+
+.artiz-article-card__title a:hover {
+    color: #0284c7 !important; /* يتحول للون أزرق إيلا عند الشير بالماوس */
 }
 
 .artiz-article-card__excerpt {
-    font-size: 14px;
-    color: #555555;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    flex-grow: 1; /* دفع زر القراءة لأسفل الكارت دائماً */
+    font-size: 14px !important;
+    color: #475569 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 20px !important;
+    flex-grow: 1 !important; /* لدفع زر القراءة لأسفل البطاقة دائماً وتوحيد الأسطر */
 }
 
 .artiz-article-card__footer {
-    margin-top: auto;
+    margin-top: auto !important;
 }
 
 .artiz-article-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #0284c7 !important; /* لون أزرق مائي متناسق مع هوية إيلا للمياه */
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #0284c7 !important; /* اللون المعتمد لهوية متجر إيلا للمياه */
     text-decoration: none !important;
 }
 
-/* دعم شاشات الجوال */
+/* 4. تجاوب أبعاد الكارت والصور مع شاشات الجوال */
 @media screen and (max-width: 768px) {
     .artiz-article-card__image-link {
-        height: 180px !important;
+        height: 190px !important; /* تقليل حجم الصورة لتناسب الشاشات الصغيرة */
     }
     .artiz-article-card__title {
         font-size: 16px !important;
+    }
+    .artiz-article-card__content {
+        padding: 16px 12px !important;
     }
 }
 </style>
