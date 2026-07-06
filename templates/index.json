@@ -42,7 +42,7 @@
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
-        "bg_image_desktop": "shopify://shop_images/pc_background_banner.webp",
+        "bg_image_desktop": "shopify://shop_images/pc_background_banner_1.webp",
         "bg_image_mobile": "shopify://shop_images/Gadgets_Facebook_Cover_Design_Template_Free_PSD_by.png",
         "overlay_dark": false,
         "parent_pre_title": "آيلا للمياه",
