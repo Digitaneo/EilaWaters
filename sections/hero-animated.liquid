@@ -1,56 +1,91 @@
+{%- schema -%}
+{
+  "name": "بانر آبار المطور v6",
+  "settings": [
+    { "type": "header", "content": "الخلفيات" },
+    { "type": "image_picker", "id": "bg_image_desktop", "label": "صورة خلفية الكمبيوتر" },
+    { "type": "image_picker", "id": "bg_image_mobile", "label": "صورة خلفية الهاتف" },
+    { "type": "checkbox", "id": "overlay_dark", "label": "تفعيل تعتيم الخلفية", "default": false },
+    { "type": "text", "id": "parent_pre_title", "label": "العنوان العلوي الثابت", "default": "آيلا للمياه" },
+    { "type": "text", "id": "parent_button_text", "label": "نص الزر", "default": "تسوق الآن" },
+    { "type": "url", "id": "parent_button_link", "label": "رابط الزر" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "شريحة",
+      "settings": [
+        { "type": "textarea", "id": "slide_title", "label": "العنوان الرئيسي", "default": "نصلك بأسرع وقت" },
+        { "type": "image_picker", "id": "image_right", "label": "الصورة اليمنى" },
+        { "type": "image_picker", "id": "image_left", "label": "الصورة اليسرى" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "بانر آبار المطور v6",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{%- endschema -%}
+
 {%- style -%}
 .hero-canvas-section {
   position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
   overflow: hidden; background-size: cover; background-position: center; direction: rtl;
-  background-image: var(--hero-bg-desktop, none); padding: 100px 0; min-height: 500px;
+  padding: 100px 0; min-height: 450px;
+  background-image: var(--hero-bg-desktop);
 }
 .hero-canvas-container { position: relative; width: 100%; max-width: 1200px; display: flex; align-items: center; justify-content: center; }
 
-/* إصلاح التموضع: الصور تكون في الخلفية أو الأطراف */
-.hero-canvas-wing { position: absolute; bottom: 0; width: 35%; height: auto; z-index: 1; pointer-events: none; }
-.hero-canvas-wing--left { left: 0; }
-.hero-canvas-wing--right { right: 0; }
-.hero-canvas-img-box { width: 100%; max-width: 450px; }
-.hero-canvas-img-box img { width: 100%; height: auto; }
+/* إصلاح التموضع */
+.hero-canvas-wing { position: absolute; bottom: 0; width: 30%; height: auto; z-index: 2; pointer-events: none; }
+.hero-canvas-wing--left { left: 0; display: flex; justify-content: flex-start; }
+.hero-canvas-wing--right { right: 0; display: flex; justify-content: flex-end; }
+.hero-canvas-img-box { max-width: 400px; width: 100%; }
+.hero-canvas-img-box img { width: 100%; height: auto; display: block; }
 
-/* إصلاح النص والزر: ليكون فوق الصور */
-.hero-canvas-center { position: relative; z-index: 10; text-align: center; padding: 20px; }
-.hero-canvas-title { font-size: clamp(1.5rem, 3.5vw, 2.8rem); font-weight: 800; color: #1e293b; margin-bottom: 20px; }
+.hero-canvas-center { position: relative; z-index: 5; text-align: center; padding: 20px; }
+.hero-canvas-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: #1e293b; }
 .hero-canvas-btn { 
-  display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; 
-  text-decoration: none; border-radius: 50px; font-weight: 700; transition: 0.3s;
+  display: inline-block; padding: 12px 40px; background: #0f172a; color: #fff; 
+  text-decoration: none; border-radius: 50px; font-weight: 700;
 }
-.hero-canvas-btn:hover { background: #0284c7; }
 
 @media (max-width: 767px) {
-  .hero-canvas-section { padding-top: 50px; }
-  .hero-canvas-wing { width: 50%; }
-  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 180px; }
-  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 180px; }
-  .hero-canvas-title { font-size: 1.5rem; }
+  .hero-canvas-section { background-image: var(--hero-bg-mobile); padding-top: 50px; }
+  .hero-canvas-wing { width: 45%; }
+  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 160px; }
+  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 160px; }
 }
 {%- endstyle -%}
 
-<section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
+<section class="hero-canvas-section" 
+  style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); 
+         --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
+  
   <div class="hero-canvas-container">
     {%- for block in section.blocks -%}
-      <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" style="width: 100%; display: {% if forloop.first %}flex{% else %}none{% endif %}; align-items: center; justify-content: center;">
+      <div class="hero-canvas-slide" {{ block.shopify_attributes }}>
         
         <div class="hero-canvas-wing hero-canvas-wing--left">
           {%- if block.settings.image_left != blank -%}
-            <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left"></div>
+             <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left"></div>
           {%- endif -%}
         </div>
 
         <div class="hero-canvas-center">
           <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
-          <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+          <h1 class="hero-canvas-title">{{ block.settings.slide_title }}</h1>
           <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
         </div>
 
         <div class="hero-canvas-wing hero-canvas-wing--right">
           {%- if block.settings.image_right != blank -%}
-            <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right"></div>
+             <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right"></div>
           {%- endif -%}
         </div>
 
