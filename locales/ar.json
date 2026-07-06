@@ -38,6 +38,11 @@
       "shop_now": "تسوق الآن"
     }
   },
+  "blogs": {
+    "article": {
+      "all_tags": "كل الوسوم"
+    }
+  },
   "shopify": {
     "checkout": {
       "field_errors": {
