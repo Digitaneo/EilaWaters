@@ -44,3 +44,67 @@
     </div>
   </div>
 </article>s
+<style>
+/* 1. إخفاء عنوان الصفحة الرئيسي المقتطع */
+.main-blog h1, 
+.blog-title,
+[class*="blog"] h1 {
+    display: none !important;
+}
+
+/* 2. إخفاء منطقة أزرار الوسوم بالكامل (كل الوسوم / نصائح وإرشادات) */
+.artiz-blog__tags,
+.blog-tags,
+[class*="tags"] {
+    display: none !important;
+}
+
+/* 3. تحويل عرض التدوينات إلى شبكة من 3 أعمدة في السطر الواحد */
+/* تأكد من تطبيق هذا على الحاوية الأب التي تضم كروت المقالات */
+.blog-articles,
+.artiz-blog__articles,
+main .grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    padding: 40px 20px !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* 4. ضبط أبعاد كارت التدوينة والصورة لتبدو متناسقة وتلقائية */
+.artiz-article-card {
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.artiz-article-card__image-link {
+    width: 100% !important;
+    height: 220px !important; /* تحديد ارتفاع ثابت ومناسب للصور لتصبح متناسقة بجانب بعضها */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.artiz-article-card__image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* لضمان عدم تشوه الصورة عند قصها تلقائياً */
+}
+
+/* 5. دعم الهواتف المحمولة: تحويل العرض إلى تدوينة واحدة أو تدوينتين في السطر لتناسب الشاشات الصغيرة */
+@media screen and (max-width: 768px) {
+    .blog-articles,
+    .artiz-blog__articles,
+    main .grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* تدوينة واحدة في السطر للجوال */
+        gap: 16px !important;
+        padding: 20px 15px !important;
+    }
+    
+    .artiz-article-card__image-link {
+        height: 200px !important;
+    }
+}
+</style>
