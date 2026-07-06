@@ -1,10 +1,10 @@
 {% comment %}
-  Advanced Animated Hero Slider v5 - Strict Mobile Background Enforcement
+  Advanced Animated Hero Slider v6 - Precise Mobile Left Wing Adjustment
 {% endcomment %}
 
 {%- schema -%}
 {
-  "name": "بانر آبار المطور v5",
+  "name": "بانر آبار المطور v6",
   "settings": [
     {
       "type": "header",
@@ -75,7 +75,7 @@
   ],
   "presets": [
     {
-      "name": "بانر آبار المطور v5",
+      "name": "بانر آبار المطور v6",
       "blocks": [
         { "type": "slide" }
       ]
@@ -337,6 +337,15 @@
     max-height: 85%;
   }
 
+  /* ----------------------------------------------------------------------
+     تحريك الصورة اليسرى لأسفل في الجوال (تعديل الارتفاع والنزول من هنا)
+     ---------------------------------------------------------------------- */
+  .hero-canvas-wing--left {
+    /* قيمة Y الافتراضية للوسط هي -50%، قمنا بزيادتها إلى -35% لكي تنزل الصورة لأسفل. 
+       كلما قمت بزيادة النسبة (مثلاً إلى -30% أو -25%)، ستنزل الصورة أكثر لأسفل الجوال. */
+    transform: translateY(-35%) !important;
+  }
+
   .hero-canvas-img-box {
     max-width: 190px; 
   }
@@ -363,7 +372,6 @@
       {%- for block in section.blocks -%}
         <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
           
-          <!-- الجناح الأيسر -->
           <div class="hero-canvas-wing hero-canvas-wing--left">
             {%- if block.settings.image_left != blank -%}
               <div class="hero-canvas-img-box">
@@ -372,7 +380,6 @@
             {%- endif -%}
           </div>
 
-          <!-- الصندوق النصي -->
           <div class="hero-canvas-center">
             {%- if section.settings.parent_pre_title != blank -%}
               <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
@@ -389,7 +396,6 @@
             {%- endif -%}
           </div>
 
-          <!-- الجناح الأيمن -->
           <div class="hero-canvas-wing hero-canvas-wing--right">
             {%- if block.settings.image_right != blank -%}
               <div class="hero-canvas-img-box">
@@ -403,7 +409,6 @@
 
     </div>
 
-    <!-- نقاط التحكم السفلية -->
     {%- if section.blocks.size > 1 -%}
       <div class="hero-canvas-dots">
         {%- for block in section.blocks -%}
