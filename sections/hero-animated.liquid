@@ -2,11 +2,9 @@
 {
   "name": "بانر آبار المطور v6",
   "settings": [
-    { "type": "header", "content": "الخلفيات" },
-    { "type": "image_picker", "id": "bg_image_desktop", "label": "صورة خلفية الكمبيوتر" },
-    { "type": "image_picker", "id": "bg_image_mobile", "label": "صورة خلفية الهاتف" },
-    { "type": "checkbox", "id": "overlay_dark", "label": "تفعيل تعتيم الخلفية", "default": false },
-    { "type": "text", "id": "parent_pre_title", "label": "العنوان العلوي الثابت", "default": "آيلا للمياه" },
+    { "type": "image_picker", "id": "bg_image_desktop", "label": "خلفية الكمبيوتر" },
+    { "type": "image_picker", "id": "bg_image_mobile", "label": "خلفية الهاتف" },
+    { "type": "text", "id": "parent_pre_title", "label": "العنوان العلوي", "default": "آيلا للمياه" },
     { "type": "text", "id": "parent_button_text", "label": "نص الزر", "default": "تسوق الآن" },
     { "type": "url", "id": "parent_button_link", "label": "رابط الزر" }
   ],
@@ -15,7 +13,7 @@
       "type": "slide",
       "name": "شريحة",
       "settings": [
-        { "type": "textarea", "id": "slide_title", "label": "العنوان الرئيسي", "default": "نصلك بأسرع وقت" },
+        { "type": "textarea", "id": "slide_title", "label": "العنوان الرئيسي" },
         { "type": "image_picker", "id": "image_right", "label": "الصورة اليمنى" },
         { "type": "image_picker", "id": "image_left", "label": "الصورة اليسرى" }
       ]
@@ -24,9 +22,7 @@
   "presets": [
     {
       "name": "بانر آبار المطور v6",
-      "blocks": [
-        { "type": "slide" }
-      ]
+      "blocks": [{ "type": "slide" }]
     }
   ]
 }
@@ -34,61 +30,48 @@
 
 {%- style -%}
 .hero-canvas-section {
-  position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
-  overflow: hidden; background-size: cover; background-position: center; direction: rtl;
-  padding: 100px 0; min-height: 450px;
+  position: relative; width: 100%; min-height: 500px;
+  background-size: cover; background-position: center;
   background-image: var(--hero-bg-desktop);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
 }
-.hero-canvas-container { position: relative; width: 100%; max-width: 1200px; display: flex; align-items: center; justify-content: center; }
-
-/* إصلاح التموضع */
-.hero-canvas-wing { position: absolute; bottom: 0; width: 30%; height: auto; z-index: 2; pointer-events: none; }
-.hero-canvas-wing--left { left: 0; display: flex; justify-content: flex-start; }
-.hero-canvas-wing--right { right: 0; display: flex; justify-content: flex-end; }
-.hero-canvas-img-box { max-width: 400px; width: 100%; }
-.hero-canvas-img-box img { width: 100%; height: auto; display: block; }
-
-.hero-canvas-center { position: relative; z-index: 5; text-align: center; padding: 20px; }
-.hero-canvas-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: #1e293b; }
-.hero-canvas-btn { 
-  display: inline-block; padding: 12px 40px; background: #0f172a; color: #fff; 
-  text-decoration: none; border-radius: 50px; font-weight: 700;
+.hero-wrapper {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  width: 100%; max-width: 1200px;
 }
+.hero-wing { width: 25%; display: flex; align-items: flex-end; }
+.hero-wing--left { justify-content: flex-start; }
+.hero-wing--right { justify-content: flex-end; }
+.hero-wing img { max-width: 350px; width: 100%; height: auto; }
+
+.hero-center { width: 50%; text-align: center; z-index: 5; margin-bottom: 50px; }
+.hero-title { font-size: 2.5rem; font-weight: 800; color: #1e293b; margin: 20px 0; }
+.hero-btn { display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; border-radius: 50px; text-decoration: none; font-weight: bold; }
 
 @media (max-width: 767px) {
-  .hero-canvas-section { background-image: var(--hero-bg-mobile); padding-top: 50px; }
-  .hero-canvas-wing { width: 45%; }
-  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 160px; }
-  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 160px; }
+  .hero-wrapper { flex-direction: column; align-items: center; }
+  .hero-wing { width: 100%; justify-content: center; order: 2; }
+  .hero-center { width: 100%; order: 1; margin-bottom: 20px; }
+  .hero-wing img { max-width: 180px; }
 }
 {%- endstyle -%}
 
-<section class="hero-canvas-section" 
-  style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); 
-         --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
-  
-  <div class="hero-canvas-container">
+<section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
+  <div class="hero-wrapper">
     {%- for block in section.blocks -%}
-      <div class="hero-canvas-slide" {{ block.shopify_attributes }}>
-        
-        <div class="hero-canvas-wing hero-canvas-wing--left">
-          {%- if block.settings.image_left != blank -%}
-             <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left"></div>
-          {%- endif -%}
-        </div>
+      <div class="hero-wing hero-wing--left">
+        {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left">{%- endif -%}
+      </div>
 
-        <div class="hero-canvas-center">
-          <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
-          <h1 class="hero-canvas-title">{{ block.settings.slide_title }}</h1>
-          <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
-        </div>
+      <div class="hero-center">
+        <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
+        <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
+        <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
+      </div>
 
-        <div class="hero-canvas-wing hero-canvas-wing--right">
-          {%- if block.settings.image_right != blank -%}
-             <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right"></div>
-          {%- endif -%}
-        </div>
-
+      <div class="hero-wing hero-wing--right">
+        {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right">{%- endif -%}
       </div>
     {%- endfor -%}
   </div>
