@@ -1,457 +1,105 @@
-{% comment %}
-  Advanced Animated Hero Slider v6 - Precise Mobile Left Wing Adjustment
-{% endcomment %}
-
 {%- schema -%}
 {
   "name": "بانر آبار المطور v6",
   "settings": [
-    {
-      "type": "header",
-      "content": "الخلفيات المخصصة"
-    },
-    {
-      "type": "image_picker",
-      "id": "bg_image_desktop",
-      "label": "صورة خلفية الكمبيوتر"
-    },
-    {
-      "type": "image_picker",
-      "id": "bg_image_mobile",
-      "label": "صورة خلفية الهاتف"
-    },
-    {
-      "type": "checkbox",
-      "id": "overlay_dark",
-      "label": "تفعيل تعتيم الخلفية (لزيادة وضوح النص)",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "العناصر الثابتة (الأب)"
-    },
-    {
-      "type": "text",
-      "id": "parent_pre_title",
-      "label": "اسم المتجر الثابت",
-      "default": "آيلا للمياه"
-    },
-    {
-      "type": "text",
-      "id": "parent_button_text",
-      "label": "نص الزر الثابت",
-      "default": "تسوق الآن"
-    },
-    {
-      "type": "url",
-      "id": "parent_button_link",
-      "label": "رابط الزر الثابت",
-      "default": "/collections/all"
-    }
+    { "type": "header", "content": "الخلفيات المخصصة" },
+    { "type": "image_picker", "id": "bg_image_desktop", "label": "صورة خلفية الكمبيوتر" },
+    { "type": "image_picker", "id": "bg_image_mobile", "label": "صورة خلفية الهاتف" },
+    { "type": "checkbox", "id": "overlay_dark", "label": "تفعيل تعتيم الخلفية", "default": false },
+    { "type": "header", "content": "العناصر الثابتة" },
+    { "type": "text", "id": "parent_pre_title", "label": "اسم المتجر الثابت", "default": "آيلا للمياه" },
+    { "type": "text", "id": "parent_button_text", "label": "نص الزر الثابت", "default": "تسوق الآن" },
+    { "type": "url", "id": "parent_button_link", "label": "رابط الزر الثابت", "default": "/collections/all" }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "شريحة بانر (ابن)",
+      "name": "شريحة بانر",
       "settings": [
-        {
-          "type": "textarea",
-          "id": "slide_title",
-          "label": "العنوان الرئيسي المتغير",
-          "default": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل."
-        },
-        {
-          "type": "image_picker",
-          "id": "image_right",
-          "label": "الصورة اليمنى (PNG)"
-        },
-        {
-          "type": "image_picker",
-          "id": "image_left",
-          "label": "الصورة اليسرى (PNG)"
-        }
+        { "type": "textarea", "id": "slide_title", "label": "العنوان الرئيسي", "default": "نصلك بأسرع وقت" },
+        { "type": "image_picker", "id": "image_right", "label": "الصورة اليمنى (PNG)" },
+        { "type": "image_picker", "id": "image_left", "label": "الصورة اليسرى (PNG)" }
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "بانر آبار المطور v6",
-      "blocks": [
-        { "type": "slide" }
-      ]
-    }
-  ]
+  "presets": [{ "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }]
 }
 {%- endschema -%}
 
 {%- style -%}
 .hero-canvas-section {
-  position: relative;
-  width: 100%;
-  min-height: auto; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  direction: rtl;
-  
-  /* تعيين خلفية الكمبيوتر كخيار افتراضي للشاشات الكبيرة */
-  background-image: var(--hero-bg-desktop, none);
-  
-  padding-top: 200px; 
-  padding-bottom: 60px;
+  position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background-size: cover; background-position: center; direction: rtl;
+  background-image: var(--hero-bg-desktop, none); padding-top: 100px; padding-bottom: 0px; min-height: 500px;
 }
+.hero-canvas-container { position: relative; width: 100%; max-width: 1200px; }
 
-.hero-canvas-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-.hero-canvas-section[data-overlay="true"]::before {
-  opacity: 1;
-}
+/* وضع الصور في الأسفل */
+.hero-canvas-wing { position: absolute; bottom: 0; width: 30%; height: auto; display: flex; z-index: 5; pointer-events: none; }
+.hero-canvas-wing--left { left: 0; justify-content: flex-start; }
+.hero-canvas-wing--right { right: 0; justify-content: flex-end; }
 
-.hero-canvas-container {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  z-index: 5;
-}
+.hero-canvas-img-box { width: 100%; max-width: 480px; opacity: 0; transition: all 0.8s ease; }
+.hero-canvas-img-box img { width: 100%; height: auto; display: block; }
 
-.hero-canvas-slider {
-  position: relative;
-  width: 100%;
-  min-height: auto; 
-}
+/* تحريك الصور */
+.hero-canvas-slide.is-active .hero-canvas-wing--left .hero-canvas-img-box { opacity: 1; animation: slideInLeft 0.8s forwards; }
+.hero-canvas-slide.is-active .hero-canvas-wing--right .hero-canvas-img-box { opacity: 1; animation: slideInRight 0.8s forwards; }
 
-.hero-canvas-slide {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  z-index: 3;
-}
+@keyframes slideInLeft { 0% { transform: translateX(-100px); } 100% { transform: translateX(0); } }
+@keyframes slideInRight { 0% { transform: translateX(100px); } 100% { transform: translateX(0); } }
 
-.hero-canvas-slide.is-active {
-  position: relative;
-  opacity: 1;
-  visibility: visible;
-  z-index: 4;
-}
+/* المحتوى النصي */
+.hero-canvas-center { text-align: center; z-index: 10; padding: 20px; }
+.hero-canvas-title { font-size: clamp(1.5rem, 3.5vw, 2.8rem); font-weight: 800; margin-bottom: 20px; }
 
-.hero-canvas-center {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 20; 
-  padding: 0 20px;
-  pointer-events: auto;
-}
-
-.hero-canvas-pre-title {
-  display: block;
-  font-family: 'Cairo', sans-serif;
-  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-  font-weight: 700;
-  color: #0284c7; 
-  margin-top: 0px;
-  margin-bottom: 12px;
-  z-index: 25;
-}
-.hero-canvas-section[data-overlay="true"] .hero-canvas-pre-title {
-  color: #38bdf8;
-}
-
-.hero-canvas-title {
-  font-family: 'Cairo', sans-serif;
-  font-size: clamp(1.5rem, 3.8vw, 3rem);
-  font-weight: 800;
-  line-height: 1.4;
-  color: #1e293b;
-  margin: 0 0 20px 0;
-  transform: translateY(15px);
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hero-canvas-section[data-overlay="true"] .hero-canvas-title {
-  color: #ffffff;
-}
-
-.hero-canvas-btn-holder {
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-.hero-canvas-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem 3.2rem;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 700;
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  color: #ffffff;
-  background-color: #0f172a;
-  border-radius: 50px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-.hero-canvas-btn:hover {
-  background-color: #0284c7;
-  transform: translateY(-3px);
-}
-
-.hero-canvas-wing {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 35%; 
-  height: auto;
-  max-height: 95%;
-  display: flex;
-  align-items: center;
-  z-index: 5; 
-  pointer-events: none; 
-}
-
-.hero-canvas-wing--left {
-  left: 0;
-  justify-content: flex-start;
-}
-
-.hero-canvas-wing--right {
-  right: 0;
-  justify-content: flex-end;
-}
-
-.hero-canvas-img-box {
-  width: 100%;
-  max-width: 420px; 
-  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1));
-  opacity: 0;
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-canvas-img-box img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-}
-
-.hero-canvas-slide.is-active .hero-canvas-title {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.hero-canvas-slide.is-active .hero-canvas-wing--left .hero-canvas-img-box {
-  opacity: 1;
-  animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.hero-canvas-slide.is-active .hero-canvas-wing--right .hero-canvas-img-box {
-  opacity: 1;
-  animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideInLeft {
-  0% { opacity: 0; transform: translateX(-60px) scale(0.95); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
-}
-
-@keyframes slideInRight {
-  0% { opacity: 0; transform: translateX(60px) scale(0.95); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
-}
-
-.hero-canvas-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 25px;
-  position: relative;
-  z-index: 30;
-}
-
-.hero-canvas-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(30, 41, 59, 0.2);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.3s ease;
-}
-.hero-canvas-section[data-overlay="true"] .hero-canvas-dot {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.hero-canvas-dot.is-active {
-  background: #0284c7;
-  width: 24px;
-  border-radius: 6px;
-}
-
-/* ==========================================================================
-   تعديلات وضع الجوال - فرض تغيير الخلفية بشكل صارم ومباشر
-   ========================================================================== */
 @media (max-width: 767px) {
-  .hero-canvas-section {
-    /* فرض استدعاء صورة الموبايل مع تصريح !important لكسر أي كاش أو تداخل للمتصفح */
-    background-image: var(--hero-bg-mobile, var(--hero-bg-desktop, none)) !important;
-    min-height: auto; 
-    padding-top: 200px !important; 
-    padding-bottom: 50px !important;
-  }
-
-  .hero-canvas-slider {
-    min-height: auto;
-  }
-
-  .hero-canvas-pre-title {
-    margin-top: 15px !important; 
-    margin-bottom: 10px;
-  }
-
-  .hero-canvas-wing {
-    width: 45%; 
-    max-height: 85%;
-  }
-
-  /* ----------------------------------------------------------------------
-     تحريك الصورة اليسرى لأسفل في الجوال (تعديل الارتفاع والنزول من هنا)
-     ---------------------------------------------------------------------- */
-  .hero-canvas-wing--left {
-    /* قيمة Y الافتراضية للوسط هي -50%، قمنا بزيادتها إلى -35% لكي تنزل الصورة لأسفل. 
-       كلما قمت بزيادة النسبة (مثلاً إلى -30% أو -25%)، ستنزل الصورة أكثر لأسفل الجوال. */
-    transform: translateY(0%) !important;
-  }
-
-  .hero-canvas-img-box {
-    max-width: 190px; 
-  }
-
-  .hero-canvas-center {
-    max-width: 100%;
-    padding: 0 5px;
-  }
-  
-  .hero-canvas-dots {
-    margin-top: 15px; 
-  }
+  .hero-canvas-section { background-image: var(--hero-bg-mobile, var(--hero-bg-desktop)) !important; padding-top: 80px; }
+  .hero-canvas-wing { width: 45%; }
+  .hero-canvas-wing--left .hero-canvas-img-box { max-width: 220px; margin-left: -10px; }
+  .hero-canvas-wing--right .hero-canvas-img-box { max-width: 220px; }
+  .hero-canvas-slide { flex-direction: column; }
 }
 {%- endstyle -%}
 
-<section class="hero-canvas-section" 
-         data-overlay="{{ section.settings.overlay_dark }}"
-         style="{% if section.settings.bg_image_desktop != blank %}--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2400 }}');{% endif %}
-                {% if section.settings.bg_image_mobile != blank %}--hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 1000 }}');{% endif %}">
-
+<section class="hero-canvas-section" data-overlay="{{ section.settings.overlay_dark }}"
+  style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
+  
   <div class="hero-canvas-container">
     <div class="hero-canvas-slider">
-      
       {%- for block in section.blocks -%}
-        <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-          
+        <div class="hero-canvas-slide {% if forloop.first %}is-active{% endif %}" style="{% unless forloop.first %}display:none;{% endunless %}">
           <div class="hero-canvas-wing hero-canvas-wing--left">
             {%- if block.settings.image_left != blank -%}
-              <div class="hero-canvas-img-box">
-                <img src="{{ block.settings.image_left | image_url: width: 700 }}" alt="صورة اليسار" loading="lazy">
-              </div>
+              <div class="hero-canvas-img-box"><img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Image"></div>
             {%- endif -%}
           </div>
-
+          
           <div class="hero-canvas-center">
-            {%- if section.settings.parent_pre_title != blank -%}
-              <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
-            {%- endif -%}
-
-            {%- if block.settings.slide_title != blank -%}
-              <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
-            {%- endif -%}
-
-            {%- if section.settings.parent_button_text != blank and section.settings.parent_button_link != blank -%}
-              <div class="hero-canvas-btn-holder">
-                <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
-              </div>
-            {%- endif -%}
+            <span class="hero-canvas-pre-title">{{ section.settings.parent_pre_title }}</span>
+            <h1 class="hero-canvas-title">{{ block.settings.slide_title | newline_to_br }}</h1>
+            <a href="{{ section.settings.parent_button_link }}" class="hero-canvas-btn">{{ section.settings.parent_button_text }}</a>
           </div>
 
           <div class="hero-canvas-wing hero-canvas-wing--right">
             {%- if block.settings.image_right != blank -%}
-              <div class="hero-canvas-img-box">
-                <img src="{{ block.settings.image_right | image_url: width: 700 }}" alt="صورة اليمين" loading="lazy">
-              </div>
+              <div class="hero-canvas-img-box"><img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Image"></div>
             {%- endif -%}
           </div>
-
         </div>
       {%- endfor -%}
-
     </div>
-
-    {%- if section.blocks.size > 1 -%}
-      <div class="hero-canvas-dots">
-        {%- for block in section.blocks -%}
-          <button class="hero-canvas-dot {% if forloop.first %}is-active{% endif %}" data-slide-to="{{ forloop.index0 }}" aria-label="شريحة {{ forloop.index }}"></button>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
   </div>
-
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const section = document.querySelector('.hero-canvas-section');
-    if (!section) return;
-
-    const slides = section.querySelectorAll('.hero-canvas-slide');
-    const dots = section.querySelectorAll('.hero-canvas-dot');
-    let currentSlide = 0;
-    const totalSlides = slides.length;
-
-    function changeSlide(index) {
-      slides[currentSlide].classList.remove('is-active');
-      dots[currentSlide].classList.remove('is-active');
-      
-      currentSlide = index;
-      
-      slides[currentSlide].classList.add('is-active');
-      dots[currentSlide].classList.add('is-active');
-    }
-
-    dots.forEach(dot => {
-      dot.addEventListener('click', function() {
-        const target = parseInt(this.getAttribute('data-slide-to'));
-        changeSlide(target);
-      });
-    });
-
-    if (totalSlides > 1) {
-      setInterval(() => {
-        let next = (currentSlide + 1) % totalSlides;
-        changeSlide(next);
-      }, 5000);
-    }
-  });
+  // تفعيل تبديل الشرائح البسيط
+  setInterval(() => {
+    const active = document.querySelector('.hero-canvas-slide.is-active');
+    let next = active.nextElementSibling || document.querySelector('.hero-canvas-slide');
+    active.classList.remove('is-active');
+    active.style.display = 'none';
+    next.classList.add('is-active');
+    next.style.display = 'flex';
+  }, 5000);
 </script>
