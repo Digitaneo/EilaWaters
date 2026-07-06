@@ -1,29 +1,52 @@
 {{ 'artiz-blog.css' | asset_url | stylesheet_tag }}
 
+<style>
+  /* 1. إخفاء عنوان الصفحة الرئيسي المقتطع وأزرار التصنيفات والوسوم تماماً */
+  .artiz-blog-page__title,
+  .artiz-blog__tags,
+  .artiz-blog__tags-list {
+    display: none !important;
+  }
+
+  /* 2. إضافة مسافات أمان جانبية للصفحة بالكامل ومنع الالتصاق بالحواف */
+  .artiz-blog-page {
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    padding: 40px 24px !important; /* مسافة أمان ممتازة يميناً ويساراً */
+    box-sizing: border-box !important;
+  }
+
+  /* 3. تحويل شبكة المقالات إلى 3 أعمدة (3 مقالات في السطر) */
+  .artiz-blog__grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 30px !important; /* تباعد بين المقالات */
+    margin-top: 20px !important;
+  }
+
+  /* 4. جعل التصميم متجاوباً بالكامل مع الشاشات المختلفة */
+  @media screen and (max-width: 992px) {
+    .artiz-blog__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* مقالين في السطر للتابلت */
+    }
+    .artiz-blog-page {
+      padding: 30px 20px !important;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .artiz-blog__grid {
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* مقال واحد في السطر للجوال */
+      gap: 20px !important;
+    }
+    .artiz-blog-page {
+      padding: 20px 16px !important; /* مسافة حماية مخصصة للجوال */
+    }
+  }
+</style>
+
 <div class="artiz-blog-page" data-section-id="{{ section.id }}">
-  <h1 class="artiz-blog-page__title">{{ section.settings.heading | default: blog.title }}</h1>
-
-  {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
-    <div class="artiz-blog__tags">
-      <ul class="artiz-blog__tags-list">
-        <li class="artiz-blog__tag-item">
-          <a href="{{ blog.url }}" class="artiz-blog__tag-link {% if current_tags == blank %}artiz-blog__tag-link--active{% endif %}">
-            {{ 'blogs.article.all_tags' | t | default: 'All' }}
-          </a>
-        </li>
-        {%- for tag in blog.all_tags -%}
-          <li class="artiz-blog__tag-item">
-            {%- if current_tags contains tag -%}
-              <span class="artiz-blog__tag-link artiz-blog__tag-link--active">{{ tag | link_to_remove_tag: tag }}</span>
-            {%- else -%}
-              <span class="artiz-blog__tag-link">{{ tag | link_to_add_tag: tag }}</span>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    </div>
-  {%- endif -%}
-
+  
   {%- paginate blog.articles by section.settings.posts_per_page -%}
     <div class="artiz-blog__grid">
       {%- for article in blog.articles -%}
@@ -50,42 +73,6 @@
     {%- endif -%}
   {%- endpaginate -%}
 </div>
-
-<style>
-.artiz-blog__tags {
-  margin-bottom: 3rem;
-  display: flex;
-  justify-content: center;
-}
-.artiz-blog__tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  justify-content: center;
-}
-.artiz-blog__tag-link, .artiz-blog__tag-link a {
-  display: inline-block;
-  padding: 0.5rem 1.2rem;
-  border-radius: 20px;
-  background: #f5f5f5;
-  color: #666;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-.artiz-blog__tag-link:hover, .artiz-blog__tag-link a:hover {
-  background: #eee;
-  color: #1a1a1a;
-}
-.artiz-blog__tag-link--active, .artiz-blog__tag-link--active a {
-  background: #1a1a1a !important;
-  color: #fff !important;
-}
-</style>
 
 {% schema %}
 {
