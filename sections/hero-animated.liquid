@@ -45,18 +45,33 @@
 .hero-wing--right { right: 0; display: flex; justify-content: flex-end; }
 .hero-wing img { max-width: 350px; width: 100%; height: auto; }
 
+/* إعدادات الحركة */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-150px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(150px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.hero-wing--left { animation: slideInLeft 1.2s ease-out forwards; }
+.hero-wing--right { animation: slideInRight 1.2s ease-out forwards; }
+
 @media (max-width: 767px) {
   .hero-canvas-section { background-image: var(--hero-bg-mobile); }
-  .hero-wing { width: 65%; }
+  .hero-wing { width: 50%; }
   .hero-title { font-size: 1.5rem; }
-  .hero-wing--left { left: 0; z-index: 6;
 }
 {%- endstyle -%}
 
 <section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
   {%- for block in section.blocks -%}
     <div class="hero-wing hero-wing--left">
-      {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left">{%- endif -%}
+      {%- if block.settings.image_left != blank -%}
+        <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Wing" loading="lazy">
+      {%- endif -%}
     </div>
 
     <div class="hero-center">
@@ -66,7 +81,9 @@
     </div>
 
     <div class="hero-wing hero-wing--right">
-      {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right">{%- endif -%}
+      {%- if block.settings.image_right != blank -%}
+        <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Wing" loading="lazy">
+      {%- endif -%}
     </div>
   {%- endfor -%}
 </section>
