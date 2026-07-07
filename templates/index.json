@@ -28,25 +28,16 @@
     "hero_animated_Az7nUR": {
       "type": "hero-animated",
       "blocks": {
-        "slide_KDMCMe": {
-          "type": "slide",
-          "settings": {
-            "slide_title": "نصلك بأسرع وقت ونوفر عليك 22222222222225555",
-            "image_right": "shopify://shop_images/MilesWaterCarton200ml.webp",
-            "image_left": "shopify://shop_images/womensa.webp"
-          }
-        },
         "slide_mdCCGy": {
           "type": "slide",
           "settings": {
             "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
-            "image_right": "shopify://shop_images/Lift1.webp",
+            "image_right": "shopify://shop_images/image_23.webp",
             "image_left": "shopify://shop_images/womensa.webp"
           }
         }
       },
       "block_order": [
-        "slide_KDMCMe",
         "slide_mdCCGy"
       ],
       "name": "بانر البطل المتحرك",
