@@ -24,31 +24,52 @@
 {%- endschema -%}
 
 {%- style -%}
-.hero-canvas-section { position: relative; width: 100%; min-height: 590px; overflow: hidden; background-size: cover; background-position: center; background-image: var(--hero-bg-desktop); }
-.slide-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s ease; }
-/* تفعيل الشريحة الأولى افتراضياً */
-.slide-container:first-child { opacity: 1; visibility: visible; }
+.hero-canvas-section { 
+  position: relative; width: 100%; min-height: 590px; overflow: hidden; 
+  background-size: cover; background-position: center; 
+  background-image: var(--hero-bg-desktop);
+}
+
+.slide-container { 
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+  display: flex; align-items: center; justify-content: center; 
+  opacity: 0; transition: opacity 0.4s ease-in-out;
+  pointer-events: none;
+}
+
+.slide-container.active { opacity: 1; pointer-events: auto; }
 
 .hero-center { width: 100%; max-width: 700px; text-align: center; z-index: 10; }
-.hero-wing { position: absolute; bottom: 0; z-index: 5; pointer-events: none; transition: transform 1s ease-out, opacity 1s ease; }
-.hero-wing--left { left: 0; transform: translateX(-100px); opacity: 0; }
-.hero-wing--right { right: 0; transform: translateX(100px); opacity: 0; }
+.hero-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #1e293b; margin: 20px 0; }
+.hero-btn { display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; border-radius: 50px; text-decoration: none; font-weight: bold; }
 
-/* عند ظهور الشريحة، تتحرك الصور */
-.slide-container.active .hero-wing--left { transform: translateX(0); opacity: 1; }
+.hero-wing { 
+  position: absolute; bottom: 0; z-index: 5; pointer-events: none; 
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s; 
+}
+
+.hero-wing--left { left: 0; transform: translateX(-80px); opacity: 0; }
+.hero-wing--right { right: 0; transform: translateX(80px); opacity: 0; }
+
+.slide-container.active .hero-wing--left,
 .slide-container.active .hero-wing--right { transform: translateX(0); opacity: 1; }
+
+.hero-wing img { max-width: 350px; width: 100%; height: auto; }
 
 @media (max-width: 767px) {
   .hero-canvas-section { background-image: var(--hero-bg-mobile); }
-  .hero-wing { width: 50%; }
+  .hero-wing { width: 45%; }
+  .hero-title { font-size: 1.5rem; }
 }
 {%- endstyle -%}
 
 <section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
   {%- for block in section.blocks -%}
-    <div class="slide-container {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+    <div class="slide-container {% if forloop.first %}active{% endif %}">
       <div class="hero-wing hero-wing--left">
-        {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+        {%- if block.settings.image_left != blank -%}
+          <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Wing" loading="lazy">
+        {%- endif -%}
       </div>
 
       <div class="hero-center">
@@ -58,20 +79,24 @@
       </div>
 
       <div class="hero-wing hero-wing--right">
-        {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+        {%- if block.settings.image_right != blank -%}
+          <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Wing" loading="lazy">
+        {%- endif -%}
       </div>
     </div>
   {%- endfor -%}
 </section>
 
 <script>
-  // تبديل الشرائح تلقائياً كل 5 ثوانٍ
-  let currentSlide = 0;
-  const slides = document.querySelectorAll('.slide-container');
-  
-  setInterval(() => {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
-  }, 5000);
+  (function() {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-container');
+    if (slides.length <= 1) return;
+
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 4500); // الوقت الإجمالي قبل الانتقال التلقائي
+  })();
 </script>
