@@ -541,7 +541,11 @@
         "shipping_used_as_billing_notice": "سيتم استخدام هذا العنوان أيضًا كعنوان إرسال الفواتير لهذا الطلب.",
         "shipping_method_title": "طريقة الشحن",
         "free_rate_label": "مجاني",
-        "title": "الشحن"
+        "title": "الشحن",
+        "estimated_delivery_date": {
+          "other": "أيام عمل {{ count }}"
+        },
+        "estimated_delivery_date_range": "ايام عمل {{ maximum }} الى {{ minimum }}"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
