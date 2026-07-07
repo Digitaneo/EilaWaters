@@ -60,6 +60,12 @@
   .hero-canvas-section { background-image: var(--hero-bg-mobile); }
   .hero-title { font-size: 1.5rem; }
 }
+/* تعديل الصورة اليمنى فقط في شاشات الكمبيوتر */
+@media screen and (min-width: 1024px) {
+    .hero-wing.hero-wing--right img {
+        max-width: 450px;
+    }
+}
 {%- endstyle -%}
 
 <section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
