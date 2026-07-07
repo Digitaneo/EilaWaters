@@ -32,7 +32,7 @@
           "type": "slide",
           "settings": {
             "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
-            "image_right": "shopify://shop_images/image_23.webp",
+            "image_right": "shopify://shop_images/image_24.webp",
             "image_left": "shopify://shop_images/womensa.webp"
           }
         }
@@ -42,7 +42,7 @@
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
-        "bg_image_desktop": "shopify://shop_images/PC_Bg.webp",
+        "bg_image_desktop": "shopify://shop_images/BG.webp",
         "bg_image_mobile": "shopify://shop_images/image_22.webp",
         "parent_pre_title": "آيلا للمياه",
         "parent_button_text": "تسوق الآن",
