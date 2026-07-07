@@ -543,9 +543,9 @@
         "free_rate_label": "مجاني",
         "title": "الشحن",
         "estimated_delivery_date": {
-          "other": "أيام عمل {{ count }}"
+          "other": "{{ count }} أيام عمل"
         },
-        "estimated_delivery_date_range": "ايام عمل {{ maximum }} الى {{ minimum }}"
+        "estimated_delivery_date_range": "{{ minimum }} الى {{ maximum }} ايام عمل"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
