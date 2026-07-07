@@ -19,71 +19,59 @@
       ]
     }
   ],
-  "presets": [
-    { "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }
-  ]
+  "presets": [{ "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }]
 }
 {%- endschema -%}
 
 {%- style -%}
-.hero-canvas-section {
-  position: relative; width: 100%; min-height: 590px;
-  background-size: cover; background-position: center;
-  background-image: var(--hero-bg-desktop);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
+.hero-canvas-section { position: relative; width: 100%; min-height: 590px; overflow: hidden; background-size: cover; background-position: center; background-image: var(--hero-bg-desktop); }
+.slide-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.5s ease; }
+/* تفعيل الشريحة الأولى افتراضياً */
+.slide-container:first-child { opacity: 1; visibility: visible; }
 
-/* النص في المنتصف دائماً */
 .hero-center { width: 100%; max-width: 700px; text-align: center; z-index: 10; }
-.hero-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #1e293b; margin: 20px 0; padding-bottom: 54px; }
-.hero-btn { display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; border-radius: 50px; text-decoration: none; font-weight: bold; }
+.hero-wing { position: absolute; bottom: 0; z-index: 5; pointer-events: none; transition: transform 1s ease-out, opacity 1s ease; }
+.hero-wing--left { left: 0; transform: translateX(-100px); opacity: 0; }
+.hero-wing--right { right: 0; transform: translateX(100px); opacity: 0; }
 
-/* الصور مثبتة في زوايا البانر */
-.hero-wing { position: absolute; bottom: 0; z-index: 5; pointer-events: none; }
-.hero-wing--left { left: 0; }
-.hero-wing--right { right: 0; display: flex; justify-content: flex-end; }
-.hero-wing img { max-width: 350px; width: 100%; height: auto; }
-
-/* إعدادات الحركة */
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-150px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(150px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.hero-wing--left { animation: slideInLeft 1.2s ease-out forwards; }
-.hero-wing--right { animation: slideInRight 1.2s ease-out forwards; }
+/* عند ظهور الشريحة، تتحرك الصور */
+.slide-container.active .hero-wing--left { transform: translateX(0); opacity: 1; }
+.slide-container.active .hero-wing--right { transform: translateX(0); opacity: 1; }
 
 @media (max-width: 767px) {
   .hero-canvas-section { background-image: var(--hero-bg-mobile); }
   .hero-wing { width: 50%; }
-  .hero-title { font-size: 1.5remA; }
 }
 {%- endstyle -%}
 
 <section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
   {%- for block in section.blocks -%}
-    <div class="hero-wing hero-wing--left">
-      {%- if block.settings.image_left != blank -%}
-        <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Wing" loading="lazy">
-      {%- endif -%}
-    </div>
+    <div class="slide-container {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+      <div class="hero-wing hero-wing--left">
+        {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+      </div>
 
-    <div class="hero-center">
-      <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
-      <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
-      <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
-    </div>
+      <div class="hero-center">
+        <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
+        <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
+        <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
+      </div>
 
-    <div class="hero-wing hero-wing--right">
-      {%- if block.settings.image_right != blank -%}
-        <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Wing" loading="lazy">
-      {%- endif -%}
+      <div class="hero-wing hero-wing--right">
+        {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+      </div>
     </div>
   {%- endfor -%}
 </section>
+
+<script>
+  // تبديل الشرائح تلقائياً كل 5 ثوانٍ
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide-container');
+  
+  setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }, 5000);
+</script>
