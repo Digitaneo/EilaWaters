@@ -28,7 +28,7 @@
     "hero_animated_Az7nUR": {
       "type": "hero-animated",
       "blocks": {
-        "slide_FHchCy": {
+        "slide_KDMCMe": {
           "type": "slide",
           "settings": {
             "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
@@ -36,7 +36,7 @@
             "image_left": "shopify://shop_images/womensa.webp"
           }
         },
-        "slide_KDMCMe": {
+        "slide_mdCCGy": {
           "type": "slide",
           "settings": {
             "slide_title": "نصلك بأسرع وقت ونوفر عليك عناء البحث وتعب التوصيل.",
@@ -46,8 +46,8 @@
         }
       },
       "block_order": [
-        "slide_FHchCy",
-        "slide_KDMCMe"
+        "slide_KDMCMe",
+        "slide_mdCCGy"
       ],
       "name": "بانر البطل المتحرك",
       "settings": {
