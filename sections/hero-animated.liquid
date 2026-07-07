@@ -19,71 +19,59 @@
       ]
     }
   ],
-  "presets": [
-    { "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }
-  ]
+  "presets": [{ "name": "بانر آبار المطور v6", "blocks": [{ "type": "slide" }] }]
 }
 {%- endschema -%}
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 {%- style -%}
-.hero-canvas-section {
-  position: relative; width: 100%; min-height: 590px;
-  background-size: cover; background-position: center;
-  background-image: var(--hero-bg-desktop);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
+.hero-canvas-section { position: relative; width: 100%; min-height: 590px; overflow: hidden; background-size: cover; background-position: center; }
+.swiper-slide { display: flex; align-items: center; justify-content: center; position: relative; }
 
-/* النص في المنتصف دائماً */
-.hero-center { width: 100%; max-width: 700px; text-align: center; z-index: 10; }
-.hero-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #1e293b; margin: 20px 0; padding-bottom: 54px; }
+.hero-center { width: 100%; max-width: 700px; text-align: center; z-index: 10; opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+.hero-wing { position: absolute; bottom: 0; z-index: 5; transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.hero-wing--left { left: -200px; }
+.hero-wing--right { right: -200px; }
+
+/* عند تفعيل الشريحة يتم استدعاء الحركات */
+.swiper-slide-active .hero-center { opacity: 1; transform: translateY(0); }
+.swiper-slide-active .hero-wing--left { left: 0; }
+.swiper-slide-active .hero-wing--right { right: 0; }
+
+.hero-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #1e293b; margin: 20px 0; }
 .hero-btn { display: inline-block; padding: 15px 40px; background: #0f172a; color: #fff; border-radius: 50px; text-decoration: none; font-weight: bold; }
-
-/* الصور مثبتة في زوايا البانر */
-.hero-wing { position: absolute; bottom: 0; z-index: 5; pointer-events: none; }
-.hero-wing--left { left: 0; }
-.hero-wing--right { right: 0; display: flex; justify-content: flex-end; }
 .hero-wing img { max-width: 350px; width: 100%; height: auto; }
 
-/* إعدادات الحركة */
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-150px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(150px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.hero-wing--left { animation: slideInLeft 1.2s ease-out forwards; }
-.hero-wing--right { animation: slideInRight 1.2s ease-out forwards; }
-
-@media (max-width: 767px) {
-  .hero-canvas-section { background-image: var(--hero-bg-mobile); }
-  .hero-wing { width: 50%; }
-  .hero-title { font-size: 1.5remA; }
-}
+@media (max-width: 767px) { .hero-wing { width: 40%; } }
 {%- endstyle -%}
 
-<section class="hero-canvas-section" style="--hero-bg-desktop: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}'); --hero-bg-mobile: url('{{ section.settings.bg_image_mobile | image_url: width: 800 }}');">
-  {%- for block in section.blocks -%}
-    <div class="hero-wing hero-wing--left">
-      {%- if block.settings.image_left != blank -%}
-        <img src="{{ block.settings.image_left | image_url: width: 600 }}" alt="Left Wing" loading="lazy">
-      {%- endif -%}
-    </div>
-
-    <div class="hero-center">
-      <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
-      <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
-      <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
-    </div>
-
-    <div class="hero-wing hero-wing--right">
-      {%- if block.settings.image_right != blank -%}
-        <img src="{{ block.settings.image_right | image_url: width: 600 }}" alt="Right Wing" loading="lazy">
-      {%- endif -%}
-    </div>
-  {%- endfor -%}
+<section class="hero-canvas-section swiper" style="background-image: url('{{ section.settings.bg_image_desktop | image_url: width: 2000 }}');">
+  <div class="swiper-wrapper">
+    {%- for block in section.blocks -%}
+      <div class="swiper-slide">
+        <div class="hero-wing hero-wing--left">
+          {%- if block.settings.image_left != blank -%}<img src="{{ block.settings.image_left | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+        </div>
+        <div class="hero-center">
+          <span class="pre-title">{{ section.settings.parent_pre_title }}</span>
+          <h1 class="hero-title">{{ block.settings.slide_title }}</h1>
+          <a href="{{ section.settings.parent_button_link }}" class="hero-btn">{{ section.settings.parent_button_text }}</a>
+        </div>
+        <div class="hero-wing hero-wing--right">
+          {%- if block.settings.image_right != blank -%}<img src="{{ block.settings.image_right | image_url: width: 600 }}" loading="lazy">{%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  new Swiper('.hero-canvas-section', {
+    loop: true,
+    autoplay: { delay: 5000, disableOnInteraction: false },
+    effect: 'fade',
+    fadeEffect: { crossFade: true }
+  });
+</script>
