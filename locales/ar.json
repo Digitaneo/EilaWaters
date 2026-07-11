@@ -726,7 +726,8 @@
         "delivery_exception_returning_to_sender_title": "لم يتم التسليم",
         "delivery_exception_shop_promise_delivered_late_description": "طلبك مدعوم بـ Shop Promise. نظرًا لأنه وصل متأخرًا، يمكنك المطالبة بـ {{amount}} من رصيد Shop Cash.",
         "delivery_exception_shop_promise_delivered_late_title": "تم التسليم متأخرًا",
-        "predicted_by_shop": "توقعه شوب"
+        "predicted_by_shop": "توقعه شوب",
+        "confirmed_label": "طلب مؤكد"
       },
       "status_mark_as_delivered": "تم التسليم",
       "fulfillment_status_title": "حالة التنفيذ: {{status}}",
@@ -740,7 +741,8 @@
         "column_headers": {
           "products_accessibility_label": "المنتجات",
           "order": "طلب رقم"
-        }
+        },
+        "orders_title": "طلب مؤكد"
       },
       "list_title": "الطلبات",
       "list_title_with_pending_orders": "الطلبات:"
