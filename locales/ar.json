@@ -639,7 +639,8 @@
       "postal_code": "الرمز البريدي"
     },
     "page_titles": {
-      "products": "المنتجات"
+      "products": "المنتجات",
+      "order": "طلب رقم {{ name }}"
     }
   },
   "customer_accounts": {
@@ -1006,6 +1007,9 @@
           "add_billing_address_button_accessibility_label": "اضافة عنوان الفواتير"
         }
       }
+    },
+    "navigation_and_structure": {
+      "orders_link_label": "الطلبات"
     }
   }
 }
