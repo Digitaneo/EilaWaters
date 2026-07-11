@@ -737,9 +737,12 @@
       "group_title_label_with_parent": "لـ: {{groupTitle}}",
       "order_list": {
         "column_headers": {
-          "products_accessibility_label": "المنتجات"
+          "products_accessibility_label": "المنتجات",
+          "order": "طلب رقم"
         }
-      }
+      },
+      "list_title": "الطلبات",
+      "list_title_with_pending_orders": "الطلبات:"
     },
     "order_details": {
       "shipment_timeline": {
