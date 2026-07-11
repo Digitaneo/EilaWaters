@@ -379,7 +379,8 @@
         "checkout_on_remote_shop_link_text": "تحقق من %{remoteShopName}",
         "checkout_on_another_store": "اطلع على متجر آخر",
         "order_status_confirmed_order_with_email": "ستتلقى بريدًا إلكترونيًا عندما يكون طلبك جاهزًا.",
-        "login": "تسجيل الدخول"
+        "login": "تسجيل الدخول",
+        "breadcrumbs_confirmed": "طلب مؤكد"
       },
       "general": {
         "continue_to_payment_plans_button_label": "المتابعة إلى خطط الدفع",
