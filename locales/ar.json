@@ -727,7 +727,8 @@
         "delivery_exception_shop_promise_delivered_late_description": "طلبك مدعوم بـ Shop Promise. نظرًا لأنه وصل متأخرًا، يمكنك المطالبة بـ {{amount}} من رصيد Shop Cash.",
         "delivery_exception_shop_promise_delivered_late_title": "تم التسليم متأخرًا",
         "predicted_by_shop": "توقعه شوب",
-        "confirmed_label": "طلب مؤكد"
+        "confirmed_label": "طلب مؤكد",
+        "canceled_label": "تم الإلغاء"
       },
       "status_mark_as_delivered": "تم التسليم",
       "fulfillment_status_title": "حالة التنفيذ: {{status}}",
