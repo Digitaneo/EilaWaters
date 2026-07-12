@@ -745,7 +745,8 @@
       "order_list": {
         "column_headers": {
           "products_accessibility_label": "المنتجات",
-          "order": "طلب رقم"
+          "order": "طلب رقم",
+          "total": "المجموع"
         },
         "orders_title": "طلب مؤكد"
       },
