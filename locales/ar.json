@@ -605,7 +605,8 @@
         }
       },
       "shop_policies": {
-        "privacy_policy": "سياسة الخصوصية"
+        "privacy_policy": "سياسة الخصوصية",
+        "shipping_policy": "التوصيل"
       },
       "notice_banner": {
         "individual_violations_title": {
