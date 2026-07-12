@@ -561,7 +561,8 @@
           "missing": {
             "zip": "أدخل رمز بريدي"
           }
-        }
+        },
+        "shipping_line_label": "التوصيل"
       },
       "review": {
         "blocks": {
