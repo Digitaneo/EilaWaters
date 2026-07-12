@@ -380,7 +380,8 @@
         "checkout_on_another_store": "اطلع على متجر آخر",
         "order_status_confirmed_order_with_email": "ستتلقى بريدًا إلكترونيًا عندما يكون طلبك جاهزًا.",
         "login": "تسجيل الدخول",
-        "breadcrumbs_confirmed": "طلب مؤكد"
+        "breadcrumbs_confirmed": "طلب مؤكد",
+        "cancelled_title": "تم إلغاء طلبك"
       },
       "general": {
         "continue_to_payment_plans_button_label": "المتابعة إلى خطط الدفع",
@@ -728,7 +729,8 @@
         "delivery_exception_shop_promise_delivered_late_title": "تم التسليم متأخرًا",
         "predicted_by_shop": "توقعه شوب",
         "confirmed_label": "طلب مؤكد",
-        "canceled_label": "تم الإلغاء"
+        "canceled_label": "تم الإلغاء",
+        "canceled_title": "تم إلغاء طلبك"
       },
       "status_mark_as_delivered": "تم التسليم",
       "fulfillment_status_title": "حالة التنفيذ: {{status}}",
