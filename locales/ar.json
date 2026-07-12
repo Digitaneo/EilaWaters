@@ -879,7 +879,8 @@
       "hide_order_summary": "إخفاء ملخص الطلب",
       "summary_title": "ملخص الطلب",
       "title": "طلب رقم {{name}}",
-      "subtitle": "مؤكد {{date}}"
+      "subtitle": "مؤكد {{date}}",
+      "total": "المجموع"
     },
     "addresses": {
       "add_button": "أضف العنوان",
