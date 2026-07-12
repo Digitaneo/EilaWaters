@@ -869,7 +869,8 @@
         "method": "طريقة الشحن",
         "free": "مجاني",
         "free_shipping_discount": "توصيل مجاني",
-        "summary": "التوصيل"
+        "summary": "التوصيل",
+        "ship_to": "التوصيل الى"
       },
       "subtotal": "المجموع الفرعي",
       "subtotal_label_with_quantity": {
