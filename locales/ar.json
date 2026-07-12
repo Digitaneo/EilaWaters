@@ -1000,6 +1000,13 @@
         "add_billing_address_section_accessibility_label": "اضافة عنوان الفواتير",
         "billing_address_card_title": "عنوان الفواتير",
         "save_new_billing_address_accessibility_label": "حفظ عنوان الفواتير"
+      },
+      "draft_order_details": {
+        "payment_status": {
+          "canceled": {
+            "title": "تم إلغاء الدفع"
+          }
+        }
       }
     },
     "payment_methods": {
