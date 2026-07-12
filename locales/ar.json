@@ -867,7 +867,8 @@
       },
       "subtotal": "المجموع الفرعي",
       "subtotal_label_with_quantity": {
-        "one": "المجموع الفرعي"
+        "one": "المجموع الفرعي",
+        "other": "المجموع الفرعي· {{count}} عتصر"
       },
       "taxes_included": "يشمل أيضا {{ amount }} ضريبة",
       "show_order_summary": "إضهار ملخص الطلب",
