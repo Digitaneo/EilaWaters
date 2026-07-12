@@ -569,7 +569,8 @@
         "blocks": {
           "shipping_method_title": "طريقة الشحن",
           "change_shipping_method_link_label": "اختر طريقة الشحن",
-          "change_billing_address_link_label": "تغيير عنوان الفواتير"
+          "change_billing_address_link_label": "تغيير عنوان الفواتير",
+          "shipping_address_title": "التوصيال"
         }
       },
       "delivery_options": {
