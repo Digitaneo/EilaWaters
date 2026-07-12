@@ -457,7 +457,8 @@
         },
         "choose_shipping_method": "اختر طريقة الشحن",
         "complete_purchase_button_label": "تأكيد الطلب",
-        "autocomplete_multi_item": "عنصر متوفر {{number}}"
+        "autocomplete_multi_item": "عنصر متوفر {{number}}",
+        "page_title": "الدفع"
       },
       "embed": {
         "header": {
