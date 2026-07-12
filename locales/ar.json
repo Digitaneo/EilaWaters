@@ -547,7 +547,8 @@
         "estimated_delivery_date": {
           "other": "{{ count }} أيام عمل"
         },
-        "estimated_delivery_date_range": "{{ minimum }} الى {{ maximum }} ايام عمل"
+        "estimated_delivery_date_range": "{{ minimum }} الى {{ maximum }} ايام عمل",
+        "shipping_address_title": "التوصيل الى"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
