@@ -1004,7 +1004,8 @@
       "draft_order_details": {
         "payment_status": {
           "canceled": {
-            "title": "تم إلغاء الدفع"
+            "title": "تم إلغاء الدفع",
+            "description": "لم يتم توجيه أي تهمة إليك."
           }
         }
       }
