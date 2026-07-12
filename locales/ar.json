@@ -635,6 +635,9 @@
         "title": {
           "other": "المنتجات المتاحة"
         }
+      },
+      "throttle": {
+        "cart_summary_heading": "سلة التسوف الخصة بك"
       }
     },
     "notices": {
