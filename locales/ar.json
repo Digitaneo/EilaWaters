@@ -870,7 +870,8 @@
       "show_order_summary": "إضهار ملخص الطلب",
       "hide_order_summary": "إخفاء ملخص الطلب",
       "summary_title": "ملخص الطلب",
-      "title": "طلب رقم {{name}}"
+      "title": "طلب رقم {{name}}",
+      "subtitle": "مؤكد {{date}}"
     },
     "addresses": {
       "add_button": "أضف العنوان",
