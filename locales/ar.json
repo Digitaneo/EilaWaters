@@ -548,7 +548,8 @@
           "other": "{{ count }} أيام عمل"
         },
         "estimated_delivery_date_range": "{{ minimum }} الى {{ maximum }} ايام عمل",
-        "shipping_address_title": "التوصيل الى"
+        "shipping_address_title": "التوصيل الى",
+        "split_shipping_shipping_label": "طريقة الدفع"
       },
       "customer_account": {
         "sign_in_link_label": "تسجيل الدخول",
