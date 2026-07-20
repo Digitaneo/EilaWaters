@@ -58,6 +58,51 @@
         "parent_button_link": "shopify://collections/all"
       }
     },
+    "interactive_promo_showcase_UXHpzQ": {
+      "type": "interactive-promo-showcase",
+      "blocks": {
+        "promo_banner_7RVPW9": {
+          "type": "promo_banner",
+          "settings": {
+            "bg_image": "shopify://shop_images/ZulalWaterCarton600ml.webp",
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        },
+        "promo_banner_9gBGiB": {
+          "type": "promo_banner",
+          "settings": {
+            "bg_image": "shopify://shop_images/WhatsApp_Image_2026-07-15_at_12.10.28_AM.jpg",
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "promo_banner_7RVPW9",
+        "promo_banner_9gBGiB"
+      ],
+      "name": "Hero Interactive Showcase",
+      "settings": {
+        "section_title": "عروض حصرية اخترناها لك",
+        "section_bg": "#f8fafc",
+        "title_color": "#0f172a",
+        "accent_glow_color": "#3b82f6",
+        "badge_bg": "#ef4444",
+        "badge_text": "#ffffff",
+        "btn_bg": "#ffffff",
+        "btn_text": "#0f172a",
+        "btn_hover_bg": "#f1f5f9",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
     "eilawaters_features_grid_Hz6ckx": {
       "type": "eilawaters-features-grid",
       "name": "Eilawaters Grid Features",
@@ -216,6 +261,7 @@
   "order": [
     "hero-banner",
     "hero_animated_Az7nUR",
+    "interactive_promo_showcase_UXHpzQ",
     "eilawaters_features_grid_Hz6ckx",
     "brands_slider_pecJwQ",
     "eilawaters_faq_KXDDkA"
