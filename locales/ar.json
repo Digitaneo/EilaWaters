@@ -775,7 +775,7 @@
       "order_list": {
         "column_headers": {
           "products_accessibility_label": "المنتجات",
-          "order": "طلب رقم #",
+          "order": "طلب رقم ",
           "total": "المجموع"
         },
         "orders_title": "طلب مؤكد"
@@ -910,7 +910,7 @@
       "show_order_summary": "إضهار ملخص الطلب",
       "hide_order_summary": "إخفاء ملخص الطلب",
       "summary_title": "ملخص الطلب",
-      "title": "طلب رقم {{name}}",
+      "title": "طلب رقم # {{ name }}",
       "subtitle": "مؤكد {{date}}",
       "total": "المجموع",
       "returns": {
