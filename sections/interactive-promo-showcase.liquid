@@ -36,19 +36,17 @@
     position: relative;
   }
 
-  /* شبكة البانرات */
   .promo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
   }
 
-  /* تصميم البانر الإعلاني */
   .promo-banner-card {
     position: relative;
     border-radius: 24px;
     overflow: hidden;
-    min-height: 450px;
+    min-height: 480px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -58,13 +56,11 @@
     cursor: pointer;
   }
 
-  /* تأثيرات الحركة والتوهج عند التمرير */
   .promo-banner-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px {{ section.settings.accent_glow_color | color_modify: 'alpha', 0.15 }};
   }
 
-  /* خلفية الصورة المصممة */
   .promo-bg-image {
     position: absolute;
     top: 0;
@@ -81,28 +77,25 @@
     transform: scale(1.06);
   }
 
-  /* طبقة التدرج اللوني الذكية لقراءة النص بوضوح */
   .promo-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 70%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+    height: 80%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0) 100%);
     z-index: 2;
-    transition: opacity 0.3s ease;
   }
 
-  /* محتوى النصوص داخل البانر */
   .promo-content {
     position: relative;
     z-index: 3;
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    transform: translateY(15px);
-    transition: transform 0.4s ease;
+    gap: 12px;
+    transform: translateY(30px);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .promo-banner-card:hover .promo-content {
@@ -124,29 +117,28 @@
   .promo-title {
     font-size: 26px;
     font-weight: 800;
-    margin: 5px 0 0 0;
+    margin: 0;
     line-height: 1.3;
     color: #ffffff;
   }
 
   .promo-description {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 10px 0;
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0;
+    line-height: 1.6;
     opacity: 0;
     visibility: hidden;
-    max-height: 0;
-    transition: opacity 0.3s ease, max-height 0.3s ease, visibility 0.3s;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
   }
 
   .promo-banner-card:hover .promo-description {
     opacity: 1;
     visibility: visible;
-    max-height: 80px;
+    transform: translateY(0);
   }
 
-  /* زر التحويل المطور */
   .promo-action-btn {
     display: inline-flex;
     align-items: center;
@@ -159,7 +151,7 @@
     text-decoration: none;
     font-weight: 700;
     font-size: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   }
@@ -169,7 +161,6 @@
     transform: scale(1.03);
   }
 
-  /* أيقونة السهم الديناميكية */
   .promo-action-btn svg {
     width: 18px;
     height: 18px;
@@ -179,14 +170,12 @@
     transform: translateX(-4px);
   }
 
-  /* ملاءمة الهواتف والشاشات الصغيرة */
   @media (max-width: 768px) {
     .promo-section-title {
       font-size: 24px;
       margin-bottom: 25px;
     }
     
-    /* تحويل الشبكة لتمرير أفقي سلس ومريح بالإصبع */
     .promo-grid {
       display: flex;
       overflow-x: auto;
@@ -195,7 +184,7 @@
       padding-bottom: 20px;
       padding-right: 4px;
       padding-left: 4px;
-      scrollbar-width: none; /* إخفاء شريط التمرير الافتراضي */
+      scrollbar-width: none;
     }
 
     .promo-grid::-webkit-scrollbar {
@@ -205,18 +194,17 @@
     .promo-banner-card {
       min-width: 85vw;
       scroll-snap-align: center;
-      min-height: 400px;
+      min-height: 420px;
       padding: 30px 20px;
     }
 
-    /* إظهار الوصف والزر بشكل دائم على الهاتف دون الحاجة للـ Hover */
     .promo-content {
-      transform: translateY(0);
+      transform: translateY(0) !important;
     }
     .promo-description {
-      opacity: 1;
-      visibility: visible;
-      max-height: 100px;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) !important;
       font-size: 13px;
     }
     .promo-action-btn {
@@ -235,36 +223,42 @@
     <div class="promo-grid">
       {% for block in section.blocks %}
         {% if block.type == 'promo_banner' %}
-          <div class="promo-banner-card" onclick="window.location.href='{{ block.settings.button_link | default: '#' }}'">
+          {%- assign target_product = all_products[block.settings.featured_product] -%}
+          
+          <div class="promo-banner-card" onclick="window.location.href='{% if target_product != blank %}{{ target_product.url }}{% else %}#{% endif %}'">
             
-            <!-- صورة الخلفية الترويجية -->
+            <!-- جلب صورة المنتج تلقائياً كخلفية أو استخدام صورة افتراضية إن لم يتم اختيار منتج -->
             <div class="promo-bg-image" 
-                 style="background-image: url('{% if block.settings.bg_image != blank %}{{ block.settings.bg_image | image_url: width: 800 }}{% else %}https://cdn.shopify.com/s/images/themes/product-1.png{% endif %}');">
+                 style="background-image: url('{% if target_product.featured_image != blank %}{{ target_product.featured_image | image_url: width: 800 }}{% else %}https://cdn.shopify.com/s/images/themes/product-1.png{% endif %}');">
             </div>
             
-            <!-- طبقة الحماية والتدرج -->
             <div class="promo-overlay"></div>
 
-            <!-- النصوص والمحتوى -->
             <div class="promo-content">
               {% if block.settings.badge_text != blank %}
                 <span class="promo-badge">{{ block.settings.badge_text }}</span>
               {% endif %}
               
-              <h3 class="promo-title">{{ block.settings.banner_title }}</h3>
+              <!-- جلب اسم المنتج تلقائياً -->
+              <h3 class="promo-title">
+                {% if target_product != blank %}
+                  {{ target_product.title }}
+                {% else %}
+                  {{ 'homepage.onboarding.product_title' | t }}
+                {% endif %}
+              </h3>
               
               {% if block.settings.banner_desc != blank %}
                 <p class="promo-description">{{ block.settings.banner_desc }}</p>
               {% endif %}
               
-              {% if block.settings.button_text != blank %}
-                <a href="{{ block.settings.button_link | default: '#' }}" class="promo-action-btn">
-                  <span>{{ block.settings.button_text }}</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </a>
-              {% endif %}
+              <!-- الزر موحد وتلقائي لجميع المنتجات -->
+              <a href="{% if target_product != blank %}{{ target_product.url }}{% else %}#{% endif %}" class="promo-action-btn">
+                <span>تعرف على المزيد</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </a>
             </div>
 
           </div>
@@ -372,9 +366,9 @@
       "name": "بانر ترويجي لمنتج",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "bg_image",
-          "label": "صورة البانر الخلفية (تصميم لافت وليس صورة المنتج الفردية)"
+          "type": "product",
+          "id": "featured_product",
+          "label": "اختر المنتج المستهدف (سيتم جلب الاسم والصورة تلقائياً)"
         },
         {
           "type": "text",
@@ -383,27 +377,10 @@
           "default": "الأكثر مبيعاً"
         },
         {
-          "type": "text",
-          "id": "banner_title",
-          "label": "عنوان العرض المبتكر",
-          "default": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة"
-        },
-        {
           "type": "textarea",
           "id": "banner_desc",
-          "label": "نص إقناعي قصير",
+          "label": "نص إقناعي قصير مخصص",
           "default": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك."
-        },
-        {
-          "type": "text",
-          "id": "button_text",
-          "label": "نص زر التحويل",
-          "default": "اكتشف المنتج الآن"
-        },
-        {
-          "type": "product",
-          "id": "button_link",
-          "label": "اختر المنتج المستهدف"
         }
       ]
     }
