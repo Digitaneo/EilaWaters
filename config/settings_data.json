@@ -13,14 +13,42 @@
       "header": {
         "type": "header",
         "blocks": {
+          "announcement_HxtfQe": {
+            "type": "announcement",
+            "settings": {
+              "text": "طلبك جاهز بأعلى جودة وعلى مدار الساعة"
+            }
+          },
+          "announcement_MEMqmC": {
+            "type": "announcement",
+            "settings": {
+              "text": "عذب ونقي، نعتني بصحتك وصحة عائلتك"
+            }
+          },
+          "announcement_bYBfjD": {
+            "type": "announcement",
+            "settings": {
+              "text": "مياهك واصلة لبابك خلال نصف ساعة"
+            }
+          },
+          "announcement_gb7qAC": {
+            "type": "announcement",
+            "settings": {
+              "text": "توصيل مجاني فوري إلى كافة أحياء عرعر"
+            }
+          },
           "announcement_MGqTmz": {
             "type": "announcement",
             "settings": {
-              "text": "أفضل تطبيق لطلب توصيل المياه للمنازل"
+              "text": "خدمات مياه سريعة للمنازل والمساجد"
             }
           }
         },
         "block_order": [
+          "announcement_HxtfQe",
+          "announcement_MEMqmC",
+          "announcement_bYBfjD",
+          "announcement_gb7qAC",
           "announcement_MGqTmz"
         ],
         "settings": {
