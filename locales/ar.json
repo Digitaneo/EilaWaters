@@ -1025,6 +1025,9 @@
           "canceled": {
             "title": "تم إلغاء الدفع",
             "description": "لم يتم توجيه أي تهمة إليك."
+          },
+          "pending": {
+            "description_waiting_for_manual_payment": "هذا الطلب لا يزال قيد الدفع. سيتم تحديث الحالة عند استلام الدفعة."
           }
         }
       }
