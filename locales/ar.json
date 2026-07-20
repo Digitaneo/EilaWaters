@@ -1073,7 +1073,8 @@
       }
     },
     "navigation_and_structure": {
-      "orders_link_label": "الطلبات"
+      "orders_link_label": "الطلبات",
+      "contact_link": "معلومات التواصل"
     }
   }
 }
