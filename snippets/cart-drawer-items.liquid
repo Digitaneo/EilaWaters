@@ -61,18 +61,6 @@
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 213, 0.15);
 }
-select option:disabled {
-  color: #ef4444 !important;
-  background-color: #fef2f2;
-}
-.delivery-error-msg {
-  display: none;
-  color: #ef4444;
-  font-size: 12px;
-  font-weight: 600;
-  margin-top: 6px;
-  text-align: right;
-}
 .cart-drawer__summary {
   margin: 15px 0;
   padding-top: 12px;
@@ -181,10 +169,9 @@ select option:disabled {
         <div class="cart-drawer__property-group">
           <label for="Delivery-Time">{% if is_rtl %}توقيت التوصيل المناسب :{% else %}Preferred Delivery Time:{% endif %}</label>
           <select id="Delivery-Time" name="attributes[توقيت التوصيل المناسب]">
-            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)" id="opt-morning">{% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}</option>
-            <option value="المساء (2:00 مساءً - 7:00 مساءً)" id="opt-evening">{% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}</option>
+            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)">{% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}</option>
+            <option value="المساء (2:00 مساءً - 7:00 مساءً)">{% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}</option>
           </select>
-          <div class="delivery-error-msg" id="delivery-error"></div>
         </div>
       </div>
 
@@ -209,11 +196,6 @@ select option:disabled {
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.getElementById('Delivery-Date');
-    const timeSelect = document.getElementById('Delivery-Time');
-    const optMorning = document.getElementById('opt-morning');
-    const optEvening = document.getElementById('opt-evening');
-    const errorMsg = document.getElementById('delivery-error');
-    const checkoutForm = document.getElementById('CartDrawerForm');
 
     function getLocalDateString(dateObj) {
       const year = dateObj.getFullYear();
@@ -222,97 +204,15 @@ select option:disabled {
       return `${year}-${month}-${day}`;
     }
 
-    function validateDeliveryTime() {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const todayStr = getLocalDateString(now);
-      const selectedDateStr = dateInput.value;
-
-      // 1. حظر واكتشاف التواريخ السابقة (مثل البارحة) فوراً
-      if (selectedDateStr && selectedDateStr < todayStr) {
-        errorMsg.innerText = "لا يمكن اختيار تاريخ قديم أو سابق لليوم.";
-        errorMsg.style.display = "block";
-        dateInput.value = todayStr; // إعادة تعيين الحقل تلقائياً لليوم الحالي
-        validateDeliveryTime(); // إعادة الفحص بناءً على تاريخ اليوم الجديد
-        return false;
-      }
-
-      // إعادة ضبط الخيارات الافتراضية
-      optMorning.disabled = false;
-      optMorning.style.color = "";
-      optEvening.disabled = false;
-      optEvening.style.color = "";
-      errorMsg.style.display = "none";
-
-      if (selectedDateStr === todayStr) {
-        // قيد الصباح (قبل 11:00)
-        if (currentHour >= 11) {
-          optMorning.disabled = true;
-          optMorning.style.color = "#ef4444";
-          
-          if (timeSelect.value === "الصباح (9:00 صباحاً - 1:00 مساءً)") {
-            timeSelect.value = "المساء (2:00 مساءً - 7:00 مساءً)";
-            errorMsg.innerText = "الفترة الصباحية غير متاحة الآن، تم التغيير للمساء تلقائياً.";
-            errorMsg.style.display = "block";
-          }
-        }
-
-        // قيد المساء (قبل 17:00)
-        if (currentHour >= 17) {
-          optEvening.disabled = true;
-          optEvening.style.color = "#ef4444";
-
-          const tomorrow = new Date();
-          tomorrow.setDate(now.getDate() + 1);
-          dateInput.value = getLocalDateString(tomorrow);
-          timeSelect.value = "الصباح (9:00 صباحاً - 1:00 مساءً)";
-          
-          errorMsg.innerText = "انتهت فترات التوصيل لليوم، تم الانتقال لصباح الغد الموالي.";
-          errorMsg.style.display = "block";
-          
-          optMorning.disabled = false;
-          optMorning.style.color = "";
-          optEvening.disabled = false;
-          optEvening.style.color = "";
-        }
-      }
-      return true;
-    }
-
-    if (dateInput && timeSelect) {
+    if (dateInput) {
       const now = new Date();
       const todayStr = getLocalDateString(now);
       
+      // تعيين الحد الأدنى والتاريخ التلقائي لليوم الحالي فقط لمنع التواريخ القديمة
       dateInput.min = todayStr;
       if (!dateInput.value) {
         dateInput.value = todayStr;
       }
-
-      validateDeliveryTime();
-
-      dateInput.addEventListener('change', validateDeliveryTime);
-      timeSelect.addEventListener('change', validateDeliveryTime);
-    }
-
-    // منع الإرسال والحظر النهائي عند محاولة الضغط على زر الدفع بتواريخ غير صالحة
-    if (checkoutForm) {
-      checkoutForm.addEventListener('submit', function(e) {
-        const now = new Date();
-        const todayStr = getLocalDateString(now);
-        
-        if (dateInput.value < todayStr) {
-          e.preventDefault();
-          alert("يرجى اختيار تاريخ توصيل صالح وصحيح أولاً.");
-          dateInput.value = todayStr;
-          validateDeliveryTime();
-        } else if (dateInput.value === todayStr) {
-          if (timeSelect.value === "الصباح (9:00 صباحاً - 1:00 مساءً)" && now.getHours() >= 11) {
-            e.preventDefault();
-            alert("الفترة الصباحية لم تعد متاحة لليوم، يرجى مراجعة المواعيد المتاحة.");
-            validateDeliveryTime();
-          }
-        }
-      });
     }
 
     // تفاعل زر إفراغ السلة
