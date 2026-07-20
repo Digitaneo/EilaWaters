@@ -6,7 +6,12 @@
 -%}
 
 <style>
-/* تنسيق احترافي وجذاب لقسم مواعيد التسليم وملخص الطلب */
+/* تطبيق خط Cairo وتنسيق قسم مواعيد التسليم */
+.cart-drawer__delivery-properties,
+.cart-drawer__summary,
+.cart-drawer__delivery-properties * {
+  font-family: 'Cairo', sans-serif !important;
+}
 .cart-drawer__delivery-properties {
   margin: 20px 0;
   padding: 18px;
@@ -47,7 +52,7 @@
   border-radius: 8px;
   background-color: #fff;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   color: #1a202c;
 }
 .cart-drawer__property-group input:focus,
@@ -55,6 +60,19 @@
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 213, 0.15);
+}
+/* تنسيق الخيارات عند التعطيل بسبب الوقت */
+select option:disabled {
+  color: #ef4444 !important;
+  background-color: #fef2f2;
+}
+.delivery-error-msg {
+  display: none;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+  text-align: right;
 }
 .cart-drawer__summary {
   margin: 15px 0;
@@ -87,10 +105,6 @@
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
-  transition: opacity 0.2s;
-}
-.cart-drawer__clear:hover {
-  opacity: 0.8;
 }
 </style>
 
@@ -147,15 +161,13 @@
         <span>{{ 'cart.add_more' | t }}</span>
       </a>
 
-      <!-- إصلاح تفاعل إفراغ السلة المباشر -->
       <a href="/cart/clear" class="cart-drawer__clear" id="CartDrawerClearBtn">
         {% if is_rtl %}إفراغ السلة{% else %}{{ 'cart.clear' | t }}{% endif %}
       </a>
     </div>
 
-    <form action="{{ routes.cart_url }}" method="post" class="cart-drawer__checkout-form">
+    <form action="{{ routes.cart_url }}" method="post" class="cart-drawer__checkout-form" id="CartDrawerForm">
       
-      <!-- قسم موعد التسليم الذكي والمنظم -->
       <div class="cart-drawer__delivery-properties">
         <div class="cart-drawer__delivery-title">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -170,13 +182,13 @@
         <div class="cart-drawer__property-group">
           <label for="Delivery-Time">{% if is_rtl %}توقيت التوصيل المناسب :{% else %}Preferred Delivery Time:{% endif %}</label>
           <select id="Delivery-Time" name="attributes[توقيت التوصيل المناسب]">
-            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)">{% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}</option>
-            <option value="المساء (2:00 مساءً - 7:00 مساءً)">{% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}</option>
+            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)" id="opt-morning">{% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}</option>
+            <option value="المساء (2:00 مساءً - 7:00 مساءً)" id="opt-evening">{% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}</option>
           </select>
+          <div class="delivery-error-msg" id="delivery-error"></div>
         </div>
       </div>
 
-      <!-- ملخص الطلب المحسن -->
       <div class="cart-drawer__summary">
         <div class="cart-drawer__summary-row">
           <span>{% if is_rtl %}عدد المنتجات:{% else %}Total Items:{% endif %}</span>
@@ -197,46 +209,111 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // 1. منطق احتساب موعد ووقت التسليم التلقائي (ساعتين كحد أقصى قبل انتهاء الفترة)
     const dateInput = document.getElementById('Delivery-Date');
     const timeSelect = document.getElementById('Delivery-Time');
+    const optMorning = document.getElementById('opt-morning');
+    const optEvening = document.getElementById('opt-evening');
+    const errorMsg = document.getElementById('delivery-error');
+    const checkoutForm = document.getElementById('CartDrawerForm');
+
+    // دالة جلب التاريخ الحالي بصيغة YYYY-MM-DD المتوافقة مع المتصفحات
+    function getLocalDateString(dateObj) {
+      const offset = dateObj.getTimezoneOffset();
+      const localDate = new Date(dateObj.getTime() - (offset * 60 * 1000));
+      return localDate.toISOString().split('T')[0];
+    }
+
+    function validateDeliveryTime() {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const todayStr = getLocalDateString(now);
+      const selectedDateStr = dateInput.value;
+
+      // إعادة ضبط الخيارات افتراضياً
+      optMorning.disabled = false;
+      optMorning.style.color = "";
+      optEvening.disabled = false;
+      optEvening.style.color = "";
+      errorMsg.style.display = "none";
+
+      // إذا كان التاريخ المختار هو اليوم الحالي، يتم تطبيق قيود الـ 2 ساعات
+      if (selectedDateStr === todayStr) {
+        
+        // 1. قيد الفترة الصباحية: تنتهي 13:00 (آخر موعد متاح بفرق ساعتين هو الساعة 11:00 صباحاً)
+        if (currentHour >= 11) {
+          optMorning.disabled = true;
+          optMorning.style.color = "#ef4444";
+          
+          if (timeSelect.value === "الصباح (9:00 صباحاً - 1:00 مساءً)") {
+            timeSelect.value = "المساء (2:00 مساءً - 7:00 مساءً)";
+            errorMsg.innerText = "الفترة الصباحية غير متاحة الآن، تم التغيير للمساء تلقائياً.";
+            errorMsg.style.display = "block";
+          }
+        }
+
+        // 2. قيد الفترة المسائية: تنتهي 19:00 (آخر موعد متاح بفرق ساعتين هو الساعة 17:00 / 5 مساءً)
+        if (currentHour >= 17) {
+          optEvening.disabled = true;
+          optEvening.style.color = "#ef4444";
+
+          // إذا انتهت الفترتان لليوم الحالي، نقوم بتوجيه العميل لليوم التالي تلقائياً
+          const tomorrow = new Date();
+          tomorrow.setDate(now.getDate() + 1);
+          dateInput.value = getLocalDateString(tomorrow);
+          timeSelect.value = "الصباح (9:00 صباحاً - 1:00 مساءً)";
+          
+          errorMsg.innerText = "انتهت فترات التوصيل لليوم، تم الانتقال لصباح الغد الموالي.";
+          errorMsg.style.display = "block";
+          
+          // إعادة تفعيل الخيارات ليوم غد
+          optMorning.disabled = false;
+          optMorning.style.color = "";
+          optEvening.disabled = false;
+          optEvening.style.color = "";
+        }
+      }
+    }
 
     if (dateInput && timeSelect) {
       const now = new Date();
-      let currentYear = now.getFullYear();
-      let currentMonth = String(now.getMonth() + 1).padStart(2, '0');
-      let currentDay = String(now.getDate()).padStart(2, '0');
+      const todayStr = getLocalDateString(now);
       
-      let calculatedDate = `${currentYear}-${currentMonth}-${currentDay}`;
-      let currentHour = now.getHours();
-
-      // الفترة الصباحية تنتهي 13:00 (آخر موعد آمن بفرق ساعتين هو 11:00)
-      // الفترة المسائية تنتهي 19:00 (آخر موعد آمن بفرق ساعتين هو 17:00)
-      if (currentHour >= 11 && currentHour < 17) {
-        // الوقت غير كافٍ للصباح، يتم التوجيه للمساء تلقائياً لنفس اليوم
-        timeSelect.value = "المساء (2:00 مساءً - 7:00 مساءً)";
-      } else if (currentHour >= 17) {
-        // تجاوز فترة المساء بفرق ساعتين، التوجيه لصباح الغد
-        const tomorrow = new Date(now);
-        tomorrow.setDate(now.getDate() + 1);
-        
-        let tomYear = tomorrow.getFullYear();
-        let tomMonth = String(tomorrow.getMonth() + 1).padStart(2, '0');
-        let tomDay = String(tomorrow.getUTCDate()).padStart(2, '0');
-        
-        calculatedDate = `${tomYear}-${tomMonth}-${tomDay}`;
-        timeSelect.value = "الصباح (9:00 صباحاً - 1:00 مساءً)";
-      } else {
-        // في الصباح الباكر (قبل 11 صباحاً)
-        timeSelect.value = "الصباح (9:00 صباحاً - 1:00 مساءً)";
+      // تعيين الحد الأدنى والتاريخ الافتراضي ليظهر فوراً
+      dateInput.min = todayStr;
+      if (!dateInput.value) {
+        dateInput.value = todayStr;
       }
 
-      // ضبط التاريخ المحسوب والحد الأدنى للتاريخ لمنع الاختيارات السابقة
-      dateInput.value = calculatedDate;
-      dateInput.min = `${currentYear}-${currentMonth}-${currentDay}`;
+      // فحص أولي للوقت المتاح
+      validateDeliveryTime();
+
+      // الاستماع لأي تغيير يقوم به العميل في التاريخ أو وقت التوصيل
+      dateInput.addEventListener('change', validateDeliveryTime);
+      timeSelect.addEventListener('change', function() {
+        const currentHour = now.getHours();
+        if (dateInput.value === todayStr) {
+          if (timeSelect.value === "الصباح (9:00 صباحاً - 1:00 مساءً)" && currentHour >= 11) {
+            alert("هذه الفترة لم تعد متاحة للتوصيل اليوم.");
+            validateDeliveryTime();
+          }
+        }
+      });
     }
 
-    // 2. إصلاح تفاعل زر إفراغ السلة الفوري دون بطء
+    // منع العميل من الدفع في حال وجود أي تلاعب أو اختيار خاطئ
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', function(e) {
+        const now = new Date();
+        if (dateInput.value === getLocalDateString(now)) {
+          if (timeSelect.value === "الصباح (9:00 صباحاً - 1:00 مساءً)" && now.getHours() >= 11) {
+            e.preventDefault();
+            alert("يرجى اختيار فترة توصيل متاحة قبل إتمام الطلب.");
+          }
+        }
+      });
+    }
+
+    // تفاعل زر إفراغ السلة الفوري
     const clearBtn = document.getElementById('CartDrawerClearBtn');
     if (clearBtn) {
       clearBtn.addEventListener('click', function(e) {
@@ -245,22 +322,14 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
         })
-        .then(response => response.json())
-        .then(() => {
-          // إعادة تحميل الصفحة لتحديث السلة فوراً دون تأخير
-          window.location.reload();
-        })
-        .catch(error => {
-          console.error('Error clearing cart:', error);
-          window.location.href = '/cart/clear';
-        });
+        .then(() => { window.location.reload(); })
+        .catch(() => { window.location.href = '/cart/clear'; });
       });
     }
   });
   </script>
-
 {%- else -%}
-  <div class="cart-drawer__empty" {% if is_rtl %}dir="rtl"{% endif %}>
+  <div class="cart-drawer__empty" {% if is_rtl %}dir="rtl"{% endif %} style="font-family: 'Cairo', sans-serif !important;">
     <div class="empty-icon">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
