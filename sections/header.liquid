@@ -13,13 +13,84 @@
   endif
 -%}
 
+<style>
+.announcement-bar {
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+  user-select: none;
+  padding: 10px 0;
+  position: relative;
+  display: flex;
+}
+
+.announcement-bar__marquee {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-shrink: 0;
+  min-width: 100%;
+  animation: marquee 20s linear infinite;
+}
+
+{% if is_rtl %}
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+.announcement-bar__marquee {
+  animation-name: marquee;
+  direction: rtl;
+}
+{% else %}
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+{% endif %}
+
+.announcement-bar__item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.announcement-bar:hover .announcement-bar__marquee {
+  animation-play-state: paused;
+}
+</style>
+
 <div class="header-group{% if transparent_header_enabled %} header-group--transparent{% endif %}" id="header-group">
 
-{%- if show_announcement -%}
+{%- if show_announcement and section.blocks.size > 0 -%}
   <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
-    <div class="container announcement-bar__container">
-      <p class="announcement-bar__text">{{ section.settings.announcement_text }}</p>
+    
+    <div class="announcement-bar__marquee" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <span class="announcement-bar__item" {{ block.shopify_attributes }}>
+          {{ block.settings.text }}
+        </span>
+      {%- endfor -%}
     </div>
+    
+    <div class="announcement-bar__marquee" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <span class="announcement-bar__item">
+          {{ block.settings.text }}
+        </span>
+      {%- endfor -%}
+    </div>
+
+    <div class="announcement-bar__marquee" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <span class="announcement-bar__item">
+          {{ block.settings.text }}
+        </span>
+      {%- endfor -%}
+    </div>
+
   </div>
 {%- endif -%}
 
@@ -376,7 +447,6 @@
       unlockScroll();
     };
 
-    // Bind ALL cart trigger buttons (desktop + mobile)
     document.querySelectorAll('.header-cart-trigger').forEach(btn => {
       btn.addEventListener('click', openCartDrawer);
     });
@@ -550,7 +620,6 @@
       });
     }
 
-    // Expose close drawer functions for inner items
     window.closeCartDrawer = closeCartDrawer;
     window.openCartDrawer = openCartDrawer;
     window.fetchCartDrawerItems = fetchCartDrawerItems;
@@ -609,7 +678,6 @@
       clearBtn.onclick = (e) => { e.preventDefault(); fetch('/cart/clear.js', { method: 'POST' }).then(() => fetchCartDrawerItems()); };
     }
 
-    // Bind close buttons inside rendered snippet
     document.querySelectorAll('.header-cart-trigger-close').forEach(btn => {
       btn.onclick = (e) => {
         e.preventDefault();
@@ -640,12 +708,6 @@
       "id": "show_announcement_mobile",
       "label": "إظهار شريط الإعلانات على الهاتف",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "announcement_text",
-      "label": "نص الإعلان",
-      "default": "أفضل تطبيق لطلب توصيل المياه للمنازل"
     },
     {
       "type": "header",
@@ -697,6 +759,20 @@
         { "value": "dark", "label": "أسود (داكن)" }
       ],
       "default": "dark"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "إعلان",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "نص الإعلان",
+          "default": "أفضل تطبيق لطلب توصيل المياه للمنازل"
+        }
+      ]
     }
   ]
 }
