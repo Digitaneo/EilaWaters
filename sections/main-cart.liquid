@@ -1,5 +1,5 @@
 <div class="cart-section container">
-  <h1 class="cart-title">Your Cart</h1>
+  <h1 class="cart-title">سلة التسوق</h1>
 
   {%- if cart.item_count > 0 -%}
     <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
@@ -30,15 +30,15 @@
 
       <div class="cart-summary">
         <div class="cart-total-row">
-          <span>Subtotal</span>
+          <span>المجموع الفرعي</span>
           <span class="cart-subtotal">{{ cart.total_price | money }}</span>
         </div>
-        <button type="submit" name="checkout" class="btn btn-primary cart-checkout-btn">Checkout</button>
+        <button type="submit" name="checkout" class="btn btn-primary cart-checkout-btn">تأكيد الطلب</button>
       </div>
     </form>
   {%- else -%}
     <div class="empty-cart-message">
-      <p>Your cart is currently empty.</p>
+      <p>سلة التسوق الخاصة بك فارغة</p>
       <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Continue Shopping</a>
     </div>
   {%- endif -%}
