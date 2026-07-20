@@ -602,18 +602,21 @@
       },
       "marketing": {
         "disclaimer": {
-          "privacy_policy": "سياسة الخصوصية"
+          "privacy_policy": "سياسة الخصوصية",
+          "terms_of_service": "شروط الخدمة"
         },
         "sms": {
           "disclaimer": {
-            "privacy_policy": "سياسة الخصوصية"
+            "privacy_policy": "سياسة الخصوصية",
+            "terms_of_service": "شروط الخدمة"
           }
         }
       },
       "shop_policies": {
         "privacy_policy": "سياسة الخصوصية",
         "shipping_policy": "التوصيل",
-        "refund_policy": "سياسة الاسترداد"
+        "refund_policy": "سياسة الاسترداد",
+        "terms_of_service": "شروط الخدمة"
       },
       "notice_banner": {
         "individual_violations_title": {
