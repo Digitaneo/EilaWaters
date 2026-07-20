@@ -61,6 +61,26 @@
     "interactive_promo_showcase_UXHpzQ": {
       "type": "interactive-promo-showcase",
       "blocks": {
+        "promo_banner_UyD3mg": {
+          "type": "promo_banner",
+          "settings": {
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        },
+        "promo_banner_ncRLzz": {
+          "type": "promo_banner",
+          "settings": {
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        },
         "promo_banner_4mAfxX": {
           "type": "promo_banner",
           "settings": {
@@ -106,6 +126,8 @@
         }
       },
       "block_order": [
+        "promo_banner_UyD3mg",
+        "promo_banner_ncRLzz",
         "promo_banner_4mAfxX",
         "promo_banner_7RVPW9",
         "promo_banner_pnK9X9",
