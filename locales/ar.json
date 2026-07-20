@@ -740,7 +740,8 @@
         "predicted_by_shop": "توقعه شوب",
         "confirmed_label": "طلب مؤكد",
         "canceled_label": "تم الإلغاء",
-        "canceled_title": "تم إلغاء طلبك"
+        "canceled_title": "تم إلغاء طلبك",
+        "confirmed_description_shipping": "نقوم بتجهيز هذه المنتجات للشحن."
       },
       "status_mark_as_delivered": "تم التسليم",
       "fulfillment_status_title": "حالة التنفيذ: {{status}}",
