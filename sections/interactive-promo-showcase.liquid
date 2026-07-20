@@ -1,0 +1,421 @@
+{%- liquid
+  assign is_rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign is_rtl = true
+  endif
+-%}
+
+{%- style -%}
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+  .promo-showcase-{{ section.id }} {
+    background: {{ section.settings.section_bg }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    direction: rtl;
+  }
+
+  .promo-showcase-{{ section.id }} * {
+    font-family: 'Cairo', sans-serif !important;
+    box-sizing: border-box;
+  }
+
+  .promo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .promo-section-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  /* شبكة البانرات */
+  .promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+  }
+
+  /* تصميم البانر الإعلاني */
+  .promo-banner-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+    cursor: pointer;
+  }
+
+  /* تأثيرات الحركة والتوهج عند التمرير */
+  .promo-banner-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px {{ section.settings.accent_glow_color | color_modify: 'alpha', 0.15 }};
+  }
+
+  /* خلفية الصورة المصممة */
+  .promo-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 1;
+  }
+
+  .promo-banner-card:hover .promo-bg-image {
+    transform: scale(1.06);
+  }
+
+  /* طبقة التدرج اللوني الذكية لقراءة النص بوضوح */
+  .promo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+
+  /* محتوى النصوص داخل البانر */
+  .promo-content {
+    position: relative;
+    z-index: 3;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translateY(15px);
+    transition: transform 0.4s ease;
+  }
+
+  .promo-banner-card:hover .promo-content {
+    transform: translateY(0);
+  }
+
+  .promo-badge {
+    align-self: flex-start;
+    background: {{ section.settings.badge_bg }};
+    color: {{ section.settings.badge_text }};
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .promo-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 5px 0 0 0;
+    line-height: 1.3;
+    color: #ffffff;
+  }
+
+  .promo-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    transition: opacity 0.3s ease, max-height 0.3s ease, visibility 0.3s;
+  }
+
+  .promo-banner-card:hover .promo-description {
+    opacity: 1;
+    visibility: visible;
+    max-height: 80px;
+  }
+
+  /* زر التحويل المطور */
+  .promo-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }} !important;
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  .promo-action-btn:hover {
+    background: {{ section.settings.btn_hover_bg }};
+    transform: scale(1.03);
+  }
+
+  /* أيقونة السهم الديناميكية */
+  .promo-action-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+  .promo-action-btn:hover svg {
+    transform: translateX(-4px);
+  }
+
+  /* ملاءمة الهواتف والشاشات الصغيرة */
+  @media (max-width: 768px) {
+    .promo-section-title {
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+    
+    /* تحويل الشبكة لتمرير أفقي سلس ومريح بالإصبع */
+    .promo-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding-bottom: 20px;
+      padding-right: 4px;
+      padding-left: 4px;
+      scrollbar-width: none; /* إخفاء شريط التمرير الافتراضي */
+    }
+
+    .promo-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .promo-banner-card {
+      min-width: 85vw;
+      scroll-snap-align: center;
+      min-height: 400px;
+      padding: 30px 20px;
+    }
+
+    /* إظهار الوصف والزر بشكل دائم على الهاتف دون الحاجة للـ Hover */
+    .promo-content {
+      transform: translateY(0);
+    }
+    .promo-description {
+      opacity: 1;
+      visibility: visible;
+      max-height: 100px;
+      font-size: 13px;
+    }
+    .promo-action-btn {
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<div class="promo-showcase-{{ section.id }}">
+  <div class="promo-container">
+    
+    {% if section.settings.section_title != blank %}
+      <h2 class="promo-section-title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+
+    <div class="promo-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'promo_banner' %}
+          <div class="promo-banner-card" onclick="window.location.href='{{ block.settings.button_link | default: '#' }}'">
+            
+            <!-- صورة الخلفية الترويجية -->
+            <div class="promo-bg-image" 
+                 style="background-image: url('{% if block.settings.bg_image != blank %}{{ block.settings.bg_image | image_url: width: 800 }}{% else %}https://cdn.shopify.com/s/images/themes/product-1.png{% endif %}');">
+            </div>
+            
+            <!-- طبقة الحماية والتدرج -->
+            <div class="promo-overlay"></div>
+
+            <!-- النصوص والمحتوى -->
+            <div class="promo-content">
+              {% if block.settings.badge_text != blank %}
+                <span class="promo-badge">{{ block.settings.badge_text }}</span>
+              {% endif %}
+              
+              <h3 class="promo-title">{{ block.settings.banner_title }}</h3>
+              
+              {% if block.settings.banner_desc != blank %}
+                <p class="promo-description">{{ block.settings.banner_desc }}</p>
+              {% endif %}
+              
+              {% if block.settings.button_text != blank %}
+                <a href="{{ block.settings.button_link | default: '#' }}" class="promo-action-btn">
+                  <span>{{ block.settings.button_text }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </a>
+              {% endif %}
+            </div>
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Interactive Showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "إعدادات القسم العامة"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "عنوان القسم الرئيسي",
+      "default": "عروض حصرية اخترناها لك"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "لون خلفية القسم",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "لون العنوان الرئيسي",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "accent_glow_color",
+      "label": "لون توهج حركية البانر (Glow Effect)",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "header",
+      "content": "إعدادات الشارات والأزرار"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "خلفية الشارة للبانرات",
+      "default": "#ef4444"
+    },
+    {
+      "type": "color",
+      "id": "badge_text",
+      "label": "نص الشارة للبانرات",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "خلفية زر التحويل",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "نص زر التحويل",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover_bg",
+      "label": "خلفية الزر عند التمرير",
+      "default": "#f1f5f9"
+    },
+    {
+      "type": "header",
+      "content": "المسافات (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة علوية",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "مسافة سفلية",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_banner",
+      "name": "بانر ترويجي لمنتج",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "صورة البانر الخلفية (تصميم لافت وليس صورة المنتج الفردية)"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "نص الشارة الترويجية",
+          "default": "الأكثر مبيعاً"
+        },
+        {
+          "type": "text",
+          "id": "banner_title",
+          "label": "عنوان العرض المبتكر",
+          "default": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة"
+        },
+        {
+          "type": "textarea",
+          "id": "banner_desc",
+          "label": "نص إقناعي قصير",
+          "default": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "نص زر التحويل",
+          "default": "اكتشف المنتج الآن"
+        },
+        {
+          "type": "product",
+          "id": "button_link",
+          "label": "اختر المنتج المستهدف"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Interactive Showcase",
+      "blocks": [
+        { "type": "promo_banner" },
+        { "type": "promo_banner" }
+      ]
+    }
+  ]
+}
+{% endschema %}
