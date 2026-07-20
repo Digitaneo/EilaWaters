@@ -61,10 +61,31 @@
     "interactive_promo_showcase_UXHpzQ": {
       "type": "interactive-promo-showcase",
       "blocks": {
+        "promo_banner_4mAfxX": {
+          "type": "promo_banner",
+          "settings": {
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        },
         "promo_banner_7RVPW9": {
           "type": "promo_banner",
           "settings": {
             "bg_image": "shopify://shop_images/ZulalWaterCarton600ml.webp",
+            "badge_text": "الأكثر مبيعاً",
+            "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
+            "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
+            "button_text": "اكتشف المنتج الآن",
+            "button_link": ""
+          }
+        },
+        "promo_banner_pnK9X9": {
+          "type": "promo_banner",
+          "settings": {
+            "bg_image": "shopify://shop_images/image_28.webp",
             "badge_text": "الأكثر مبيعاً",
             "banner_title": "انتعاش يدوم طوال اليوم مع تركيبتنا الجديدة",
             "banner_desc": "تصميم فريد يحاكي الطبيعة النقية، تمتع بالجودة القصوى التي يستحقها يومك.",
@@ -85,13 +106,15 @@
         }
       },
       "block_order": [
+        "promo_banner_4mAfxX",
         "promo_banner_7RVPW9",
+        "promo_banner_pnK9X9",
         "promo_banner_9gBGiB"
       ],
       "name": "Hero Interactive Showcase",
       "settings": {
         "section_title": "عروض حصرية اخترناها لك",
-        "section_bg": "#f8fafc",
+        "section_bg": "#FFFFFF",
         "title_color": "#0f172a",
         "accent_glow_color": "#3b82f6",
         "badge_bg": "#ef4444",
