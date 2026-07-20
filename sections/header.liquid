@@ -27,14 +27,16 @@
 
 .announcement-bar__wrap {
   display: flex;
-  width: max-content;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .announcement-bar__marquee {
   display: flex;
   align-items: center;
+  justify-content: space-around;
+  min-width: 100%;
   flex-shrink: 0;
-  animation: marquee 25s linear infinite;
 }
 
 .announcement-bar__item {
@@ -42,30 +44,30 @@
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  white-space: nowrap;
-  /* مسافة مدروسة بين العناصر لمنع الالتصاق والفراغات المفاجئة */
-  padding: 0 40px; 
+  padding: 0 30px;
 }
 
 .announcement-bar:hover .announcement-bar__marquee {
   animation-play-state: paused;
 }
 
+/* حركة انسيابية لا تعتمد على إزاحة الحاوية الأب وتضمن ظهور العناصر فوراً */
 {% if is_rtl %}
-@keyframes marquee {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(50%, 0, 0); }
-}
-.announcement-bar__wrap {
-  transform: translate3d(-50%, 0, 0);
-}
 .announcement-bar__marquee {
   direction: rtl;
+  animation: marquee-rtl 35s linear infinite;
+}
+@keyframes marquee-rtl {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(100%, 0, 0); }
 }
 {% else %}
-@keyframes marquee {
+.announcement-bar__marquee {
+  animation: marquee-ltr 35s linear infinite;
+}
+@keyframes marquee-ltr {
   0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
 }
 {% endif %}
 </style>
@@ -76,9 +78,9 @@
   <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
     <div class="announcement-bar__wrap">
       
-      <!-- المجموعة الأولى المكررة لملء المسار الممتد -->
-      <div class="announcement-bar__marquee" aria-hidden="true">
-        {%- for i in (1..6) -%}
+      <!-- المجموعة الأولى: تظهر فوراً وتملأ الشاشة بالكامل دون أي تأخير -->
+      <div class="announcement-bar__marquee">
+        {%- for i in (1..4) -%}
           {%- for block in section.blocks -%}
             <span class="announcement-bar__item" {{ block.shopify_attributes }}>
               {{ block.settings.text }}
@@ -87,9 +89,9 @@
         {%- endfor -%}
       </div>
       
-      <!-- المجموعة الثانية المطابقة تماماً لضمان حلقة حركة غير منتهية وبدون أي فراغ زمني -->
+      <!-- المجموعة الثانية: تتبع المجموعة الأولى مباشرة لتصنع حلقة الحركة اللانهائية -->
       <div class="announcement-bar__marquee" aria-hidden="true">
-        {%- for i in (1..6) -%}
+        {%- for i in (1..4) -%}
           {%- for block in section.blocks -%}
             <span class="announcement-bar__item">
               {{ block.settings.text }}
@@ -105,7 +107,7 @@
 <header class="site-header{% if section.settings.enable_sticky_header %} site-header--sticky{% endif %}{% if transparent_header_enabled %} site-header--transparent{% endif %} site-header--trans-text-{{ section.settings.transparent_text_color }}" id="site-header" data-sticky="{{ section.settings.enable_sticky_header }}" data-transparent="{{ transparent_header_enabled }}">
   <div class="container site-header__container">
     
-    <!-- Desktop: Logo (First) -->
+    <!-- Desktop: Logo -->
     <div class="site-header__logo">
       <a href="{{ routes.root_url }}" class="site-header__logo-link">
         {%- if section.settings.logo != blank -%}
@@ -117,7 +119,7 @@
       </a>
     </div>
 
-    <!-- Desktop: Navigation (Middle) -->
+    <!-- Desktop: Navigation -->
     <nav class="site-nav desktop-only" role="navigation">
       <ul class="site-nav__list">
         {%- for link in linklists[section.settings.menu].links -%}
@@ -142,9 +144,8 @@
       </ul>
     </nav>
 
-    <!-- Desktop: Actions/Icons (Last) -->
+    <!-- Desktop: Actions/Icons -->
     <div class="site-header__actions desktop-only">
-      <!-- Delivery Location Indicator -->
       {%- if section.settings.delivery_text != blank -%}
         <div class="header-delivery">
           <svg class="icon icon-pin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -158,7 +159,6 @@
         </div>
       {%- endif -%}
 
-      <!-- Language Selector -->
       <div class="header-lang-selector">
         {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
           <div class="disclosure">
@@ -180,7 +180,6 @@
         {%- endform -%}
       </div>
 
-      <!-- Search Link -->
       <button type="button" class="header-action-item header-search header-search-trigger" aria-label="{% if is_rtl %}بحث{% else %}Search{% endif %}">
         <svg class="icon icon-search" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
@@ -188,7 +187,6 @@
         </svg>
       </button>
 
-      <!-- Cart Trigger -->
       <button type="button" class="header-action-item header-cart-trigger" aria-label="{{ 'cart.title' | t }}">
         <div class="cart-icon-wrapper">
           <svg class="icon icon-cart" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -200,7 +198,6 @@
         </div>
       </button>
 
-      <!-- Account Link -->
       {%- if shop.customer_accounts_enabled -%}
         <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header-action-item header-account">
           <svg class="icon icon-user" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -218,7 +215,7 @@
       {%- endif -%}
     </div>
 
-    <!-- Mobile Header Actions (Mobile Only) -->
+    <!-- Mobile Header Actions -->
     <div class="mobile-only mobile-header-left">
       <button type="button" class="header-action-item header-cart-trigger" aria-label="{{ 'cart.title' | t }}">
         <div class="cart-icon-wrapper">
@@ -232,7 +229,7 @@
       </button>
     </div>
 
-    <!-- Hamburger (Mobile Only) -->
+    <!-- Hamburger Menu -->
     <div class="mobile-only mobile-header-right">
       <button type="button" class="mobile-nav-toggle" aria-label="Toggle Menu" id="menu-toggle-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -246,7 +243,7 @@
   </div>
 </header>
 
-</div><!-- .header-group -->
+</div>
 
 <!-- Mobile Navigation Drawer -->
 <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
@@ -351,7 +348,7 @@
   </div>
 </div>
 
-<!-- Cart Drawer (Slide-out Cart) -->
+<!-- Cart Drawer -->
 <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
 <div class="cart-drawer" id="cart-drawer">
   <div class="cart-drawer__header">
@@ -366,7 +363,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    /* ============ Prevent Layout Shake / Shifting ============ */
     const getScrollbarWidth = () => window.innerWidth - document.documentElement.clientWidth;
 
     const lockScroll = () => {
@@ -374,21 +370,16 @@
       document.body.style.paddingRight = `${sbw}px`;
       document.body.classList.add('overflow-hidden');
       const hg = document.getElementById('header-group');
-      if (hg) {
-        hg.style.paddingRight = `${sbw}px`;
-      }
+      if (hg) hg.style.paddingRight = `${sbw}px`;
     };
 
     const unlockScroll = () => {
       document.body.style.paddingRight = '';
       document.body.classList.remove('overflow-hidden');
       const hg = document.getElementById('header-group');
-      if (hg) {
-        hg.style.paddingRight = '';
-      }
+      if (hg) hg.style.paddingRight = '';
     };
 
-    /* ============ Sticky / Transparent Header ============ */
     const header = document.getElementById('site-header');
     const headerGroup = document.getElementById('header-group');
     if (header && headerGroup) {
@@ -411,7 +402,7 @@
       }
     }
 
-    /* ============ Mobile Drawer ============ */
+    /* Mobile Drawer */
     const mobileDrawer = document.getElementById('mobile-drawer');
     const mobileOverlay = document.getElementById('mobile-drawer-overlay');
     const menuToggle = document.getElementById('menu-toggle-btn');
@@ -433,16 +424,13 @@
     if (menuClose) menuClose.addEventListener('click', closeMobileDrawer);
     if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileDrawer);
 
-    /* ============ Cart Drawer ============ */
+    /* Cart Drawer */
     const cartDrawer = document.getElementById('cart-drawer');
     const cartOverlay = document.getElementById('cart-drawer-overlay');
     const cartClose = document.getElementById('cart-drawer-close-btn');
 
     const openCartDrawer = (e) => {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       lockScroll();
       if (cartDrawer) cartDrawer.classList.add('active');
       if (cartOverlay) cartOverlay.classList.add('active');
@@ -461,7 +449,7 @@
     if (cartClose) cartClose.addEventListener('click', closeCartDrawer);
     if (cartOverlay) cartOverlay.addEventListener('click', closeCartDrawer);
 
-    /* ============ Search Drawer ============ */
+    /* Search Drawer */
     const searchDrawer = document.getElementById('search-drawer');
     const searchOverlay = document.getElementById('search-drawer-overlay');
     const searchClose = document.getElementById('search-drawer-close-btn');
@@ -482,32 +470,11 @@
     };
 
     const openSearchDrawer = (e) => {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       lockScroll();
       if (searchDrawer) searchDrawer.classList.add('active');
       if (searchOverlay) searchOverlay.classList.add('active');
-      window.setTimeout(() => {
-        if (searchInput) searchInput.focus();
-      }, 180);
-    };
-
-    const moneyFormat = (value) => {
-      if (!value) return '';
-      if (typeof value === 'string') return value;
-      return value.toString();
-    };
-
-    const escapeHtml = (value) => {
-      return String(value || '').replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[char]);
+      window.setTimeout(() => { if (searchInput) searchInput.focus(); }, 180);
     };
 
     const renderSearchResults = (products, term) => {
@@ -522,23 +489,19 @@
       }
 
       const productMarkup = products.map(product => {
-        const productTitle = escapeHtml(product.title);
-        let productUrl = escapeHtml(product.url);
+        const productTitle = String(product.title || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        let productUrl = String(product.url || '');
         const routesRoot = '{{ routes.root_url }}'.replace(/\/$/, '');
-        if (routesRoot && !productUrl.startsWith(routesRoot)) {
-          productUrl = routesRoot + productUrl;
-        }
-        const productPrice = escapeHtml(moneyFormat(product.price));
+        if (routesRoot && !productUrl.startsWith(routesRoot)) productUrl = routesRoot + productUrl;
         const image = product.featured_image && product.featured_image.url
-          ? `<img src="${escapeHtml(product.featured_image.url)}" alt="${escapeHtml(product.featured_image.alt || product.title)}" loading="lazy">`
+          ? `<img src="${product.featured_image.url}" alt="${productTitle}" loading="lazy">`
           : `<div class="search-drawer__placeholder"></div>`;
-        const price = product.price ? `<span class="search-drawer__price">${productPrice}</span>` : '';
         return `
           <a href="${productUrl}" class="search-drawer__item">
             <div class="search-drawer__image">${image}</div>
             <div class="search-drawer__info">
               <span class="search-drawer__name">${productTitle}</span>
-              ${price}
+              <span class="search-drawer__price">${product.price || ''}</span>
             </div>
           </a>
         `;
@@ -556,28 +519,21 @@
       if (!searchResults) return;
       const query = term.trim();
       if (searchController) searchController.abort();
-
-      if (query.length < 2) {
-        renderSearchResults([], '');
-        return;
-      }
+      if (query.length < 2) { renderSearchResults([], ''); return; }
 
       searchResults.innerHTML = `<p class="search-drawer__hint">${searchLoadingText}</p>`;
       searchController = new AbortController();
       const routesRoot = '{{ routes.root_url }}'.replace(/\/$/, '');
-      const searchQuery = query.endsWith('*') ? query : query + '*';
-      const suggestUrl = `${routesRoot}/search?q=${encodeURIComponent(searchQuery)}&type=product&view=ajax`;
+      const suggestUrl = `${routesRoot}/search?q=${encodeURIComponent(query + '*')}&type=product&view=ajax`;
 
       fetch(suggestUrl, { signal: searchController.signal })
-        .then(response => response.json())
+        .then(r => r.json())
         .then(data => {
-          const products = data.resources && data.resources.results && data.resources.results.products
-            ? data.resources.results.products
-            : [];
+          const products = data.resources?.results?.products || [];
           renderSearchResults(products, query);
         })
-        .catch(error => {
-          if (error.name === 'AbortError') return;
+        .catch(err => {
+          if (err.name === 'AbortError') return;
           searchResults.innerHTML = `<p class="search-drawer__empty">${searchErrorText}</p>`;
         });
     };
@@ -593,16 +549,8 @@
         searchTimer = window.setTimeout(() => fetchSearchResults(searchInput.value), 220);
       });
     }
-    if (searchForm) {
-      searchForm.addEventListener('submit', (e) => {
-        if (!searchInput || searchInput.value.trim().length === 0) {
-          e.preventDefault();
-          searchInput?.focus();
-        }
-      });
-    }
 
-    /* ============ Language Disclosure ============ */
+    /* Language Disclosure */
     const disclosureButton = document.querySelector('.disclosure__button');
     const disclosureList = document.getElementById('HeaderLanguageList');
     if (disclosureButton && disclosureList) {
@@ -612,12 +560,10 @@
         disclosureButton.setAttribute('aria-expanded', String(!expanded));
         disclosureList.hidden = expanded;
       });
-
       document.addEventListener('click', () => {
         disclosureButton.setAttribute('aria-expanded', 'false');
         disclosureList.hidden = true;
       });
-
       disclosureList.querySelectorAll('.disclosure__link').forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
@@ -633,27 +579,19 @@
     window.fetchCartDrawerItems = fetchCartDrawerItems;
   });
 
-  /* ============ AJAX Cart Operations ============ */
   function fetchCartDrawerItems() {
     const container = document.getElementById('cart-drawer-body');
     if (!container) return;
-
     fetch(window.location.pathname + '?section_id=header')
       .then(r => r.text())
       .then(html => {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const newBody = doc.getElementById('cart-drawer-body');
         if (newBody) container.innerHTML = newBody.innerHTML;
-        
-        const newCount = doc.getElementById('cart-count-desktop');
+        const newCount = doc.getElementById('cart-count-desktop')?.textContent.trim();
         if (newCount) {
-          const count = newCount.textContent.trim();
-          const desktopBadge = document.getElementById('cart-count-desktop');
-          const mobileBadge = document.getElementById('cart-count-mobile');
-          if (desktopBadge) desktopBadge.textContent = count;
-          if (mobileBadge) mobileBadge.textContent = count;
+          document.querySelectorAll('#cart-count-desktop, #cart-count-mobile').forEach(b => b.textContent = newCount);
         }
-
         bindCartItemEvents();
       });
   }
@@ -663,36 +601,17 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ line: parseInt(line), quantity: qty })
-    })
-    .then(r => r.json())
-    .then(() => fetchCartDrawerItems());
+    }).then(() => fetchCartDrawerItems());
   }
 
   function bindCartItemEvents() {
     document.querySelectorAll('.cart-drawer__qty-input').forEach(input => {
       const line = input.dataset.line;
-      const plus = input.parentElement.querySelector('.plus-qty');
-      const minus = input.parentElement.querySelector('.minus-qty');
-      if (plus) plus.onclick = () => updateCartItemQuantity(line, parseInt(input.value) + 1);
-      if (minus) minus.onclick = () => { let v = parseInt(input.value) - 1; if (v >= 0) updateCartItemQuantity(line, v); };
+      input.parentElement.querySelector('.plus-qty').onclick = () => updateCartItemQuantity(line, parseInt(input.value) + 1);
+      input.parentElement.querySelector('.minus-qty').onclick = () => { let v = parseInt(input.value) - 1; if (v >= 0) updateCartItemQuantity(line, v); };
     });
-
     document.querySelectorAll('.cart-drawer__item-remove').forEach(btn => {
       btn.onclick = (e) => { e.preventDefault(); updateCartItemQuantity(btn.dataset.line, 0); };
-    });
-
-    const clearBtn = document.querySelector('.cart-drawer__clear');
-    if (clearBtn) {
-      clearBtn.onclick = (e) => { e.preventDefault(); fetch('/cart/clear.js', { method: 'POST' }).then(() => fetchCartDrawerItems()); };
-    }
-
-    document.querySelectorAll('.header-cart-trigger-close').forEach(btn => {
-      btn.onclick = (e) => {
-        e.preventDefault();
-        if (window.closeCartDrawer) {
-          window.closeCartDrawer();
-        }
-      };
     });
   }
 </script>
