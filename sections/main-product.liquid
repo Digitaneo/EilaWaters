@@ -38,10 +38,16 @@
           {% form 'product', product, id: 'add-to-cart-form' %}
             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
             
+            <!-- تم تعديل القيمة الافتراضية إلى 10 والحد الأدنى min إلى 10 -->
             <div class="quantity-selector-container">
               <button type="button" class="qty-btn-adjust" onclick="changeMainQty(1)">+</button>
-              <input type="number" id="quantity-main-input" name="quantity" value="1" min="1" readonly>
+              <input type="number" id="quantity-main-input" name="quantity" value="10" min="10" readonly>
               <button type="button" class="qty-btn-adjust" onclick="changeMainQty(-1)">&minus;</button>
+            </div>
+
+            <!-- إضافة تنبيه نصي يوضح للعميل الحد الأدنى للطلب -->
+            <div class="moq-notice-text" style="color: #ef4444; font-size: 13px; font-weight: 600; margin-top: -10px; margin-bottom: 15px;">
+              ⚠️ الحد الأدنى للطلب هو 10 كرتونات.
             </div>
 
             <div class="qty-and-add-wrapper">
@@ -53,10 +59,10 @@
             <span class="share-title-text">🔗 شارك المنتج عبر</span>
             <div class="share-social-icons">
               <a href="https://api.whatsapp.com/send?text={{ shop.url | append: product.url }}" target="_blank" title="واتساب" class="share-icon-btn whatsapp-color">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12.017 0C5.393 0 .029 5.364.022 11.99c-.002 2.118.554 4.185 1.613 6.02L0 24l6.135-1.61a11.903 11.903 0 0 0 5.88 1.549h.005c6.623 0 11.986-5.364 11.993-11.99A11.966 11.966 0 0 0 12.017 0zm6.59 16.944c-.272.766-1.583 1.46-2.176 1.545-.593.085-1.187.117-3.953-.993-3.535-1.42-5.814-5.01-5.99-5.244-.176-.233-1.402-1.865-1.402-3.56 0-1.694.884-2.529 1.2-2.87.317-.34.694-.426.926-.426.23 0 .462.002.663.011.21.01.493-.08.77.585.28.663.954 2.327 1.037 2.492.083.166.138.36.028.58-.11.22-.165.36-.33.55-.165.19-.347.426-.496.57-.165.16-.337.336-.145.666.192.32.853 1.407 1.826 2.274 1.253 1.118 2.31 1.464 2.64 1.63.33.164.524.137.72-.087.195-.224.834-.972 1.057-1.306.223-.334.446-.28.752-.166.307.115 1.953.92 2.288 1.086.336.166.56.248.64.39.082.14.082.812-.19 1.578z"/>
-  </svg>
-</a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.017 0C5.393 0 .029 5.364.022 11.99c-.002 2.118.554 4.185 1.613 6.02L0 24l6.135-1.61a11.903 11.903 0 0 0 5.88 1.549h.005c6.623 0 11.986-5.364 11.993-11.99A11.966 11.966 0 0 0 12.017 0zm6.59 16.944c-.272.766-1.583 1.46-2.176 1.545-.593.085-1.187.117-3.953-.993-3.535-1.42-5.814-5.01-5.99-5.244-.176-.233-1.402-1.865-1.402-3.56 0-1.694.884-2.529 1.2-2.87.317-.34.694-.426.926-.426.23 0 .462.002.663.011.21.01.493-.08.77.585.28.663.954 2.327 1.037 2.492.083.166.138.36.028.58-.11.22-.165.36-.33.55-.165.19-.347.426-.496.57-.165.16-.337.336-.145.666.192.32.853 1.407 1.826 2.274 1.253 1.118 2.31 1.464 2.64 1.63.33.164.524.137.72-.087.195-.224.834-.972 1.057-1.306.223-.334.446-.28.752-.166.307.115 1.953.92 2.288 1.086.336.166.56.248.64.39.082.14.082.812-.19 1.578z"/>
+                </svg>
+              </a>
               <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: product.url }}&text={{ product.title }}" target="_blank" title="تويتر" class="share-icon-btn twitter-color">𝕏</a>
               <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" title="فيسبوك" class="share-icon-btn facebook-color">f</a>
               <button type="button" onclick="copyProductLink()" class="share-icon-btn copy-color" title="نسخ الرابط">📋</button>
@@ -157,7 +163,7 @@
     display: grid;
     grid-template-columns: 1fr 320px; 
     gap: 30px;
-    margin-bottom: 30px; /* مسافة قبل قسم التبويبات السفلي */
+    margin-bottom: 30px;
   }
 
   /* الحاوية الأساسية للمنتج */
@@ -390,7 +396,7 @@
   .facebook-color:hover { background: #1877f2; color: white; }
   .copy-color:hover { background: var(--primary-color); color: white; }
 
-  /* قسم التبويبات الممتد على كامل الصفحة */
+  /* قسم التبويبات الممتد */
   .product-description-tabs {
     width: 100%;
     border: 1px solid #e2e8f0;
@@ -456,7 +462,6 @@
   .prev-btn { right: 40px; }
   .next-btn { left: 40px; }
 
-  /* شاشات الجوال والأجهزة الذكية */
   @media (max-width: 991px) {
     .product-top-layout-wrapper { grid-template-columns: 1fr; }
     .product-essential-wrapper { grid-template-columns: 1fr; }
@@ -512,15 +517,15 @@
     lightboxImg.setAttribute('data-current-lightbox-idx', currentIndex);
   }
 
+  // تم تعديل الدالة لمنع النزول عن الرقم 10
   function changeMainQty(amt) {
     const input = document.getElementById('quantity-main-input');
-    let current = parseInt(input.value) || 1;
+    let current = parseInt(input.value) || 10;
     current += amt;
-    if (current < 1) current = 1;
+    if (current < 10) current = 10; // تغيير الحد الأدنى هنا إلى 10 بدل 1
     input.value = current;
   }
 
-  // تبديل التبويبات ليشمل التبويب الثالث الجديد
   function switchProductTab(event, tabId) {
     const tabContents = document.querySelectorAll('.tab-content-body');
     tabContents.forEach(content => content.style.display = 'none');
@@ -538,7 +543,6 @@
     });
   }
 
-  // Intercept add to cart form submission to perform AJAX request and open drawer
   document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('add-to-cart-form');
     if (productForm) {
@@ -570,7 +574,6 @@
             }, 2000);
           }
           
-          // Trigger the cart drawer update and opening
           if (window.fetchCartDrawerItems && window.openCartDrawer) {
             window.fetchCartDrawerItems();
             window.openCartDrawer();
