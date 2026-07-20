@@ -381,7 +381,12 @@
         "order_status_confirmed_order_with_email": "ستتلقى بريدًا إلكترونيًا عندما يكون طلبك جاهزًا.",
         "login": "تسجيل الدخول",
         "breadcrumbs_confirmed": "طلب مؤكد",
-        "cancelled_title": "تم إلغاء طلبك"
+        "cancelled_title": "تم إلغاء طلبك",
+        "contact_us": "إتصل بنا",
+        "contact_us_lowercase": "إتصل بنا",
+        "missing_shipping_address_banner": {
+          "contact_us": "إتصل بنا"
+        }
       },
       "general": {
         "continue_to_payment_plans_button_label": "المتابعة إلى خطط الدفع",
@@ -617,11 +622,21 @@
         "shipping_policy": "التوصيل",
         "refund_policy": "سياسة الاسترداد",
         "terms_of_service": "شروط الخدمة",
-        "legal_notice": "إشعار قانوني"
+        "legal_notice": "إشعار قانوني",
+        "contact_information": "إتصل بنا"
       },
       "notice_banner": {
         "individual_violations_title": {
           "PaymentViolations": "عنوان الفواتير"
+        },
+        "editable_shipping_address_violations_email_link": "إتصل بنا",
+        "contact_information": {
+          "email_link": "إتصل بنا"
+        },
+        "validation_errors_banner": {
+          "section_label": {
+            "contact": "إتصل بنا"
+          }
         }
       },
       "billing": {
