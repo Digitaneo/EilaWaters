@@ -612,7 +612,8 @@
       },
       "shop_policies": {
         "privacy_policy": "سياسة الخصوصية",
-        "shipping_policy": "التوصيل"
+        "shipping_policy": "التوصيل",
+        "refund_policy": "سياسة الاسترداد"
       },
       "notice_banner": {
         "individual_violations_title": {
@@ -891,7 +892,10 @@
       "summary_title": "ملخص الطلب",
       "title": "طلب رقم {{name}}",
       "subtitle": "مؤكد {{date}}",
-      "total": "المجموع"
+      "total": "المجموع",
+      "returns": {
+        "return_and_refund_modal_header": "سياسة الاسترداد"
+      }
     },
     "addresses": {
       "add_button": "أضف العنوان",
