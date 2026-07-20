@@ -674,7 +674,7 @@
     },
     "page_titles": {
       "products": "المنتجات",
-      "order": "طلب رقم # {{ name }}"
+      "order": "طلب رقم {{ name }}"
     }
   },
   "customer_accounts": {
