@@ -69,7 +69,15 @@
         "other_brand_qQwwTw",
         "other_brand_x4Tp9F"
       ],
+      "disabled": true,
       "settings": {}
+    },
+    "related_products_custom_jRPgAg": {
+      "type": "related-products-custom",
+      "name": "منتجات مشابهة (مخصص)",
+      "settings": {
+        "heading": "قد يعجبك أيضاً"
+      }
     },
     "brands_slider_x4wncp": {
       "type": "brands-slider",
@@ -124,13 +132,6 @@
         "brands_title": "مزيد من العلامات التجارية",
         "primary_color": "#00c7f2",
         "text_color_dark": "#1e293b"
-      }
-    },
-    "related_products_custom_jRPgAg": {
-      "type": "related-products-custom",
-      "name": "منتجات مشابهة (مخصص)",
-      "settings": {
-        "heading": "قد يعجبك أيضاً"
       }
     }
   },
