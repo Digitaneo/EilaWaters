@@ -22,32 +22,20 @@
   padding: 10px 0;
   position: relative;
   display: flex;
+  width: 100%;
+}
+
+.announcement-bar__wrap {
+  display: flex;
+  width: max-content;
 }
 
 .announcement-bar__marquee {
   display: flex;
   align-items: center;
-  gap: 40px;
   flex-shrink: 0;
-  min-width: 100%;
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
-
-{% if is_rtl %}
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
-}
-.announcement-bar__marquee {
-  animation-name: marquee;
-  direction: rtl;
-}
-{% else %}
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
-}
-{% endif %}
 
 .announcement-bar__item {
   display: inline-flex;
@@ -55,42 +43,62 @@
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
+  /* مسافة مدروسة بين العناصر لمنع الالتصاق والفراغات المفاجئة */
+  padding: 0 40px; 
 }
 
 .announcement-bar:hover .announcement-bar__marquee {
   animation-play-state: paused;
 }
+
+{% if is_rtl %}
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(50%, 0, 0); }
+}
+.announcement-bar__wrap {
+  transform: translate3d(-50%, 0, 0);
+}
+.announcement-bar__marquee {
+  direction: rtl;
+}
+{% else %}
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+{% endif %}
 </style>
 
 <div class="header-group{% if transparent_header_enabled %} header-group--transparent{% endif %}" id="header-group">
 
 {%- if show_announcement and section.blocks.size > 0 -%}
   <div class="announcement-bar{% unless section.settings.show_announcement_desktop %} mobile-only{% endunless %}{% unless section.settings.show_announcement_mobile %} desktop-only{% endunless %}" id="announcement-bar">
-    
-    <div class="announcement-bar__marquee" aria-hidden="true">
-      {%- for block in section.blocks -%}
-        <span class="announcement-bar__item" {{ block.shopify_attributes }}>
-          {{ block.settings.text }}
-        </span>
-      {%- endfor -%}
-    </div>
-    
-    <div class="announcement-bar__marquee" aria-hidden="true">
-      {%- for block in section.blocks -%}
-        <span class="announcement-bar__item">
-          {{ block.settings.text }}
-        </span>
-      {%- endfor -%}
-    </div>
+    <div class="announcement-bar__wrap">
+      
+      <!-- المجموعة الأولى المكررة لملء المسار الممتد -->
+      <div class="announcement-bar__marquee" aria-hidden="true">
+        {%- for i in (1..6) -%}
+          {%- for block in section.blocks -%}
+            <span class="announcement-bar__item" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+      
+      <!-- المجموعة الثانية المطابقة تماماً لضمان حلقة حركة غير منتهية وبدون أي فراغ زمني -->
+      <div class="announcement-bar__marquee" aria-hidden="true">
+        {%- for i in (1..6) -%}
+          {%- for block in section.blocks -%}
+            <span class="announcement-bar__item">
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
 
-    <div class="announcement-bar__marquee" aria-hidden="true">
-      {%- for block in section.blocks -%}
-        <span class="announcement-bar__item">
-          {{ block.settings.text }}
-        </span>
-      {%- endfor -%}
     </div>
-
   </div>
 {%- endif -%}
 
