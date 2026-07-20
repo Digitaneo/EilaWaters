@@ -616,7 +616,8 @@
         "privacy_policy": "سياسة الخصوصية",
         "shipping_policy": "التوصيل",
         "refund_policy": "سياسة الاسترداد",
-        "terms_of_service": "شروط الخدمة"
+        "terms_of_service": "شروط الخدمة",
+        "legal_notice": "إشعار قانوني"
       },
       "notice_banner": {
         "individual_violations_title": {
