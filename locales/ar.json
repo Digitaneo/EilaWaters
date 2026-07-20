@@ -673,7 +673,7 @@
     },
     "page_titles": {
       "products": "المنتجات",
-      "order": "طلب رقم {{ name }}"
+      "order": "طلب رقم # {{ name }}"
     }
   },
   "customer_accounts": {
@@ -775,7 +775,7 @@
       "order_list": {
         "column_headers": {
           "products_accessibility_label": "المنتجات",
-          "order": "طلب رقم",
+          "order": "طلب رقم #",
           "total": "المجموع"
         },
         "orders_title": "طلب مؤكد"
