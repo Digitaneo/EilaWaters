@@ -1,5 +1,73 @@
+{%- liquid
+  assign is_rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign is_rtl = true
+  endif
+-%}
+
+<style>
+/* تنسيقات إضافية خاصة بحقول اختيار وقت التسليم وملخص الطلب */
+.cart-drawer__delivery-properties {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #eaeaea;
+}
+.cart-drawer__property-group {
+  margin-bottom: 12px;
+}
+.cart-drawer__property-group:last-child {
+  margin-bottom: 0;
+}
+.cart-drawer__property-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+  text-align: right;
+}
+.cart-drawer__property-group input,
+.cart-drawer__property-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.cart-drawer__summary {
+  margin: 15px 0;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.cart-drawer__summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #555;
+}
+.cart-drawer__summary-row.total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
+}
+.cart-drawer__footer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+</style>
+
 {%- if cart.item_count > 0 -%}
-  <div class="cart-drawer__items-wrapper">
+  <div class="cart-drawer__items-wrapper" {% if is_rtl %}dir="rtl"{% endif %}>
     {%- for item in cart.items -%}
       <div class="cart-drawer__item" data-key="{{ item.key }}">
         <div class="cart-drawer__item-image">
@@ -13,7 +81,7 @@
             <h3 class="cart-drawer__item-title">
               <a href="{{ item.url }}">{{ item.product.title }}</a>
             </h3>
-            <button type="button" class="cart-drawer__item-remove" data-line="{{ forloop.index }}" aria-label="Remove item">
+            <button type="button" class="cart-drawer__item-remove" data-line="{{ forloop.index }}" aria-label="{% if is_rtl %}إزالة المنتج{% else %}Remove item{% endif %}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -31,9 +99,9 @@
             <span class="cart-drawer__item-price">{{ item.final_price | money }}</span>
             
             <div class="cart-drawer__qty-selector">
-              <button type="button" class="qty-btn minus-qty" aria-label="Decrease quantity">-</button>
+              <button type="button" class="qty-btn minus-qty" aria-label="{% if is_rtl %}تقليل الكمية{% else %}Decrease quantity{% endif %}">-</button>
               <input type="number" class="cart-drawer__qty-input" data-line="{{ forloop.index }}" value="{{ item.quantity }}" min="0" readonly>
-              <button type="button" class="qty-btn plus-qty" aria-label="Increase quantity">+</button>
+              <button type="button" class="qty-btn plus-qty" aria-label="{% if is_rtl %}زيادة الكمية{% else %}Increase quantity{% endif %}">+</button>
             </div>
           </div>
         </div>
@@ -41,27 +109,66 @@
     {%- endfor -%}
   </div>
 
-  <div class="cart-drawer__footer">
-    <a href="{{ routes.all_products_collection_url }}" class="cart-drawer__add-more header-cart-trigger-close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-      <span>{{ 'cart.add_more' | t }}</span>
-    </a>
+  <div class="cart-drawer__footer" {% if is_rtl %}dir="rtl"{% endif %}>
+    <div class="cart-drawer__footer-actions">
+      <a href="{{ routes.all_products_collection_url }}" class="cart-drawer__add-more header-cart-trigger-close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>{{ 'cart.add_more' | t }}</span>
+      </a>
 
-    <a href="#" class="cart-drawer__clear">{{ 'cart.clear' | t }}</a>
+      <a href="#" class="cart-drawer__clear">{{ 'cart.clear' | t }}</a>
+    </div>
 
     <form action="{{ routes.cart_url }}" method="post" class="cart-drawer__checkout-form">
+      
+      <!-- حقول اختيار وقت وتاريخ التسليم (مفعلة وتظهر الآن) -->
+      <div class="cart-drawer__delivery-properties">
+        <div class="cart-drawer__property-group">
+          <label for="Delivery-Date">
+            {% if is_rtl %}تاريخ التوصيل المفضل :{% else %}Preferred Delivery Date:{% endif %}
+          </label>
+          <input type="date" id="Delivery-Date" name="attributes[تاريخ التوصيل المفضل]" value="{{ cart.attributes['تاريخ التوصيل المفضل'] }}" required>
+        </div>
+
+        <div class="cart-drawer__property-group">
+          <label for="Delivery-Time">
+            {% if is_rtl %}توقيت التوصيل المناسب :{% else %}Preferred Delivery Time:{% endif %}
+          </label>
+          <select id="Delivery-Time" name="attributes[توقيت التوصيل المناسب]">
+            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)" {% if cart.attributes['توقيت التوصيل المناسب'] == 'الصباح (9:00 صباحاً - 1:00 مساءً)' %}selected{% endif %}>
+              {% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}
+            </option>
+            <option value="المساء (2:00 مساءً - 7:00 مساءً)" {% if cart.attributes['توقيت التوصيل المناسب'] == 'المساء (2:00 مساءً - 7:00 مساءً)' %}selected{% endif %}>
+              {% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ملخص الطلب (مفعل ويظهر الآن) -->
+      <div class="cart-drawer__summary">
+        <div class="cart-drawer__summary-row">
+          <span>{% if is_rtl %}عدد المنتجات:{% else %}Total Items:{% endif %}</span>
+          <span>{{ cart.item_count }}</span>
+        </div>
+        <div class="cart-drawer__summary-row total">
+          <span>{% if is_rtl %}المجموع الإجمالي:{% else %}Subtotal:{% endif %}</span>
+          <span class="cart-drawer__total-price">{{ cart.total_price | money }}</span>
+        </div>
+      </div>
+
       <button type="submit" name="checkout" class="btn btn-primary cart-drawer__checkout-btn">
         <span>{{ 'cart.checkout' | t }}</span>
-        <span class="cart-drawer__total-price">({{ cart.total_price | money }})</span>
+        <span>{{ cart.total_price | money }}</span>
       </button>
     </form>
   </div>
 
 {%- else -%}
-  <div class="cart-drawer__empty">
+  <div class="cart-drawer__empty" {% if is_rtl %}dir="rtl"{% endif %}>
     <div class="empty-icon">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
