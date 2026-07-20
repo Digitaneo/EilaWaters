@@ -597,7 +597,8 @@
           "one": "المجموع الفرعي · {{ count }} عنصر",
           "other": "المجموع الفرعي · {{ count }} عنصر"
         },
-        "enter_shipping_address": "أدخل عنوان الشحن"
+        "enter_shipping_address": "أدخل عنوان الشحن",
+        "confirmation_number_label": "طلب رقم{{ confirmation_number }}"
       },
       "marketing": {
         "disclaimer": {
