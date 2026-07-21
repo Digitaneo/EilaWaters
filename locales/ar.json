@@ -388,7 +388,8 @@
           "contact_us": "إتصل بنا"
         },
         "contact_us_html": "هل تحتاج مساعدة؟ {{ contact_us }}",
-        "title": "شكرا على طلبك"
+        "title": "شكرا على طلبك",
+        "return_to_store_link_label": "متابعة التسوق"
       },
       "general": {
         "continue_to_payment_plans_button_label": "المتابعة إلى خطط الدفع",
@@ -1070,6 +1071,12 @@
           "title": "عنوان الفواتير",
           "add_billing_address_button_accessibility_label": "اضافة عنوان الفواتير"
         }
+      },
+      "update_success": {
+        "done_button": "متابعة التسوق"
+      },
+      "add_success": {
+        "done_button": "متابعة التسوق"
       }
     },
     "navigation_and_structure": {
