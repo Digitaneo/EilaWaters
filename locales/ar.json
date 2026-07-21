@@ -606,7 +606,7 @@
           "other": "المجموع الفرعي · {{ count }} عنصر"
         },
         "enter_shipping_address": "أدخل عنوان الشحن",
-        "confirmation_number_label": "طلب رقم #{{ confirmation_number }}"
+        "confirmation_number_label": "تم تقديم الطلب #{{ confirmation_number }}"
       },
       "marketing": {
         "disclaimer": {
