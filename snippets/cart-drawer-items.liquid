@@ -169,8 +169,15 @@
         <div class="cart-drawer__property-group">
           <label for="Delivery-Time">{% if is_rtl %}توقيت التوصيل المناسب :{% else %}Preferred Delivery Time:{% endif %}</label>
           <select id="Delivery-Time" name="attributes[توقيت التوصيل المناسب]">
-            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)">{% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}</option>
-            <option value="المساء (2:00 مساءً - 7:00 مساءً)">{% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}</option>
+            <option value="الصباح (9:00 صباحاً - 1:00 مساءً)" {% if cart.attributes['توقيت التوصيل المناسب'] == 'الصباح (9:00 صباحاً - 1:00 مساءً)' %}selected{% endif %}>
+              {% if is_rtl %}الصباح (9:00 صباحاً - 1:00 مساءً){% else %}Morning (9:00 AM - 1:00 PM){% endif %}
+            </option>
+            <option value="المساء (2:00 مساءً - 7:00 مساءً)" {% if cart.attributes['توقيت التوصيل المناسب'] == 'المساء (2:00 مساءً - 7:00 مساءً)' %}selected{% endif %}>
+              {% if is_rtl %}المساء (2:00 مساءً - 7:00 مساءً){% else %}Afternoon (2:00 PM - 7:00 PM){% endif %}
+            </option>
+            <option value="الليل (7:00 مساءً - 11:00 مساءً)" {% if cart.attributes['توقيت التوصيل المناسب'] == 'الليل (7:00 مساءً - 11:00 مساءً)' %}selected{% endif %}>
+              {% if is_rtl %}الليل (7:00 مساءً - 11:00 مساءً){% else %}Evening (7:00 PM - 11:00 PM){% endif %}
+            </option>
           </select>
         </div>
       </div>
