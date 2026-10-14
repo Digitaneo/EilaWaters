@@ -43,6 +43,12 @@
       gtag('config', 'G-LZ6NSXSJ7B');
     </script>
 
+{% if request.page_type == 'product' and product != blank %}
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{% endif %}
+
   </head>
 
   <body>
